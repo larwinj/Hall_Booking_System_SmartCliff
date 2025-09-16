@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hall Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+         <div class="w-64 bg-primary-800 text-white flex-shrink-0 hidden lg:block">
+    <div class="p-6">
+        <h1 class="text-2xl font-bold text-center bg-primary-700 py-3 px-4 rounded-lg">VenueVista</h1>
+    </div>
+    
+    <nav class="mt-8">
+        <div class="px-4 space-y-2">
+            <a href="../DashBoard/dashboard.html" class="flex items-center px-4 py-3 text-primary-100 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                Dashboard
+            </a>
+            <a href="../Bookingmanagement/booking.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                Booking Management
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-primary-200 bg-primary-700 rounded-lg font-medium">
+                Hall Management
+            </a>
+            <a href="../ReportManagement/report.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                Report Management
+            </a>
+            <a href="../ContentManagement/content.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                Content Management
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                Backup & Recovery
+            </a>
+        </div>
+        
+        <div class="absolute bottom-4 w-64 px-4">
+            <button class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
+                Log Out
+            </button>
+        </div>
+    </nav>
+</div>
+
+<!-- Mobile Menu Button -->
+<div class="lg:hidden fixed top-4 left-4 z-50">
+    <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+</div>
+
+<!-- Mobile Sidebar Overlay -->
+<div id="mobileMenu" class="lg:hidden fixed inset-0 z-40 hidden">
+    <div class="fixed inset-0 bg-black opacity-50"></div>
+    <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white">
+        <div class="p-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold">VenueVista</h1>
+                <button id="closeMobileMenu" class="text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <nav class="mt-4">
+            <div class="px-4 space-y-2">
+                <a href="../DashBoard/dashboard.html" class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Dashboard</a>
+                <a href="../Bookingmanagement/booking.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Booking Management</a>
+                <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Hall Management</a>
+                <a href="../ReportManagement/report.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Report Management</a>
+                <a href="../ContentManagement/content.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Content Management</a>
+                <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Backup & Recovery</a>
+                <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Log Out</a>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+        <!-- Main Content -->
+        <div class="flex-1 p-4 lg:p-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl lg:text-4xl font-bold text-gray-800 ml-12 lg:ml-0">Hall Management</h1>
+                    <button id="addHallBtn" class="bg-primary-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                        <span class="mr-2">+</span>
+                        Add Rooms
+                    </button>
+                </div>
+
+                <!-- Compact Halls Section -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Compact Halls</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Hall #001 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #001</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#001', 'compact', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #002 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #002</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#002', 'compact', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #003 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #003</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#003', 'compact', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #004 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #004</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#004', 'compact', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Classic Halls Section -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Classic Halls</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Hall #005 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #005</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#005', 'classic', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #006 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #006</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#006', 'classic', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #007 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #007</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#007', 'classic', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #008 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #008</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-red-600 font-medium">Inactive</span>
+                                    <button onclick="editHall('#008', 'classic', 'inactive')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grand Halls Section -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Grand Halls</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Hall #009 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #009</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#009', 'grand', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #010 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #010</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#010', 'grand', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #011 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #011</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-red-600 font-medium">Inactive</span>
+                                    <button onclick="editHall('#011', 'grand', 'inactive')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Hall #012 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="h-32 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+                                <span class="text-white font-semibold">Hall Image</span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-800 mb-2">Hall no : #012</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-green-600 font-medium">Active</span>
+                                    <button onclick="editHall('#012', 'grand', 'active')" class="text-blue-600 text-sm hover:underline">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialog Form -->
+    <div id="hallDialog" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+            <div class="text-center mb-6">
+                <h3 id="dialogTitle" class="text-xl font-semibold text-gray-800">Add Or Edit Halls</h3>
+            </div>
+            <form id="hallForm" class="space-y-4">
+                <div>
+                    <input type="text" id="hallNumber" placeholder="Enter the Hall Number" 
+                           class="w-full px-4 py-3 border-b border-gray-300 focus:border-primary-blue focus:outline-none bg-transparent">
+                </div>
+                <div>
+                    <input type="number" id="hallPrice" placeholder="Enter the price of the Hall" 
+                           class="w-full px-4 py-3 border-b border-gray-300 focus:border-primary-blue focus:outline-none bg-transparent">
+                </div>
+                <div>
+                    <input type="text" id="hallCapacity" placeholder="Enter the Capacity (Eg:20-30)" 
+                           class="w-full px-4 py-3 border-b border-gray-300 focus:border-primary-blue focus:outline-none bg-transparent">
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">Add Features</span>
+                        <button type="button" id="addFeatureBtn" class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-300">
+                            +
+                        </button>
+                    </div>
+                    <div id="featuresContainer" class="flex flex-wrap gap-2">
+                        <!-- Features will be added here dynamically -->
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <span class="text-sm text-gray-600">Specify the Status of the Hall</span>
+                    <div class="flex items-center space-x-6">
+                        <label class="flex items-center">
+                            <input type="radio" name="hallStatus" value="active" class="text-primary-blue">
+                            <span class="ml-2 text-sm">Active</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="hallStatus" value="inactive" class="text-primary-blue">
+                            <span class="ml-2 text-sm">Inactive</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button" id="uploadPhotoBtn" class="text-primary-blue text-sm hover:underline">
+                        Upload Photo
+                    </button>
+                    <input type="file" id="photoInput" class="hidden" accept="image/*">
+                </div>
+                <div class="flex justify-center pt-4">
+                    <button type="submit" class="bg-gray-800 text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors">
+                        Submit
+                    </button>
+                </div>
+            </form>
+            <button id="closeDialog" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Sample features array
+        let features = [];
+        let isEditMode = false;
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+        mobileMenuBtn?.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        closeMobileMenu?.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        mobileMenu?.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Dialog functionality
+        const addHallBtn = document.getElementById('addHallBtn');
+        const hallDialog = document.getElementById('hallDialog');
+        const closeDialog = document.getElementById('closeDialog');
+        const dialogTitle = document.getElementById('dialogTitle');
+        const hallForm = document.getElementById('hallForm');
+        const addFeatureBtn = document.getElementById('addFeatureBtn');
+        const featuresContainer = document.getElementById('featuresContainer');
+        const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
+        const photoInput = document.getElementById('photoInput');
+
+        // Add hall button
+        addHallBtn.addEventListener('click', () => {
+            isEditMode = false;
+            dialogTitle.textContent = 'Add Or Edit Halls';
+            hallDialog.classList.remove('hidden');
+            hallForm.reset();
+            features = [];
+            renderFeatures();
+        });
+
+        // Edit hall function
+        function editHall(hallNumber, category, status) {
+            isEditMode = true;
+            dialogTitle.textContent = 'Add Or Edit Halls';
+            
+            // Pre-fill form data
+            document.getElementById('hallNumber').value = hallNumber;
+            document.getElementById('hallPrice').value = category === 'compact' ? '100' : category === 'classic' ? '200' : '300';
+            document.getElementById('hallCapacity').value = category === 'compact' ? '20-30' : category === 'classic' ? '40-50' : '60-80';
+            
+            // Set status
+            const statusRadios = document.querySelectorAll('input[name="hallStatus"]');
+            statusRadios.forEach(radio => {
+                if (radio.value === status) {
+                    radio.checked = true;
+                }
+            });
+
+            // Sample features based on category
+            features = category === 'compact' ? ['WiFi', 'AC'] : 
+                      category === 'classic' ? ['WiFi', 'AC', 'Projector'] : 
+                      ['WiFi', 'AC', 'Projector', 'Sound System'];
+            
+            renderFeatures();
+            hallDialog.classList.remove('hidden');
+        }
+
+        // Close dialog
+        closeDialog.addEventListener('click', () => {
+            hallDialog.classList.add('hidden');
+            hallForm.reset();
+            features = [];
+            renderFeatures();
+        });
+
+        // Close dialog on backdrop click
+        hallDialog.addEventListener('click', (e) => {
+            if (e.target === hallDialog) {
+                hallDialog.classList.add('hidden');
+                hallForm.reset();
+                features = [];
+                renderFeatures();
+            }
+        });
+
+        // Add feature functionality
+        addFeatureBtn.addEventListener('click', () => {
+            const feature = prompt('Enter a feature:');
+            if (feature && feature.trim()) {
+                features.push(feature.trim());
+                renderFeatures();
+            }
+        });
+
+        // Render features
+        function renderFeatures() {
+            featuresContainer.innerHTML = '';
+            features.forEach((feature, index) => {
+                const featureElement = document.createElement('span');
+                featureElement.className = 'bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm flex items-center space-x-2';
+                featureElement.innerHTML = `
+                    <span>${feature}</span>
+                    <button type="button" onclick="removeFeature(${index})" class="text-gray-500 hover:text-gray-700">×</button>
+                `;
+                featuresContainer.appendChild(featureElement);
+            });
+        }
+
+        // Remove feature
+        function removeFeature(index) {
+            features.splice(index, 1);
+            renderFeatures();
+        }
+
+        // Upload photo
+        uploadPhotoBtn.addEventListener('click', () => {
+            photoInput.click();
+        });
+
+        photoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                uploadPhotoBtn.textContent = 'Photo Selected: ' + file.name;
+            }
+        });
+
+        // Form submission
+        hallForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const hallNumber = document.getElementById('hallNumber').value;
+            const hallPrice = document.getElementById('hallPrice').value;
+            const hallCapacity = document.getElementById('hallCapacity').value;
+            const hallStatus = document.querySelector('input[name="hallStatus"]:checked')?.value;
+
+            if (hallNumber && hallPrice && hallCapacity && hallStatus) {
+                const action = isEditMode ? 'Updated' : 'Added';
+                alert(`Hall ${action}: ${hallNumber}\nPrice: $${hallPrice}\nCapacity: ${hallCapacity}\nStatus: ${hallStatus}\nFeatures: ${features.join(', ')}`);
+                
+                hallDialog.classList.add('hidden');
+                hallForm.reset();
+                features = [];
+                renderFeatures();
+                photoInput.value = '';
+                uploadPhotoBtn.textContent = 'Upload Photo';
+            } else {
+                alert('Please fill all required fields.');
+            }
+        });
+
+        // Make editHall function global
+        window.editHall = editHall;
+    </script>
+</body>
+</html>

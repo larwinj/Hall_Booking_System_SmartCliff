@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-primary-500 text-white flex-shrink-0 hidden lg:block">
+            <div class="p-6">
+                <h1
+                    class="text-lg sm:text-xl md:text-2xl font-bold text-center bg-blue-600 py-2 px-3 rounded-lg break-words">
+                    VenueVista
+                </h1>
+            </div>
+
+            <nav class="mt-8">
+                <div class="px-4 space-y-2">
+                    <a href="#"
+                        class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">
+                        Dashboard
+                    </a>
+                    <a href="../Bookingmanagement/booking.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        Booking Management
+                    </a>
+                    <a href="../HallsManagement/hall.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        Hall Management
+                    </a>
+                    <a href="../ReportManagement/report.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        Report Management
+                    </a>
+                    <a href="../ContentManagement/content.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        Content Management
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        Backup & Recovery
+                    </a>
+                </div>
+
+                <div class="absolute bottom-4 w-64 px-4">
+                    <button
+                        class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
+                        Log Out
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="lg:hidden fixed top-4 left-4 z-50">
+            <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="mobileMenu" class="lg:hidden fixed inset-0 z-40 hidden">
+            <div class="fixed inset-0 bg-black opacity-50"></div>
+
+            <!-- Sidebar -->
+            <div
+                class="fixed left-0 top-0 w-3/4 sm:w-64 h-full bg-primary-800 text-white transition-transform transform translate-x-0">
+                <div class="p-4 sm:p-6">
+                    <div class="flex justify-between items-center">
+                        <h1
+                            class="text-base sm:text-lg md:text-xl font-bold text-center bg-blue-600 py-2 px-3 rounded-lg break-words max-w-[80%] sm:max-w-full">
+                            VenueVista
+                        </h1>
+
+                        <!-- Close Button -->
+                        <button id="closeMobileMenu" class="text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="mt-4">
+                    <div class="px-3 sm:px-4 space-y-2 text-sm sm:text-base">
+                        <a href="#"
+                            class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Dashboard</a>
+                        <a href="../Bookingmanagement/booking.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Booking
+                            Management</a>
+                        <a href="../HallsManagement/hall.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Hall
+                            Management</a>
+                        <a href="../ReportManagement/report.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Report
+                            Management</a>
+                        <a href="../ContentManagement/content.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Content
+                            Management</a>
+                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Backup &
+                            Recovery</a>
+                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Log Out</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200 p-4 lg:p-6">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 ml-12 lg:ml-0">Dashboard</h1>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 p-4 lg:p-6 space-y-8">
+                <!-- Top Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+                    <div
+                        class="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+                        <div class="text-center">
+                            <h3 class="text-sm font-medium text-gray-600 mb-2">New Booking</h3>
+                            <p class="text-3xl font-bold text-primary-600">12</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+                        <div class="text-center">
+                            <h3 class="text-sm font-medium text-gray-600 mb-2">Refund Pending</h3>
+                            <p class="text-3xl font-bold text-primary-600">2</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+                        <div class="text-center">
+                            <h3 class="text-sm font-medium text-gray-600 mb-2">User Queries</h3>
+                            <p class="text-3xl font-bold text-primary-600">5</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Analytics Section -->
+                <div class="bg-white rounded-lg shadow-md border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <h2 class="text-xl font-semibold text-gray-800">Booking Analytics</h2>
+                            <div class="relative">
+                                <select
+                                    class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    <option>Past 30days</option>
+                                    <option>Past 7days</option>
+                                    <option>Past 90days</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+                            <div class="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-600 mb-2">Total Booking</h3>
+                                <p class="text-2xl font-bold text-gray-800">12</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-600 mb-2">Active Booking</h3>
+                                <p class="text-2xl font-bold text-gray-800">2</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-600 mb-2">Cancelled Booking</h3>
+                                <p class="text-2xl font-bold text-gray-800">5</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Analytics Section -->
+                <div class="bg-white rounded-lg shadow-md border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <h2 class="text-xl font-semibold text-gray-800">Users Analytics</h2>
+                            <div class="relative">
+                                <select
+                                    class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    <option>Past 30days</option>
+                                    <option>Past 7days</option>
+                                    <option>Past 90days</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+                            <div class="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-600 mb-2">New Registration</h3>
+                                <p class="text-2xl font-bold text-gray-800">32</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-600 mb-2">Active Users</h3>
+                                <p class="text-2xl font-bold text-gray-800">24</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-600 mb-2">Inactive Users</h3>
+                                <p class="text-2xl font-bold text-gray-800">8</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        closeMobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

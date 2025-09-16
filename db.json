@@ -1,0 +1,155 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@example.com",
+      "phone": "1234567890",
+      "password": "password123"
+    },
+    {
+      "firstName": "larwin",
+      "lastName": "J",
+      "email": "larwinj@gmail.com",
+      "phone": "7806922311",
+      "password": "Test@123",
+      "id": 2
+    },
+    {
+      "firstName": "Shaik",
+      "lastName": "Anis",
+      "email": "anis@gmail.com",
+      "phone": "789654123",
+      "password": "Test@123",
+      "id": 3
+    },
+    {
+      "firstName": "test",
+      "lastName": "t",
+      "email": "test@gmail.com",
+      "phone": "7806922311",
+      "password": "123456",
+      "id": 4
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1,
+      "userId": 1,
+      "hallType": "compact",
+      "roomId": "#001",
+      "date": "2025-09-20",
+      "startTime": "10:00",
+      "endTime": "12:00",
+      "cost": 3000
+    },
+    {
+      "userId": 2,
+      "date": "2025-09-19",
+      "checkInTime": "10:00",
+      "checkOutTime": "11:00",
+      "venueCategory": "compact",
+      "roomId": "#002",
+      "firstName": "Larwin",
+      "lastName": "J",
+      "email": "larwinj4683@gmail.com",
+      "mobileNumber": "7806922311",
+      "address": "Kunniyamuttur kovaipudhur , Coimbatore..",
+      "purpose": "For my students to make a session about the DBMS concept..",
+      "beverage": "yes",
+      "beverages": {
+        "tea": 20
+      },
+      "totalCost": 1800,
+      "status": "cancelled",
+      "id": 2
+    },
+    {
+      "userId": 2,
+      "date": "2025-09-14",
+      "checkInTime": "08:00",
+      "checkOutTime": "09:30",
+      "venueCategory": "classic",
+      "roomId": "#006",
+      "firstName": "Madhan",
+      "lastName": "K",
+      "email": "madhan@gmail.com",
+      "mobileNumber": "7806922311",
+      "address": "cochin kerala",
+      "purpose": "For COVIN-19 program..",
+      "beverage": "yes",
+      "beverages": {
+        "coffee": 20
+      },
+      "totalCost": 3000,
+      "status": "completed",
+      "id": 3
+    },
+    {
+      "userId": 2,
+      "date": "2025-09-24",
+      "checkInTime": "12:00",
+      "checkOutTime": "13:00",
+      "venueCategory": "classic",
+      "roomId": "#006",
+      "firstName": "Kavin",
+      "lastName": "A",
+      "email": "kavin@gmail.com",
+      "mobileNumber": "7806922311",
+      "address": "Annur tiruppur",
+      "purpose": "For blockchain meeting.And tell about the imp of blobkchain.",
+      "beverage": "no",
+      "beverages": {},
+      "totalCost": 2500,
+      "status": "cancelled",
+      "id": 4
+    },
+    {
+      "userId": 2,
+      "date": "2025-09-26",
+      "checkInTime": "10:00",
+      "checkOutTime": "11:00",
+      "venueCategory": "classic",
+      "roomId": "#007",
+      "firstName": "Prabha",
+      "lastName": "M",
+      "email": "prabha@gmail.com",
+      "mobileNumber": "7418529630",
+      "address": "tirupur near bus stand - new bus stand..",
+      "purpose": "Company standup meeting..To interact with all cliend based company..",
+      "beverage": "yes",
+      "beverages": {
+        "tea": 2,
+        "coffee": 2,
+        "juice": 5,
+        "snacks": 4,
+        "water": 10
+      },
+      "totalCost": 3035,
+      "status": "pending",
+      "id": 5
+    },
+    {
+      "userId": 2,
+      "date": "2025-09-19",
+      "checkInTime": "12:00",
+      "checkOutTime": "13:00",
+      "venueCategory": "compact",
+      "roomId": "#002",
+      "firstName": "Larwin",
+      "lastName": "J",
+      "email": "larwinj@gmail.com",
+      "mobileNumber": "7806922311",
+      "address": "Kunniyamuttur kovaipudhur , Coimbatore..",
+      "purpose": "For my students to make a session about the DBMS concept..",
+      "beverage": "yes",
+      "beverages": {
+        "coffee": 15
+      },
+      "totalCost": 1875,
+      "status": "pending",
+      "id": 6
+    }
+  ]
+}

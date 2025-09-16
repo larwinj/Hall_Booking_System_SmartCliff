@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Bookings - VenueVista</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#f1f5f9',
+                        accent: '#facc15',
+                        'light-blue': '#e0f2fe',
+                        'primary-blue': '#0284c7',
+                        'dark-blue': '#0c4a6e'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #e0f2fe;
+        }
+        .table-container {
+            max-width: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            box-sizing: border-box;
+        }
+        @media (max-width: 640px) {
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            th, td {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+                white-space: nowrap;
+            }
+            th:nth-child(1), td:nth-child(1) { min-width: 100px; } /* Category Type */
+            th:nth-child(2), td:nth-child(2) { min-width: 80px; }  /* Room Number */
+            th:nth-child(3), td:nth-child(3) { min-width: 90px; }  /* Date */
+            th:nth-child(4), td:nth-child(4) { min-width: 80px; }  /* Check In */
+            th:nth-child(5), td:nth-child(5) { min-width: 80px; }  /* Check Out */
+            th:nth-child(6), td:nth-child(6) { min-width: 80px; }  /* Status */
+            th:nth-child(7), td:nth-child(7) { min-width: 90px; }  /* Booked Date */
+            th:nth-child(8), td:nth-child(8) { min-width: 60px; }  /* Actions */
+            .table-container::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 20px;
+                height: 100%;
+                background: linear-gradient(to left, rgba(0, 0, 0, 0.1), transparent);
+                pointer-events: none;
+            }
+        }
+        @media (min-width: 641px) {
+            th, td {
+                padding: 1rem;
+                font-size: 0.875rem;
+            }
+        }
+        /* Actions Dropdown */
+        .actions-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            z-index: 30;
+            transform: translateY(5px);
+            transition: all 0.15s ease;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .actions-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .actions-dropdown a, .actions-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: none;
+            background: none;
+            color: #374151;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: background-color 0.15s;
+            cursor: pointer;
+        }
+        .actions-dropdown a:hover, .actions-dropdown button:hover {
+            background-color: #f3f4f6;
+        }
+        .actions-dropdown button.danger {
+            color: #dc2626;
+        }
+        .actions-dropdown button.danger:hover {
+            background-color: #fef2f2;
+        }
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.98);
+            transition: transform 0.2s ease;
+        }
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        .updated-badge {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .actions-btn {
+            position: relative;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <div class="navbar-customer"></div>
+
+    <!-- Main Content -->
+    <div class="pt-20 pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 animate-fade-in">My Bookings</h2>
+
+        <!-- Filter -->
+        <div class="flex justify-end mb-6">
+            <select id="filter-bookings" class="border border-gray-300 rounded-lg p-2 text-sm bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 w-full sm:w-auto">
+                <option value="all">All Bookings</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+        </div>
+
+        <!-- Bookings Table -->
+        <div class="table-container bg-white shadow-md rounded-lg relative animate-slide-up">
+            <table class="w-full">
+                <thead class="sticky-header">
+                    <tr>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Category Type</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Room Number</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Date</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Check In</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Check Out</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Status</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Booked Date</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookings-table">
+                    <tr>
+                        <td colspan="8" class="p-4 text-center text-gray-500">Loading bookings...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Actions Dropdown Template (not used as a container anymore, kept for reference) -->
+    <div id="actions-dropdown-template" class="hidden">
+        <a href="#" class="view-details">View Details</a>
+        <button class="reschedule">Reschedule</button>
+        <button class="cancel-booking danger">Cancel Booking</button>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="booking-modal" class="modal-overlay hidden">
+        <div class="modal-content relative">
+            <button class="modal-close">&times;</button>
+            <h3 class="text-lg font-bold mb-4">Booking Details</h3>
+            <div id="modal-body" class="space-y-4 text-sm">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        // Load navbar and set active state (kept same as original)
+        fetch('../Navbar/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.navbar-customer').innerHTML = data;
+                // Clear all active states in desktop nav
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('border-b-2', 'border-primary-blue', 'text-primary-blue', 'font-medium');
+                    link.classList.add('text-gray-700', 'hover:text-primary-blue', 'pb-1');
+                });
+                // Set active for desktop My Bookings
+                const desktopMyBookingsLink = document.querySelector('nav a[href="../MyBookings/mybookings.html"]');
+                if (desktopMyBookingsLink) {
+                    desktopMyBookingsLink.classList.add('border-b-2', 'border-primary-blue', 'text-primary-blue', 'font-medium');
+                    desktopMyBookingsLink.classList.remove('hover:text-primary-blue');
+                }
+                // Clear all active states in mobile nav
+                const mobileNavLinks = document.querySelectorAll('#mobileMenu nav a');
+                mobileNavLinks.forEach(link => {
+                    link.classList.remove('border-l-2', 'border-primary-blue', 'font-medium');
+                    link.classList.add('text-gray-700', 'hover:text-primary-blue', 'pl-4');
+                });
+                // Set active for mobile My Bookings
+                const mobileMyBookingsLink = document.querySelector('#mobileMenu a[href="../MyBookings/mybookings.html"]');
+                if (mobileMyBookingsLink) {
+                    mobileMyBookingsLink.classList.add('border-l-2', 'border-primary-blue', 'font-medium');
+                    mobileMyBookingsLink.classList.remove('hover:text-primary-blue');
+                }
+                // Mobile menu setup
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                const mobileMenu = document.getElementById('mobileMenu');
+                const closeMobileMenu = document.getElementById('closeMobileMenu');
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+                }
+                if (closeMobileMenu) {
+                    closeMobileMenu.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+                }
+                if (mobileMenu) {
+                    mobileMenu.addEventListener('click', (e) => {
+                        if (e.target === mobileMenu) mobileMenu.classList.add('hidden');
+                    });
+                }
+            });
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                alert('Please log in to view your bookings.');
+                window.location.href = '../login.html';
+                return;
+            }
+
+            // Load bookings
+            try {
+                const response = await fetch(`${API_URL}/bookings?userId=${userId}`);
+                const bookings = await response.json();
+                populateBookingsTable(bookings);
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+                document.getElementById('bookings-table').innerHTML = '<tr><td colspan="8" class="p-4 text-center text-red-500">Error loading bookings. Please try again.</td></tr>';
+            }
+
+            // Filter functionality
+            document.getElementById('filter-bookings').addEventListener('change', (e) => {
+                const filterValue = e.target.value;
+                const rows = document.querySelectorAll('.table-row');
+                rows.forEach(row => {
+                    if (filterValue === 'all' || row.dataset.status === filterValue) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Actions dropdown and modal setup
+            setupActions();
+            setupModal();
+        });
+
+        function populateBookingsTable(bookings) {
+            const tbody = document.getElementById('bookings-table');
+            if (!Array.isArray(bookings) || bookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-500">No bookings found.</td></tr>';
+                return;
+            }
+
+            const categoryMap = {
+                'compact': 'Compact Room',
+                'classic': 'Classic Hall',
+                'grand': 'Grand Hall'
+            };
+
+            tbody.innerHTML = bookings.map(booking => {
+                const categoryName = categoryMap[booking.venueCategory] || booking.venueCategory;
+                const formattedDate = booking.date ? new Date(booking.date).toLocaleDateString('en-GB') : '-';
+                const formattedBookedDate = booking.createdAt ? new Date(booking.createdAt).toLocaleDateString('en-GB') : new Date().toLocaleDateString('en-GB');
+                const statusClass = booking.status === 'pending' ? 'text-blue-600' : booking.status === 'completed' ? 'text-green-600' : 'text-red-600';
+                const statusText = booking.status ? (booking.status.charAt(0).toUpperCase() + booking.status.slice(1)) : 'Unknown';
+                const updatedBadge = booking.updated ? '<span class="updated-badge ml-2">Updated</span>' : '';
+
+                return `
+                    <tr class="border-t hover:bg-gray-50 transition-colors table-row" data-status="${booking.status}" data-booking-id="${booking.id}">
+                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${categoryName}${updatedBadge}</td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${booking.roomId || '-'}</td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${formattedDate}</td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${booking.checkInTime || '-'}</td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${booking.checkOutTime || '-'}</td>
+                        <td class="p-2 sm:p-4 ${statusClass} font-semibold text-xs sm:text-sm">${statusText}</td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${formattedBookedDate}</td>
+                        <td class="p-2 sm:p-4 relative">
+                            <button class="actions-btn text-gray-500 hover:text-gray-700 text-sm" data-booking-id="${booking.id}" aria-haspopup="true" aria-expanded="false">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01"></path>
+                                </svg>
+                            </button>
+                            <div class="actions-dropdown" id="dropdown-${booking.id}" aria-hidden="true"></div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function setupActions() {
+            // Single delegated click handler for actions buttons and outside clicks
+            document.addEventListener('click', async (e) => {
+                const btn = e.target.closest('.actions-btn');
+
+                // If clicked on an actions button (or its children)
+                if (btn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const bookingId = btn.dataset.bookingId;
+                    if (!bookingId) return;
+
+                    const dropdown = document.getElementById(`dropdown-${bookingId}`);
+                    if (!dropdown) return;
+
+                    // If this dropdown is already open, close it and return
+                    const isOpen = dropdown.classList.contains('show');
+                    // Close all dropdowns first
+                    document.querySelectorAll('.actions-dropdown').forEach(dd => {
+                        dd.classList.remove('show');
+                        dd.setAttribute('aria-hidden', 'true');
+                    });
+                    // If it was open, we just closed it -- so return (toggle behavior)
+                    if (isOpen) return;
+
+                    // Build dropdown content directly into the dropdown element (no nested .actions-dropdown)
+                    dropdown.innerHTML = ''; // clear previous
+
+                    try {
+                        const response = await fetch(`${API_URL}/bookings/${bookingId}`);
+                        const booking = await response.json();
+
+                        // View Details
+                        const viewDetails = document.createElement('a');
+                        viewDetails.href = '#';
+                        viewDetails.className = 'view-details';
+                        viewDetails.textContent = 'View Details';
+                        viewDetails.addEventListener('click', (ev) => {
+                            ev.preventDefault();
+                            ev.stopPropagation();
+                            showBookingModal(booking);
+                            dropdown.classList.remove('show');
+                            dropdown.setAttribute('aria-hidden', 'true');
+                        });
+                        dropdown.appendChild(viewDetails);
+
+                        // Conditionally add Reschedule and Cancel based on status
+                        if (booking.status === 'pending') {
+                            const reschedule = document.createElement('button');
+                            reschedule.className = 'reschedule';
+                            reschedule.textContent = 'Reschedule';
+                            reschedule.addEventListener('click', (ev) => {
+                                ev.preventDefault();
+                                ev.stopPropagation();
+                                // redirect to booking form with prefilled query params
+                                const params = new URLSearchParams({
+                                    bookingId,
+                                    action: 'edit',
+                                    date: booking.date || '',
+                                    checkInTime: booking.checkInTime || '',
+                                    checkOutTime: booking.checkOutTime || '',
+                                    venueCategory: booking.venueCategory || '',
+                                    roomId: booking.roomId || ''
+                                });
+                                window.location.href = `../BookingsForm/bookingform.html?${params.toString()}`;
+                                dropdown.classList.remove('show');
+                                dropdown.setAttribute('aria-hidden', 'true');
+                            });
+                            dropdown.appendChild(reschedule);
+
+                            const cancel = document.createElement('button');
+                            cancel.className = 'cancel-booking danger';
+                            cancel.textContent = 'Cancel Booking';
+                            cancel.addEventListener('click', async (ev) => {
+                                ev.preventDefault();
+                                ev.stopPropagation();
+                                if (!confirm('Are you sure you want to cancel this booking?')) {
+                                    return;
+                                }
+                                try {
+                                    const updateResponse = await fetch(`${API_URL}/bookings/${bookingId}`, {
+                                        method: 'PATCH',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ status: 'cancelled' })
+                                    });
+                                    if (updateResponse.ok) {
+                                        alert('Booking cancelled successfully!');
+                                        location.reload();
+                                    } else {
+                                        alert('Error cancelling booking. Please try again.');
+                                    }
+                                } catch (error) {
+                                    console.error('Error cancelling booking:', error);
+                                    alert('An error occurred. Please try again.');
+                                }
+                                dropdown.classList.remove('show');
+                                dropdown.setAttribute('aria-hidden', 'true');
+                            });
+                            dropdown.appendChild(cancel);
+                        }
+
+                        // Show dropdown
+                        dropdown.classList.add('show');
+                        dropdown.setAttribute('aria-hidden', 'false');
+
+                    } catch (error) {
+                        console.error('Error fetching booking:', error);
+                        alert('Error loading booking details.');
+                    }
+                    return;
+                }
+
+                // If click is not inside an actions-btn, and not inside a dropdown, close all dropdowns
+                if (!e.target.closest('.actions-dropdown')) {
+                    document.querySelectorAll('.actions-dropdown').forEach(dd => {
+                        dd.classList.remove('show');
+                        dd.setAttribute('aria-hidden', 'true');
+                    });
+                }
+            });
+        }
+
+        function setupModal() {
+            const modal = document.getElementById('booking-modal');
+            const closeBtn = modal.querySelector('.modal-close');
+
+            function hideModal() {
+                modal.classList.remove('show');
+                modal.classList.add('hidden');
+            }
+
+            // close button
+            if (closeBtn) {
+                closeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    hideModal();
+                });
+            }
+
+            // click overlay to close
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    hideModal();
+                }
+            });
+
+            // Escape key to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    hideModal();
+                }
+            });
+        }
+
+        async function showBookingModal(booking) {
+            const modal = document.getElementById('booking-modal');
+            const modalBody = document.getElementById('modal-body');
+            if (!modal || !modalBody) return;
+
+            const categoryMap = {
+                'compact': 'Compact Room',
+                'classic': 'Classic Hall',
+                'grand': 'Grand Hall'
+            };
+            const categoryName = categoryMap[booking.venueCategory] || booking.venueCategory;
+            const beveragesList = booking.beverages && typeof booking.beverages === 'object'
+                ? Object.entries(booking.beverages).map(([item, qty]) => `${item} x${qty}`).join(', ')
+                : (Array.isArray(booking.beverages) ? booking.beverages.join(', ') : 'None');
+
+            modalBody.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p><strong>Category:</strong> ${categoryName}</p>
+                        <p><strong>Room:</strong> ${booking.roomId || '-'}</p>
+                        <p><strong>Date:</strong> ${booking.date ? new Date(booking.date).toLocaleDateString('en-GB') : '-'}</p>
+                        <p><strong>Check In:</strong> ${booking.checkInTime || '-'}</p>
+                        <p><strong>Check Out:</strong> ${booking.checkOutTime || '-'}</p>
+                    </div>
+                    <div>
+                        <p><strong>Name:</strong> ${booking.firstName || '-'} ${booking.lastName || ''}</p>
+                        <p><strong>Email:</strong> ${booking.email || '-'}</p>
+                        <p><strong>Phone:</strong> ${booking.mobileNumber || '-'}</p>
+                        <p><strong>Address:</strong> ${booking.address || '-'}</p>
+                        <p><strong>Purpose:</strong> ${booking.purpose || '-'}</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t">
+                    <p><strong>Beverage:</strong> ${booking.beverage === 'yes' ? 'Yes' : 'No'}</p>
+                    ${booking.beverage === 'yes' ? `<p><strong>Items:</strong> ${beveragesList}</p>` : ''}
+                    <p><strong>Total Cost:</strong> ₹${booking.totalCost ?? '-'}</p>
+                    <p><strong>Status:</strong> <span class="font-semibold ${booking.status === 'pending' ? 'text-blue-600' : booking.status === 'completed' ? 'text-green-600' : 'text-red-600'}">${booking.status ? booking.status.charAt(0).toUpperCase() + booking.status.slice(1) : '-'}</span></p>
+                </div>
+            `;
+
+            // Ensure hidden class removed (Tailwind hidden might set display:none) so CSS transitions apply
+            modal.classList.remove('hidden');
+            // small timeout to allow removal to take effect then add show for transition (not strictly necessary but smooth)
+            requestAnimationFrame(() => modal.classList.add('show'));
+        }
+
+        // Smooth scrolling (unchanged)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect (unchanged)
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('header');
+            if (nav && window.scrollY > 100) {
+                nav.classList.add('bg-white/95', 'backdrop-blur-sm', 'shadow-md');
+            } else if (nav) {
+                nav.classList.remove('bg-white/95', 'backdrop-blur-sm', 'shadow-md');
+            }
+        });
+
+        // Intersection Observer for animations (unchanged)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-fade-in, .animate-slide-up').forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-600', 'ease-out');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

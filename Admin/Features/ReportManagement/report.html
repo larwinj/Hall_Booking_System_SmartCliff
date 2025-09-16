@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-primary-800 text-white flex-shrink-0 hidden lg:block">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-center bg-primary-700 py-3 px-4 rounded-lg">VenueVista</h1>
+            </div>
+            
+            <nav class="mt-8">
+                <div class="px-4 space-y-2">
+                    <a href="../DashBoard/dashboard.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Dashboard
+                    </a>
+                    <a href="../Bookingmanagement/booking.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Booking Management
+                    </a>
+                    <a href="../HallsManagement/hall.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Hall Management
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Report Management
+                    </a>
+                    <a href="../ContentManagement/content.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Content Management
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Backup & Recovery
+                    </a>
+                </div>
+                
+                <div class="absolute bottom-4 w-64 px-4">
+                    <button class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
+                        Log Out
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="lg:hidden fixed top-4 left-4 z-50">
+            <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="mobileMenu" class="lg:hidden fixed inset-0 z-40 hidden">
+            <div class="fixed inset-0 bg-black opacity-50"></div>
+            <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white">
+                <div class="p-6">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-xl font-bold">VenueVista</h1>
+                        <button id="closeMobileMenu" class="text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="mt-4">
+                    <div class="px-4 space-y-2">
+                        <a href="../DashBoard/dashboard.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Dashboard</a>
+                        <a href="../Bookingmanagement/booking.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Booking Management</a>
+                        <a href="../HallsManagement/hall.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Hall Management</a>
+                        <a href="#" class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Report Management</a>
+                        <a href="../ContentManagement/content.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Content Management</a>
+                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Backup & Recovery</a>
+                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Log Out</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-4 lg:p-8">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-3xl lg:text-4xl font-bold text-primary-800 mb-12 ml-12 lg:ml-0">Report Management</h1>
+
+                <!-- Report Form -->
+                <div class="bg-white rounded-xl shadow-lg p-6 lg:p-8">
+                    <form class="space-y-8">
+                        <!-- Date Selection Row -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                            <!-- Start Date -->
+                            <div>
+                                <label class="block text-lg font-semibold text-gray-800 mb-3">Start Date</label>
+                                <div class="relative">
+                                    <input type="date" id="startDate"
+                                           class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
+                                </div>
+                            </div>
+
+                            <!-- End Date -->
+                            <div>
+                                <label class="block text-lg font-semibold text-gray-800 mb-3">End Date</label>
+                                <div class="relative">
+                                    <input type="date" id="endDate"
+                                           class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category and Room Selection Row -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                            <!-- Select Venue Category -->
+                            <div>
+                                <label class="block text-lg font-semibold text-gray-800 mb-3">Select Venue Category</label>
+                                <div class="relative">
+                                    <select id="venueCategory"
+                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-all cursor-pointer">
+                                        <option value="">Select Category</option>
+                                        <option value="compact">Compact Halls</option>
+                                        <option value="classic">Classic Halls</option>
+                                        <option value="grand">Grand Halls</option>
+                                        <option value="all">All Categories</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Select Room -->
+                            <div>
+                                <label class="block text-lg font-semibold text-gray-800 mb-3">Select Room</label>
+                                <div class="relative">
+                                    <select id="roomSelect"
+                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-all cursor-pointer">
+                                        <option value="">Select Room</option>
+                                        <option value="001">Hall #001 - Compact</option>
+                                        <option value="002">Hall #002 - Compact</option>
+                                        <option value="003">Hall #003 - Compact</option>
+                                        <option value="004">Hall #004 - Compact</option>
+                                        <option value="005">Hall #005 - Classic</option>
+                                        <option value="006">Hall #006 - Classic</option>
+                                        <option value="007">Hall #007 - Classic</option>
+                                        <option value="008">Hall #008 - Classic</option>
+                                        <option value="009">Hall #009 - Grand</option>
+                                        <option value="010">Hall #010 - Grand</option>
+                                        <option value="011">Hall #011 - Grand</option>
+                                        <option value="012">Hall #012 - Grand</option>
+                                        <option value="all">All Rooms</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Export Button -->
+                        <div class="flex justify-center pt-6">
+                            <button type="submit" 
+                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-4 px-12 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                Export
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Report Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
+                        <div class="flex items-center">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800">Total Bookings</h3>
+                                <p class="text-3xl font-bold text-primary-600 mt-2">247</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
+                        <div class="flex items-center">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800">Revenue Generated</h3>
+                                <p class="text-3xl font-bold text-primary-600 mt-2">₹12.5L</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
+                        <div class="flex items-center">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800">Active Halls</h3>
+                                <p class="text-3xl font-bold text-primary-600 mt-2">11/12</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        closeMobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Dynamic room filtering based on venue category
+        const venueCategory = document.getElementById('venueCategory');
+        const roomSelect = document.getElementById('roomSelect');
+
+        const roomsByCategory = {
+            compact: [
+                { value: '001', text: 'Hall #001 - Compact' },
+                { value: '002', text: 'Hall #002 - Compact' },
+                { value: '003', text: 'Hall #003 - Compact' },
+                { value: '004', text: 'Hall #004 - Compact' }
+            ],
+            classic: [
+                { value: '005', text: 'Hall #005 - Classic' },
+                { value: '006', text: 'Hall #006 - Classic' },
+                { value: '007', text: 'Hall #007 - Classic' },
+                { value: '008', text: 'Hall #008 - Classic' }
+            ],
+            grand: [
+                { value: '009', text: 'Hall #009 - Grand' },
+                { value: '010', text: 'Hall #010 - Grand' },
+                { value: '011', text: 'Hall #011 - Grand' },
+                { value: '012', text: 'Hall #012 - Grand' }
+            ]
+        };
+
+        venueCategory.addEventListener('change', (e) => {
+            const category = e.target.value;
+            
+            // Clear room options
+            roomSelect.innerHTML = '<option value="">Select Room</option>';
+            
+            if (category && category !== 'all') {
+                // Add filtered rooms
+                roomsByCategory[category].forEach(room => {
+                    const option = document.createElement('option');
+                    option.value = room.value;
+                    option.textContent = room.text;
+                    roomSelect.appendChild(option);
+                });
+            } else if (category === 'all') {
+                // Add all rooms
+                Object.values(roomsByCategory).flat().forEach(room => {
+                    const option = document.createElement('option');
+                    option.value = room.value;
+                    option.textContent = room.text;
+                    roomSelect.appendChild(option);
+                });
+            }
+            
+            // Add "All Rooms" option at the end
+            if (category) {
+                const allOption = document.createElement('option');
+                allOption.value = 'all';
+                allOption.textContent = 'All Rooms';
+                roomSelect.appendChild(allOption);
+            }
+        });
+
+        // Form validation and submission
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const category = document.getElementById('venueCategory').value;
+            const room = document.getElementById('roomSelect').value;
+            
+            if (!startDate || !endDate) {
+                alert('Please select both start and end dates.');
+                return;
+            }
+            
+            if (new Date(startDate) > new Date(endDate)) {
+                alert('Start date cannot be later than end date.');
+                return;
+            }
+            
+            if (!category) {
+                alert('Please select a venue category.');
+                return;
+            }
+            
+            // Simulate export functionality
+            const exportBtn = document.querySelector('button[type="submit"]');
+            const originalText = exportBtn.innerHTML;
+            
+            exportBtn.innerHTML = 'Generating Report...';
+            exportBtn.disabled = true;
+            
+            setTimeout(() => {
+                exportBtn.innerHTML = 'Report Generated!';
+                
+                setTimeout(() => {
+                    exportBtn.innerHTML = originalText;
+                    exportBtn.disabled = false;
+                }, 2000);
+            }, 3000);
+        });
+
+        // Set default dates (last 30 days)
+        const today = new Date();
+        const thirtyDaysAgo = new Date(today);
+        thirtyDaysAgo.setDate(today.getDate() - 30);
+        
+        document.getElementById('endDate').value = today.toISOString().split('T')[0];
+        document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+    </script>
+</body>
+</html>

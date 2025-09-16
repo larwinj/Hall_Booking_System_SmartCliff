@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hall Booking - Landing Page - VenueVista</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        },
+                        secondary: '#f1f5f9',
+                        accent: '#facc15',
+                        'light-blue': '#e0f2fe',
+                        'primary-blue': '#0284c7',
+                        'dark-blue': '#0c4a6e'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'fadeInUp': 'fadeInUp 1s ease-out'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 639px) {
+            .hero-content {
+                padding-top: 4rem;
+                padding-bottom: 2rem;
+            }
+
+            .feature-icon {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .feature-icon svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .hero-content {
+                padding-top: 5rem;
+                padding-bottom: 3rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-light-blue via-blue-50 to-white min-h-screen font-sans overflow-x-hidden">
+    <!-- Navbar -->
+    <div class="navbar-customer"></div>
+    <script>
+        fetch('../Navbar/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.navbar-customer').innerHTML = data;
+                // Clear all active states in desktop nav
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('border-b-2', 'border-primary-blue', 'text-primary-blue', 'font-medium');
+                    link.classList.add('text-gray-700', 'hover:text-primary-blue', 'pb-1');
+                });
+                // Set active for desktop Home (first link with href="#")
+                const desktopHomeLink = document.querySelector('nav a[href="../Dashboard/home.html"]');
+                if (desktopHomeLink) {
+                    desktopHomeLink.classList.add('border-b-2', 'border-primary-blue', 'text-primary-blue', 'font-medium');
+                    desktopHomeLink.classList.remove('hover:text-primary-blue');
+                }
+                // Clear all active states in mobile nav
+                const mobileNavLinks = document.querySelectorAll('#mobileMenu nav a');
+                mobileNavLinks.forEach(link => {
+                    link.classList.remove('border-l-2', 'border-primary-blue', 'font-medium');
+                    link.classList.add('text-gray-700', 'hover:text-primary-blue', 'pl-4');
+                });
+                // Set active for mobile Home (first link with href="#")
+                const mobileHomeLink = document.querySelector('#mobileMenu a[href="../Dashboard/home.html"]');
+                if (mobileHomeLink) {
+                    mobileHomeLink.classList.add('border-l-2', 'border-primary-blue', 'font-medium');
+                    mobileHomeLink.classList.remove('hover:text-primary-blue');
+                }
+                // Mobile menu setup
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                const mobileMenu = document.getElementById('mobileMenu');
+                const closeMobileMenu = document.getElementById('closeMobileMenu');
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+                }
+                if (closeMobileMenu) {
+                    closeMobileMenu.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+                }
+                if (mobileMenu) {
+                    mobileMenu.addEventListener('click', (e) => {
+                        if (e.target === mobileMenu) mobileMenu.classList.add('hidden');
+                    });
+                }
+            });
+    </script>
+
+    <!-- Hero Section -->
+    <div class="relative flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 pt-20">
+        <!-- Background Video -->
+        <!-- <video autoplay muted loop playsinline class="absolute inset-0 w-full min-h-screen object-cover object-center z-[-10]">
+            <source src="../../Assests/HomePagevideo.mp4" type="video/mp4" />
+        </video> -->
+        <!-- Black Overlay -->
+        <!-- <div class="absolute inset-0 bg-black/60 z-10"></div> -->
+
+        <!-- Main Content -->
+        <div class="relative z-20 text-center max-w-4xl mx-auto hero-content">
+            <h1
+                class="sm:text-4xl md:text-5xl lg:text-6xl font-bold text-blue-800 mb-6 sm:mb-8 leading-tight animate-fadeInUp">
+                Make your occasions grand with<br>
+                <span class="text-yellow-500">a simple click</span>
+            </h1>
+
+            <p
+                class="text-base sm:text-lg md:text-xl text-primary mb-8 sm:mb-12 max-w-xl mx-auto animate-fadeInUp animation-delay-200">
+                Book the perfect venue for your special events with just a few clicks.
+                Choose from our premium halls and make your celebration memorable.
+            </p>
+
+            <div
+                class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center animate-fadeInUp animation-delay-400">
+                <a href="../BookingsForm/bookingform.html"
+                    class="w-full sm:w-auto bg-primary-blue text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg cursor-pointer font-medium  transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm">
+                    Start Booking
+                </a>
+
+                <a href="../Halls/rooms.html"
+                    class="w-full sm:w-auto bg-white/90 backdrop-blur-sm text-gray-800 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border border-gray-200">
+                    View Rooms
+                </a>
+            </div>
+
+            <!-- Feature Icons -->
+            <div
+                class="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto animate-fadeInUp animation-delay-600">
+                <div class="text-center">
+                    <div
+                        class="feature-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-primary-blue" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-primary mb-2 text-sm sm:text-base">Easy Booking</h3>
+                    <p class="text-primary text-xs sm:text-sm">Quick and simple reservation process</p>
+                </div>
+
+                <div class="text-center">
+                    <div
+                        class="feature-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-primary-blue" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-primary mb-2 text-sm sm:text-base">Premium Venues</h3>
+                    <p class="text-primary text-xs sm:text-sm">High-quality halls for every occasion</p>
+                </div>
+
+                <div class="text-center">
+                    <div
+                        class="feature-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-primary-blue" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V18.75A.75.75 0 0112 18zM3.75 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H4.5a.75.75 0 01-.75-.75zM18 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18.75A.75.75 0 0118 12z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-primary mb-2 text-sm sm:text-base">24/7 Support</h3>
+                    <p class="text-primary text-xs sm:text-sm">Round-the-clock customer service</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scroll behavior to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function (e) {
+                if (this.textContent.includes('Start Booking') || this.textContent.includes('View Rooms')) {
+                    // Add ripple effect
+                    const ripple = document.createElement('span');
+                    ripple.className = 'absolute inset-0 rounded-full bg-white/30 scale-0 animate-ping';
+                    this.style.position = 'relative';
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                }
+            });
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .animate-fadeInUp {
+                animation: fadeInUp 1s ease-out;
+            }
+            .animation-delay-200 {
+                animation-delay: 0.2s;
+            }
+            .animation-delay-400 {
+                animation-delay: 0.4s;
+            }
+            .animation-delay-600 {
+                animation-delay: 0.6s;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
