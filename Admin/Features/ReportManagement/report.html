@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -25,38 +28,49 @@
         }
     </script>
 </head>
+
 <body class="bg-gray-50 min-h-screen">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <div class="w-64 bg-primary-800 text-white flex-shrink-0 hidden lg:block">
+        <div class="w-64 bg-primary-500 text-white flex-shrink-0 hidden lg:block">
             <div class="p-6">
-                <h1 class="text-2xl font-bold text-center bg-primary-700 py-3 px-4 rounded-lg">VenueVista</h1>
+                <div class="flex items-center space-x-2">
+                    <h1 class="text-2xl font-bold">VenueVista</h1>
+                </div>
+                <p class="text-primary-200 text-sm mt-1">Admin Dashboard</p>
             </div>
-            
+
             <nav class="mt-8">
                 <div class="px-4 space-y-2">
-                    <a href="../DashBoard/dashboard.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                    <a href="../DashBoard/dashboard.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Dashboard
                     </a>
-                    <a href="../Bookingmanagement/booking.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                    <a href="../Bookingmanagement/booking.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Booking Management
                     </a>
-                    <a href="../HallsManagement/hall.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                    <a href="../HallsManagement/hall.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Hall Management
                     </a>
-                    <a href="#" class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                    <a href="#"
+                        class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Report Management
                     </a>
-                    <a href="../ContentManagement/content.html" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                    <a href="../ContentManagement/content.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Content Management
                     </a>
-                    <a href="#" class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                    <a href="#"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Backup & Recovery
                     </a>
                 </div>
-                
+
                 <div class="absolute bottom-4 w-64 px-4">
-                    <button class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
+                    <button
+                        class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
                         Log Out
                     </button>
                 </div>
@@ -67,7 +81,8 @@
         <div class="lg:hidden fixed top-4 left-4 z-50">
             <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
                 </svg>
             </button>
         </div>
@@ -81,21 +96,35 @@
                         <h1 class="text-xl font-bold">VenueVista</h1>
                         <button id="closeMobileMenu" class="text-white">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </button>
                     </div>
                 </div>
-                
+
                 <nav class="mt-4">
                     <div class="px-4 space-y-2">
-                        <a href="../DashBoard/dashboard.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Dashboard</a>
-                        <a href="../Bookingmanagement/booking.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Booking Management</a>
-                        <a href="../HallsManagement/hall.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Hall Management</a>
-                        <a href="#" class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Report Management</a>
-                        <a href="../ContentManagement/content.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Content Management</a>
-                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Backup & Recovery</a>
-                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Log Out</a>
+                        <a href="../DashBoard/dashboard.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Dashboard</a>
+                        <a href="../Bookingmanagement/booking.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Booking
+                            Management</a>
+                        <a href="../HallsManagement/hall.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Hall
+                            Management</a>
+                        <a href="#"
+                            class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Report
+                            Management</a>
+                        <a href="../ContentManagement/content.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Content
+                            Management</a>
+                        <a href="#"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Backup
+                            & Recovery</a>
+                        <a href="#"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Log
+                            Out</a>
                     </div>
                 </nav>
             </div>
@@ -106,107 +135,142 @@
             <div class="max-w-6xl mx-auto">
                 <h1 class="text-3xl lg:text-4xl font-bold text-primary-800 mb-12 ml-12 lg:ml-0">Report Management</h1>
 
-                <!-- Report Form -->
-                <div class="bg-white rounded-xl shadow-lg p-6 lg:p-8">
-                    <form class="space-y-8">
-                        <!-- Date Selection Row -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                            <!-- Start Date -->
-                            <div>
-                                <label class="block text-lg font-semibold text-gray-800 mb-3">Start Date</label>
-                                <div class="relative">
-                                    <input type="date" id="startDate"
-                                           class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
-                                </div>
-                            </div>
-
-                            <!-- End Date -->
-                            <div>
-                                <label class="block text-lg font-semibold text-gray-800 mb-3">End Date</label>
-                                <div class="relative">
-                                    <input type="date" id="endDate"
-                                           class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Category and Room Selection Row -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                            <!-- Select Venue Category -->
-                            <div>
-                                <label class="block text-lg font-semibold text-gray-800 mb-3">Select Venue Category</label>
-                                <div class="relative">
-                                    <select id="venueCategory"
-                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-all cursor-pointer">
-                                        <option value="">Select Category</option>
-                                        <option value="compact">Compact Halls</option>
-                                        <option value="classic">Classic Halls</option>
-                                        <option value="grand">Grand Halls</option>
-                                        <option value="all">All Categories</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Select Room -->
-                            <div>
-                                <label class="block text-lg font-semibold text-gray-800 mb-3">Select Room</label>
-                                <div class="relative">
-                                    <select id="roomSelect"
-                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-all cursor-pointer">
-                                        <option value="">Select Room</option>
-                                        <option value="001">Hall #001 - Compact</option>
-                                        <option value="002">Hall #002 - Compact</option>
-                                        <option value="003">Hall #003 - Compact</option>
-                                        <option value="004">Hall #004 - Compact</option>
-                                        <option value="005">Hall #005 - Classic</option>
-                                        <option value="006">Hall #006 - Classic</option>
-                                        <option value="007">Hall #007 - Classic</option>
-                                        <option value="008">Hall #008 - Classic</option>
-                                        <option value="009">Hall #009 - Grand</option>
-                                        <option value="010">Hall #010 - Grand</option>
-                                        <option value="011">Hall #011 - Grand</option>
-                                        <option value="012">Hall #012 - Grand</option>
-                                        <option value="all">All Rooms</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Export Button -->
-                        <div class="flex justify-center pt-6">
-                            <button type="submit" 
-                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-4 px-12 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                                Export
-                            </button>
-                        </div>
-                    </form>
+                <!-- Loading State -->
+                <div id="loading" class="flex justify-center items-center h-64">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
                 </div>
 
-                <!-- Report Summary Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
-                        <div class="flex items-center">
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-800">Total Bookings</h3>
-                                <p class="text-3xl font-bold text-primary-600 mt-2">247</p>
+                <!-- Error State -->
+                <div id="error" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <div class="flex">
+                        <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-red-700" id="errorMessage">Failed to load data. Please try again.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="hidden">
+                    <!-- Report Form -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 lg:p-8">
+                        <form id="reportForm" class="space-y-8">
+                            <!-- Date Selection Row -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                                <!-- Start Date -->
+                                <div>
+                                    <label class="block text-lg font-semibold text-gray-800 mb-3">Start Date</label>
+                                    <div class="relative">
+                                        <input type="date" id="startDate"
+                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
+                                    </div>
+                                </div>
+
+                                <!-- End Date -->
+                                <div>
+                                    <label class="block text-lg font-semibold text-gray-800 mb-3">End Date</label>
+                                    <div class="relative">
+                                        <input type="date" id="endDate"
+                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Category and Room Selection Row -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                                <!-- Select Venue Category -->
+                                <div>
+                                    <label class="block text-lg font-semibold text-gray-800 mb-3">Select Venue Category</label>
+                                    <div class="relative">
+                                        <select id="venueCategory"
+                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-all cursor-pointer">
+                                            <option value="">Select Category</option>
+                                            <option value="compact">Compact Halls</option>
+                                            <option value="classic">Classic Halls</option>
+                                            <option value="grand">Grand Halls</option>
+                                            <option value="all">All Categories</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Select Room -->
+                                <div>
+                                    <label class="block text-lg font-semibold text-gray-800 mb-3">Select Room</label>
+                                    <div class="relative">
+                                        <select id="roomSelect"
+                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-all cursor-pointer">
+                                            <option value="">Select Room</option>
+                                            <option value="all">All Rooms</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Export Button -->
+                            <div class="flex justify-center pt-6">
+                                <button type="submit" id="exportBtn"
+                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-4 px-12 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                    Export PDF Report
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Report Summary Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-800">Total Bookings</h3>
+                                    <p class="text-3xl font-bold text-primary-600 mt-2" id="totalBookings">0</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-800">Revenue Generated</h3>
+                                    <p class="text-3xl font-bold text-green-600 mt-2" id="totalRevenue">₹0</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-800">Unique Rooms Used</h3>
+                                    <p class="text-3xl font-bold text-yellow-600 mt-2" id="activeHalls">0</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
-                        <div class="flex items-center">
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-800">Revenue Generated</h3>
-                                <p class="text-3xl font-bold text-primary-600 mt-2">₹12.5L</p>
+                    <!-- Status Distribution -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-400">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-800">Pending Bookings</h3>
+                                    <p class="text-3xl font-bold text-yellow-600 mt-2" id="pendingBookings">0</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
-                        <div class="flex items-center">
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-800">Active Halls</h3>
-                                <p class="text-3xl font-bold text-primary-600 mt-2">11/12</p>
+                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-400">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-800">Completed Bookings</h3>
+                                    <p class="text-3xl font-bold text-green-600 mt-2" id="completedBookings">0</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-400">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-800">Cancelled Bookings</h3>
+                                    <p class="text-3xl font-bold text-red-600 mt-2" id="cancelledBookings">0</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -216,86 +280,206 @@
     </div>
 
     <script>
-        // Mobile menu functionality
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        // Global variables
+        let allBookings = [];
+        const API_BASE = 'http://localhost:3000';
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('hidden');
-        });
-
-        closeMobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-        });
-
-        // Close mobile menu when clicking outside
-        mobileMenu.addEventListener('click', (e) => {
-            if (e.target === mobileMenu) {
-                mobileMenu.classList.add('hidden');
-            }
-        });
-
-        // Dynamic room filtering based on venue category
-        const venueCategory = document.getElementById('venueCategory');
-        const roomSelect = document.getElementById('roomSelect');
-
+        // Available rooms mapping
         const roomsByCategory = {
-            compact: [
-                { value: '001', text: 'Hall #001 - Compact' },
-                { value: '002', text: 'Hall #002 - Compact' },
-                { value: '003', text: 'Hall #003 - Compact' },
-                { value: '004', text: 'Hall #004 - Compact' }
-            ],
-            classic: [
-                { value: '005', text: 'Hall #005 - Classic' },
-                { value: '006', text: 'Hall #006 - Classic' },
-                { value: '007', text: 'Hall #007 - Classic' },
-                { value: '008', text: 'Hall #008 - Classic' }
-            ],
-            grand: [
-                { value: '009', text: 'Hall #009 - Grand' },
-                { value: '010', text: 'Hall #010 - Grand' },
-                { value: '011', text: 'Hall #011 - Grand' },
-                { value: '012', text: 'Hall #012 - Grand' }
-            ]
+            compact: ['#001', '#002', '#003', '#004'],
+            classic: ['#005', '#006', '#007', '#008'],
+            grand: ['#009', '#010', '#011', '#012']
         };
 
-        venueCategory.addEventListener('change', (e) => {
-            const category = e.target.value;
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            fetchBookings();
+            setDefaultDates();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.remove('hidden');
+            });
+
+            closeMobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+
+            // Dynamic room filtering based on venue category
+            const venueCategory = document.getElementById('venueCategory');
+            venueCategory.addEventListener('change', updateRoomOptions);
+
+            // Form submission
+            document.getElementById('reportForm').addEventListener('submit', handleExport);
+        }
+
+        // Fetch bookings from API
+        async function fetchBookings() {
+            try {
+                showLoading(true);
+                const response = await fetch(`${API_BASE}/bookings`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch bookings');
+                }
+                
+                allBookings = await response.json();
+                updateSummaryCards();
+                populateRoomOptions();
+                showContent();
+                
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+                showError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Show/hide loading state
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'flex' : 'none';
+        }
+
+        // Show error state
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('content').classList.add('hidden');
+        }
+
+        // Show content
+        function showContent() {
+            document.getElementById('error').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+        }
+
+        // Update summary cards with real data
+        function updateSummaryCards() {
+            const totalBookings = allBookings.length;
+            const totalRevenue = allBookings.reduce((sum, booking) => sum + (booking.totalCost || 0), 0);
+            const uniqueRooms = new Set(allBookings.map(booking => booking.roomId)).size;
             
-            // Clear room options
+            const statusCounts = allBookings.reduce((counts, booking) => {
+                counts[booking.status] = (counts[booking.status] || 0) + 1;
+                return counts;
+            }, {});
+
+            document.getElementById('totalBookings').textContent = totalBookings;
+            document.getElementById('totalRevenue').textContent = `₹${(totalRevenue / 100000).toFixed(1)}L`;
+            document.getElementById('activeHalls').textContent = uniqueRooms;
+            document.getElementById('pendingBookings').textContent = statusCounts.pending || 0;
+            document.getElementById('completedBookings').textContent = statusCounts.completed || 0;
+            document.getElementById('cancelledBookings').textContent = statusCounts.cancelled || 0;
+        }
+
+        // Populate room options from actual data
+        function populateRoomOptions() {
+            const roomSelect = document.getElementById('roomSelect');
+            const uniqueRooms = [...new Set(allBookings.map(booking => booking.roomId))].sort();
+            
+            // Clear existing options except default
+            roomSelect.innerHTML = '<option value="">Select Room</option>';
+            
+            // Add unique rooms from actual data
+            uniqueRooms.forEach(roomId => {
+                const option = document.createElement('option');
+                option.value = roomId;
+                option.textContent = `Hall ${roomId}`;
+                roomSelect.appendChild(option);
+            });
+            
+            // Add "All Rooms" option
+            const allOption = document.createElement('option');
+            allOption.value = 'all';
+            allOption.textContent = 'All Rooms';
+            roomSelect.appendChild(allOption);
+        }
+
+        // Update room options based on selected category
+        function updateRoomOptions() {
+            const category = document.getElementById('venueCategory').value;
+            const roomSelect = document.getElementById('roomSelect');
+            
+            // Clear options
             roomSelect.innerHTML = '<option value="">Select Room</option>';
             
             if (category && category !== 'all') {
-                // Add filtered rooms
-                roomsByCategory[category].forEach(room => {
+                // Filter rooms by category from actual bookings
+                const categoryRooms = allBookings
+                    .filter(booking => booking.venueCategory === category)
+                    .map(booking => booking.roomId);
+                
+                const uniqueRooms = [...new Set(categoryRooms)].sort();
+                
+                uniqueRooms.forEach(roomId => {
                     const option = document.createElement('option');
-                    option.value = room.value;
-                    option.textContent = room.text;
+                    option.value = roomId;
+                    option.textContent = `Hall ${roomId}`;
                     roomSelect.appendChild(option);
                 });
             } else if (category === 'all') {
-                // Add all rooms
-                Object.values(roomsByCategory).flat().forEach(room => {
+                // Add all rooms from actual data
+                const allRooms = [...new Set(allBookings.map(booking => booking.roomId))].sort();
+                allRooms.forEach(roomId => {
                     const option = document.createElement('option');
-                    option.value = room.value;
-                    option.textContent = room.text;
+                    option.value = roomId;
+                    option.textContent = `Hall ${roomId}`;
                     roomSelect.appendChild(option);
                 });
             }
             
-            // Add "All Rooms" option at the end
+            // Add "All Rooms" option if category is selected
             if (category) {
                 const allOption = document.createElement('option');
                 allOption.value = 'all';
                 allOption.textContent = 'All Rooms';
                 roomSelect.appendChild(allOption);
             }
-        });
+        }
 
-        // Form validation and submission
-        document.querySelector('form').addEventListener('submit', (e) => {
+        // Filter bookings based on criteria
+        function filterBookings(startDate, endDate, category, room) {
+            return allBookings.filter(booking => {
+                const bookingDate = new Date(booking.date);
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                
+                // Date filter
+                if (bookingDate < start || bookingDate > end) {
+                    return false;
+                }
+                
+                // Category filter
+                if (category && category !== 'all' && booking.venueCategory !== category) {
+                    return false;
+                }
+                
+                // Room filter
+                if (room && room !== 'all' && booking.roomId !== room) {
+                    return false;
+                }
+                
+                return true;
+            });
+        }
+
+        // Handle export functionality
+        function handleExport(e) {
             e.preventDefault();
             
             const startDate = document.getElementById('startDate').value;
@@ -303,8 +487,9 @@
             const category = document.getElementById('venueCategory').value;
             const room = document.getElementById('roomSelect').value;
             
-            if (!startDate || !endDate) {
-                alert('Please select both start and end dates.');
+            // Validation
+            if (!startDate || !endDate || !category) {
+                alert('Please provide all required filters:\n- Start Date\n- End Date\n- Venue Category');
                 return;
             }
             
@@ -313,35 +498,142 @@
                 return;
             }
             
-            if (!category) {
-                alert('Please select a venue category.');
+            // Filter bookings
+            const filteredBookings = filterBookings(startDate, endDate, category, room);
+            
+            if (filteredBookings.length === 0) {
+                alert('No bookings found for the selected criteria.');
                 return;
             }
             
-            // Simulate export functionality
-            const exportBtn = document.querySelector('button[type="submit"]');
+            // Generate PDF
+            generatePDFReport(filteredBookings, { startDate, endDate, category, room });
+        }
+
+        // Generate PDF report
+        function generatePDFReport(bookings, filters) {
+            const exportBtn = document.getElementById('exportBtn');
             const originalText = exportBtn.innerHTML;
             
-            exportBtn.innerHTML = 'Generating Report...';
+            exportBtn.innerHTML = 'Generating PDF...';
             exportBtn.disabled = true;
             
-            setTimeout(() => {
-                exportBtn.innerHTML = 'Report Generated!';
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Header
+                doc.setFontSize(20);
+                doc.setTextColor(59, 130, 246); // Primary blue
+                doc.text('VenueVista - Booking Report', 20, 30);
+                
+                // Report details
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Report Period: ${formatDate(filters.startDate)} to ${formatDate(filters.endDate)}`, 20, 50);
+                doc.text(`Category: ${getCategoryDisplayName(filters.category)}`, 20, 60);
+                doc.text(`Room: ${filters.room === 'all' ? 'All Rooms' : filters.room || 'All Rooms'}`, 20, 70);
+                doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 80);
+                
+                // Summary statistics
+                const totalRevenue = bookings.reduce((sum, booking) => sum + (booking.totalCost || 0), 0);
+                const statusCounts = bookings.reduce((counts, booking) => {
+                    counts[booking.status] = (counts[booking.status] || 0) + 1;
+                    return counts;
+                }, {});
+                
+                doc.setFontSize(14);
+                doc.setTextColor(59, 130, 246);
+                doc.text('Summary', 20, 100);
+                
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Total Bookings: ${bookings.length}`, 20, 115);
+                doc.text(`Total Revenue: ₹${totalRevenue.toLocaleString()}`, 20, 125);
+                doc.text(`Pending: ${statusCounts.pending || 0}`, 20, 135);
+                doc.text(`Completed: ${statusCounts.completed || 0}`, 90, 135);
+                doc.text(`Cancelled: ${statusCounts.cancelled || 0}`, 160, 135);
+                
+                // Table data
+                const tableColumns = ['User Name', 'Category', 'Room', 'Date', 'Time', 'Status', 'Cost'];
+                const tableRows = bookings.map(booking => [
+                    `${booking.firstName} ${booking.lastName}`,
+                    getCategoryDisplayName(booking.venueCategory),
+                    booking.roomId,
+                    formatDate(booking.date),
+                    `${booking.checkInTime}-${booking.checkOutTime}`,
+                    booking.status.charAt(0).toUpperCase() + booking.status.slice(1),
+                    `₹${booking.totalCost?.toLocaleString() || '0'}`
+                ]);
+                
+                // Generate table
+                doc.autoTable({
+                    head: [tableColumns],
+                    body: tableRows,
+                    startY: 150,
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 3
+                    },
+                    headStyles: {
+                        fillColor: [59, 130, 246],
+                        textColor: [255, 255, 255]
+                    },
+                    alternateRowStyles: {
+                        fillColor: [245, 247, 250]
+                    }
+                });
+                
+                // Save PDF
+                const filename = `VenueVista_Report_${filters.startDate}_to_${filters.endDate}.pdf`;
+                doc.save(filename);
+                
+                // Success feedback
+                exportBtn.innerHTML = 'PDF Generated Successfully!';
+                exportBtn.style.backgroundColor = '#059669';
                 
                 setTimeout(() => {
                     exportBtn.innerHTML = originalText;
+                    exportBtn.style.backgroundColor = '';
                     exportBtn.disabled = false;
-                }, 2000);
-            }, 3000);
-        });
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF report. Please try again.');
+                
+                exportBtn.innerHTML = originalText;
+                exportBtn.disabled = false;
+            }
+        }
+
+        // Get category display name
+        function getCategoryDisplayName(category) {
+            const categoryMap = {
+                'compact': 'Compact Halls',
+                'classic': 'Classic Halls',
+                'grand': 'Grand Halls',
+                'all': 'All Categories'
+            };
+            return categoryMap[category] || category;
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB');
+        }
 
         // Set default dates (last 30 days)
-        const today = new Date();
-        const thirtyDaysAgo = new Date(today);
-        thirtyDaysAgo.setDate(today.getDate() - 30);
-        
-        document.getElementById('endDate').value = today.toISOString().split('T')[0];
-        document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+        function setDefaultDates() {
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+
+            document.getElementById('endDate').value = today.toISOString().split('T')[0];
+            document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+        }
     </script>
 </body>
+
 </html>
