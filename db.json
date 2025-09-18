@@ -6,7 +6,8 @@
       "lastName": "Doe",
       "email": "john@example.com",
       "phone": "1234567890",
-      "password": "password123"
+      "password": "password123",
+      "role": "customer"
     },
     {
       "firstName": "larwin",
@@ -14,15 +15,17 @@
       "email": "larwinj@gmail.com",
       "phone": "7806922311",
       "password": "Test@123",
-      "id": 2
+      "id": 2,
+      "role": "customer"
     },
     {
-      "firstName": "Shaik",
-      "lastName": "Anis",
-      "email": "anis@gmail.com",
+      "firstName": "Head",
+      "lastName": "Admin",
+      "email": "admin@vv.com",
       "phone": "789654123",
       "password": "Test@123",
-      "id": 3
+      "id": 3,
+      "role": "admin"
     }
   ],
   "bookings": [
@@ -279,9 +282,9 @@
     },
     {
       "userId": 2,
-      "date": "2025-09-18",
-      "checkInTime": "15:30",
-      "checkOutTime": "16:30",
+      "date": "2025-09-19",
+      "checkInTime": "16:30",
+      "checkOutTime": "17:30",
       "venueCategory": "classic",
       "roomId": "#007",
       "firstName": "Naveen",
@@ -297,7 +300,8 @@
       "BookedOn": "18/09/2025",
       "totalCost": 2550,
       "status": "booked",
-      "id": 12
+      "id": 12,
+      "updated": true
     },
     {
       "userId": 2,

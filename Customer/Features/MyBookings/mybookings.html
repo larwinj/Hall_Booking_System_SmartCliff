@@ -102,49 +102,41 @@
                 min-width: 100px;
             }
 
-            /* Category Type */
             th:nth-child(2),
             td:nth-child(2) {
                 min-width: 80px;
             }
 
-            /* Room Number */
             th:nth-child(3),
             td:nth-child(3) {
                 min-width: 90px;
             }
 
-            /* Date */
             th:nth-child(4),
             td:nth-child(4) {
                 min-width: 80px;
             }
 
-            /* Check In */
             th:nth-child(5),
             td:nth-child(5) {
                 min-width: 80px;
             }
 
-            /* Check Out */
             th:nth-child(6),
             td:nth-child(6) {
                 min-width: 80px;
             }
 
-            /* Status */
             th:nth-child(7),
             td:nth-child(7) {
                 min-width: 90px;
             }
 
-            /* Booked Date */
             th:nth-child(8),
             td:nth-child(8) {
                 min-width: 60px;
             }
 
-            /* Actions */
             .table-container::after {
                 content: '';
                 position: absolute;
@@ -166,7 +158,6 @@
             }
         }
 
-        /* Actions Dropdown */
         .actions-dropdown {
             position: absolute;
             top: 100%;
@@ -219,7 +210,6 @@
             background-color: #fef2f2;
         }
 
-        /* Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -277,6 +267,24 @@
         .actions-btn {
             position: relative;
         }
+
+        .availability-status {
+            font-weight: 600;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .available {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .unavailable {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
     </style>
 </head>
 
@@ -289,7 +297,6 @@
                     <h1 class="text-2xl font-bold text-black">VenueVista</h1>
                 </div>
                 
-                <!-- Desktop Navigation -->
                 <div class="hidden md:flex space-x-8">
                     <a href="../Dashboard/home.html" class="text-gray-700 hover:text-primary-blue pb-1">Home</a>
                     <a href="#" class="border-b-2 border-primary-blue text-primary-blue text-gray-700 hover:text-primary-blue pb-1">My Bookings</a>
@@ -297,7 +304,6 @@
                     <a href="#" class="text-gray-700 hover:text-primary-blue pb-1">contact</a>
                 </div>
 
-                <!-- Profile Icon -->
                 <div class="flex items-center space-x-4">
                     <button id="profileBtn" class="bg-primary-blue text-white p-2 rounded-full hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,17 +311,15 @@
                         </svg>
                     </button>
 
-                    <!-- Mobile Menu Button -->
                     <button id="mobileMenuBtn" class="md:hidden bg-primary-blue text-white p-2 rounded-md">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-li necap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
         <div id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="../Dashboard/home.html" class="border-l-2 border-primary-blue font-medium block px-3 py-2 text-primary-blue">Home</a>
@@ -346,16 +350,13 @@
             <table class="w-full">
                 <thead class="sticky-header">
                     <tr>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Category Type
-                        </th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Room Number
-                        </th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Category Type</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Room Number</th>
                         <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Date</th>
                         <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Check In</th>
                         <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Check Out</th>
                         <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Status</th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Booked Date
-                        </th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Booked Date</th>
                         <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Actions</th>
                     </tr>
                 </thead>
@@ -368,26 +369,77 @@
         </div>
     </div>
 
-    <!-- Actions Dropdown Template (not used as a container anymore, kept for reference) -->
-    <div id="actions-dropdown-template" class="hidden">
-        <a href="#" class="view-details">View Details</a>
-        <button class="reschedule">Reschedule</button>
-        <button class="cancel-booking danger">Cancel Booking</button>
-    </div>
-
-    <!-- Modal Template -->
+    <!-- Booking Details Modal -->
     <div id="booking-modal" class="modal-overlay hidden">
         <div class="modal-content relative">
             <button class="modal-close">&times;</button>
-            <!-- <h3 class="text-lg font-bold mb-4">Booking Details</h3> -->
             <div id="modal-body" class="space-y-4 text-sm">
                 <!-- Dynamic content -->
             </div>
         </div>
     </div>
 
+    <!-- Reschedule Modal -->
+    <div id="reschedule-modal" class="modal-overlay hidden">
+        <div class="modal-content relative">
+            <button class="modal-close" onclick="closeRescheduleModal()">&times;</button>
+            <div class="space-y-4">
+                <div class="bg-blue-500 -mx-8 -mt-8 px-8 py-4 mb-6">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Reschedule Booking
+                    </h3>
+                    <p class="text-blue-100 text-sm mt-2">Select a new date and time for your booking</p>
+                </div>
+                
+                <form id="reschedule-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">New Date</label>
+                            <input type="date" id="new-date" required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Check-in Time</label>
+                            <input type="time" id="new-checkin" required 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Check-out Time</label>
+                        <input type="time" id="new-checkout" required 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div id="availability-check" class="availability-status hidden">
+                        <!-- Availability status will be displayed here -->
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" onclick="closeRescheduleModal()" 
+                            class="px-4 py-2 text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="button" onclick="checkAvailability()" 
+                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                            Check Availability
+                        </button>
+                        <button type="submit" id="confirm-reschedule" 
+                            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors hidden">
+                            Confirm Reschedule
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API_URL = 'http://localhost:3000';
+        let currentBookingForReschedule = null;
 
         document.addEventListener('DOMContentLoaded', async function () {
             const userId = localStorage.getItem('userId');
@@ -397,7 +449,6 @@
                 return;
             }
 
-            // Load bookings
             try {
                 const response = await fetch(`${API_URL}/bookings?userId=${userId}`);
                 const bookings = await response.json();
@@ -409,7 +460,6 @@
                 document.getElementById('bookings-table').innerHTML = '<tr><td colspan="8" class="p-4 text-center text-red-500">Error loading bookings. Please try again.</td></tr>';
             }
 
-            // Filter functionality
             document.getElementById('filter-bookings').addEventListener('change', (e) => {
                 const filterValue = e.target.value;
                 const rows = document.querySelectorAll('.table-row');
@@ -422,9 +472,9 @@
                 });
             });
 
-            // Actions dropdown and modal setup
             setupActions();
             setupModal();
+            setupRescheduleModal();
         });
 
         function populateBookingsTable(bookings) {
@@ -446,7 +496,7 @@
                 const formattedBookedDate = booking.createdAt ? new Date(booking.createdAt).toLocaleDateString('en-GB') : new Date().toLocaleDateString('en-GB');
                 const statusClass = booking.status === 'booked' ? 'text-blue-600' : booking.status === 'completed' ? 'text-green-600' : 'text-red-600';
                 const statusText = booking.status ? (booking.status.charAt(0).toUpperCase() + booking.status.slice(1)) : 'Unknown';
-                const updatedBadge = booking.updated ? '<span class="updated-badge ml-2">Updated</span>' : '';
+                const updatedBadge = booking.updated ? '<span class="updated-badge ml-2">Rescheduled</span>' : '';
 
                 return `
                     <tr class="border-t hover:bg-gray-50 transition-colors table-row" data-status="${booking.status}" data-booking-id="${booking.id}">
@@ -471,11 +521,9 @@
         }
 
         function setupActions() {
-            // Single delegated click handler for actions buttons and outside clicks
             document.addEventListener('click', async (e) => {
                 const btn = e.target.closest('.actions-btn');
 
-                // If clicked on an actions button (or its children)
                 if (btn) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -486,24 +534,19 @@
                     const dropdown = document.getElementById(`dropdown-${bookingId}`);
                     if (!dropdown) return;
 
-                    // If this dropdown is already open, close it and return
                     const isOpen = dropdown.classList.contains('show');
-                    // Close all dropdowns first
                     document.querySelectorAll('.actions-dropdown').forEach(dd => {
                         dd.classList.remove('show');
                         dd.setAttribute('aria-hidden', 'true');
                     });
-                    // If it was open, we just closed it -- so return (toggle behavior)
                     if (isOpen) return;
 
-                    // Build dropdown content directly into the dropdown element (no nested .actions-dropdown)
-                    dropdown.innerHTML = ''; // clear previous
+                    dropdown.innerHTML = '';
 
                     try {
                         const response = await fetch(`${API_URL}/bookings/${bookingId}`);
                         const booking = await response.json();
 
-                        // View Details
                         const viewDetails = document.createElement('a');
                         viewDetails.href = '#';
                         viewDetails.className = 'view-details';
@@ -517,7 +560,6 @@
                         });
                         dropdown.appendChild(viewDetails);
 
-                        // Conditionally add Reschedule and Cancel based on status
                         if (booking.status === 'booked') {
                             const reschedule = document.createElement('button');
                             reschedule.className = 'reschedule';
@@ -525,17 +567,7 @@
                             reschedule.addEventListener('click', (ev) => {
                                 ev.preventDefault();
                                 ev.stopPropagation();
-                                // redirect to booking form with prefilled query params
-                                const params = new URLSearchParams({
-                                    bookingId,
-                                    action: 'edit',
-                                    date: booking.date || '',
-                                    checkInTime: booking.checkInTime || '',
-                                    checkOutTime: booking.checkOutTime || '',
-                                    venueCategory: booking.venueCategory || '',
-                                    roomId: booking.roomId || ''
-                                });
-                                window.location.href = `../BookingsForm/bookingform.html?${params.toString()}`;
+                                openRescheduleModal(booking);
                                 dropdown.classList.remove('show');
                                 dropdown.setAttribute('aria-hidden', 'true');
                             });
@@ -572,7 +604,6 @@
                             dropdown.appendChild(cancel);
                         }
 
-                        // Show dropdown
                         dropdown.classList.add('show');
                         dropdown.setAttribute('aria-hidden', 'false');
 
@@ -583,7 +614,6 @@
                     return;
                 }
 
-                // If click is not inside an actions-btn, and not inside a dropdown, close all dropdowns
                 if (!e.target.closest('.actions-dropdown')) {
                     document.querySelectorAll('.actions-dropdown').forEach(dd => {
                         dd.classList.remove('show');
@@ -602,7 +632,6 @@
                 modal.classList.add('hidden');
             }
 
-            // close button
             if (closeBtn) {
                 closeBtn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -610,19 +639,152 @@
                 });
             }
 
-            // click overlay to close
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     hideModal();
                 }
             });
 
-            // Escape key to close
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && modal.classList.contains('show')) {
                     hideModal();
                 }
             });
+        }
+
+        function setupRescheduleModal() {
+            const form = document.getElementById('reschedule-form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await confirmReschedule();
+            });
+        }
+
+        function openRescheduleModal(booking) {
+            currentBookingForReschedule = booking;
+            
+            // Pre-fill with current booking details
+            document.getElementById('new-date').value = booking.date;
+            document.getElementById('new-checkin').value = booking.checkInTime;
+            document.getElementById('new-checkout').value = booking.checkOutTime;
+            
+            // Reset availability check
+            const availabilityDiv = document.getElementById('availability-check');
+            availabilityDiv.classList.add('hidden');
+            document.getElementById('confirm-reschedule').classList.add('hidden');
+            
+            const modal = document.getElementById('reschedule-modal');
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => modal.classList.add('show'));
+        }
+
+        function closeRescheduleModal() {
+            const modal = document.getElementById('reschedule-modal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+            currentBookingForReschedule = null;
+        }
+
+        async function checkAvailability() {
+            if (!currentBookingForReschedule) return;
+
+            const newDate = document.getElementById('new-date').value;
+            const newCheckin = document.getElementById('new-checkin').value;
+            const newCheckout = document.getElementById('new-checkout').value;
+            const availabilityDiv = document.getElementById('availability-check');
+
+            if (!newDate || !newCheckin || !newCheckout) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (newCheckin >= newCheckout) {
+                alert('Check-out time must be after check-in time');
+                return;
+            }
+
+            try {
+                // Fetch all bookings to check for conflicts
+                const response = await fetch(`${API_URL}/bookings`);
+                const allBookings = await response.json();
+
+                // Check for conflicts (excluding current booking)
+                const hasConflict = allBookings.some(booking => {
+                    if (booking.id === currentBookingForReschedule.id) return false; // Skip current booking
+                    if (booking.status === 'cancelled') return false; // Skip cancelled bookings
+                    
+                    return (
+                        booking.date === newDate &&
+                        booking.venueCategory === currentBookingForReschedule.venueCategory &&
+                        booking.roomId === currentBookingForReschedule.roomId &&
+                        timeOverlaps(booking.checkInTime, booking.checkOutTime, newCheckin, newCheckout)
+                    );
+                });
+
+                // Display availability status
+                availabilityDiv.classList.remove('hidden');
+                if (hasConflict) {
+                    availabilityDiv.innerHTML = '<strong>Unavailable:</strong> This time slot is already booked for the selected room.';
+                    availabilityDiv.className = 'availability-status unavailable';
+                    document.getElementById('confirm-reschedule').classList.add('hidden');
+                } else {
+                    availabilityDiv.innerHTML = '<strong>Available:</strong> This time slot is free for booking.';
+                    availabilityDiv.className = 'availability-status available';
+                    document.getElementById('confirm-reschedule').classList.remove('hidden');
+                }
+
+            } catch (error) {
+                console.error('Error checking availability:', error);
+                alert('Error checking availability. Please try again.');
+            }
+        }
+
+        function timeOverlaps(start1, end1, start2, end2) {
+            // Convert time strings to minutes for easier comparison
+            const timeToMinutes = (timeStr) => {
+                const [hours, minutes] = timeStr.split(':').map(Number);
+                return hours * 60 + minutes;
+            };
+
+            const start1Min = timeToMinutes(start1);
+            const end1Min = timeToMinutes(end1);
+            const start2Min = timeToMinutes(start2);
+            const end2Min = timeToMinutes(end2);
+
+            // Check if time ranges overlap
+            return start1Min < end2Min && start2Min < end1Min;
+        }
+
+        async function confirmReschedule() {
+            if (!currentBookingForReschedule) return;
+
+            const newDate = document.getElementById('new-date').value;
+            const newCheckin = document.getElementById('new-checkin').value;
+            const newCheckout = document.getElementById('new-checkout').value;
+
+            try {
+                const updateResponse = await fetch(`${API_URL}/bookings/${currentBookingForReschedule.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        date: newDate,
+                        checkInTime: newCheckin,
+                        checkOutTime: newCheckout,
+                        updated: true
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    alert('Booking rescheduled successfully!');
+                    closeRescheduleModal();
+                    location.reload();
+                } else {
+                    alert('Error rescheduling booking. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error rescheduling booking:', error);
+                alert('An error occurred. Please try again.');
+            }
         }
 
         async function showBookingModal(booking) {
@@ -836,13 +998,11 @@
     </div>
 `;
 
-            // Ensure hidden class removed (Tailwind hidden might set display:none) so CSS transitions apply
             modal.classList.remove('hidden');
-            // small timeout to allow removal to take effect then add show for transition (not strictly necessary but smooth)
             requestAnimationFrame(() => modal.classList.add('show'));
         }
 
-        // Smooth scrolling (unchanged)
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -856,7 +1016,7 @@
             });
         });
 
-        // Navbar scroll effect (unchanged)
+        // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('header');
             if (nav && window.scrollY > 100) {
@@ -866,7 +1026,7 @@
             }
         });
 
-        // Intersection Observer for animations (unchanged)
+        // Intersection Observer for animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
