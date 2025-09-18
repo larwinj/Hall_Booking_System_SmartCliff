@@ -23,52 +23,49 @@
 
 <body class="bg-gray-100 min-h-screen font-sans">
     <!-- Navbar -->
-    <div class="navbar-customer"></div>
-    <script>
-        fetch('../Navbar/navbar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.querySelector('.navbar-customer').innerHTML = data;
-                // Clear all active states in desktop nav
-                document.querySelectorAll('nav a').forEach(link => {
-                    link.classList.remove('border-b-2', 'border-primary-blue', 'text-primary-blue', 'font-medium');
-                    link.classList.add('text-gray-700', 'hover:text-primary-blue', 'pb-1');
-                });
-                // Set active for desktop Rooms
-                const desktopRoomsLink = document.querySelector('nav a[href="../Halls/rooms.html"]');
-                if (desktopRoomsLink) {
-                    desktopRoomsLink.classList.add('border-b-2', 'border-primary-blue', 'text-primary-blue', 'font-medium');
-                    desktopRoomsLink.classList.remove('hover:text-primary-blue');
-                }
-                // Clear all active states in mobile nav
-                const mobileNavLinks = document.querySelectorAll('#mobileMenu nav a');
-                mobileNavLinks.forEach(link => {
-                    link.classList.remove('border-l-2', 'border-primary-blue', 'font-medium');
-                    link.classList.add('text-gray-700', 'hover:text-primary-blue', 'pl-4');
-                });
-                // Set active for mobile Rooms
-                const mobileRoomsLink = document.querySelector('#mobileMenu a[href="../Halls/rooms.html"]');
-                if (mobileRoomsLink) {
-                    mobileRoomsLink.classList.add('border-l-2', 'border-primary-blue', 'font-medium');
-                    mobileRoomsLink.classList.remove('hover:text-primary-blue');
-                }
-                // Mobile menu setup
-                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-                const mobileMenu = document.getElementById('mobileMenu');
-                const closeMobileMenu = document.getElementById('closeMobileMenu');
-                if (mobileMenuBtn) {
-                    mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
-                }
-                if (closeMobileMenu) {
-                    closeMobileMenu.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-                }
-                if (mobileMenu) {
-                    mobileMenu.addEventListener('click', (e) => {
-                        if (e.target === mobileMenu) mobileMenu.classList.add('hidden');
-                    });
-                }
-            });
-    </script>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-40 w-[100vw]">
+        <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-black">VenueVista</h1>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="../Dashboard/home.html" class="text-gray-700 hover:text-primary-blue pb-1">Home</a>
+                    <a href="../MyBookings/mybookings.html" class="text-gray-700 hover:text-primary-blue pb-1">My Bookings</a>
+                    <a href="#" class="border-b-2 border-primary-blue text-primary-blue text-gray-700 hover:text-primary-blue pb-1">Rooms</a>
+                    <a href="#" class="text-gray-700 hover:text-primary-blue pb-1">contact</a>
+                </div>
+
+                <!-- Profile Icon -->
+                <div class="flex items-center space-x-4">
+                    <button id="profileBtn" class="bg-primary-blue text-white p-2 rounded-full hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="md:hidden bg-primary-blue text-white p-2 rounded-md">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="../Dashboard/home.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Home</a>
+                <a href="../MyBookings/mybookings.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">My Bookings</a>
+                <a href="#" class="block border-l-2 border-primary-blue px-3 py-2 text-gray-700 hover:text-primary-blue">Rooms</a>
+                <a href="#" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Contact</a>
+            </div>
+        </div>
+    </nav>
 
     <!-- Main Content Container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
@@ -302,6 +299,49 @@
         }
     `;
         document.head.appendChild(style);
+
+        // Enhanced Mobile Menu Setup (run after navbar fetch)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for navbar to load, then set up mobile menu with animations
+            const checkNavbarLoaded = setInterval(() => {
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                if (mobileMenuBtn) {
+                    clearInterval(checkNavbarLoaded);
+
+                    const mobileMenu = document.getElementById('mobileMenu');
+                    const mobileBackdrop = document.getElementById('mobileBackdrop');
+                    const closeMobileMenu = document.getElementById('closeMobileMenu');
+                    const mobileMenuContent = document.getElementById('mobileMenuContent');
+
+                    function openMenu() {
+                        mobileMenu.classList.remove('hidden');
+                        setTimeout(() => {
+                            mobileMenuContent.classList.remove('translate-x-full');
+                        }, 10); // Small delay for smooth transition
+                    }
+
+                    function closeMenu() {
+                        mobileMenuContent.classList.add('translate-x-full');
+                        setTimeout(() => {
+                            mobileMenu.classList.add('hidden');
+                        }, 300); // Match transition duration
+                    }
+
+                    mobileMenuBtn.addEventListener('click', openMenu);
+                    closeMobileMenu.addEventListener('click', closeMenu);
+                    if (mobileBackdrop) {
+                        mobileBackdrop.addEventListener('click', closeMenu);
+                    }
+
+                    // Close on escape key
+                    document.addEventListener('keydown', function(event) {
+                        if (event.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+                            closeMenu();
+                        }
+                    });
+                }
+            }, 50); // Poll every 50ms until loaded
+        });
     </script>
 </body>
 

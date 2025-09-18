@@ -23,14 +23,6 @@
       "phone": "789654123",
       "password": "Test@123",
       "id": 3
-    },
-    {
-      "firstName": "test",
-      "lastName": "t",
-      "email": "test@gmail.com",
-      "phone": "7806922311",
-      "password": "123456",
-      "id": 4
     }
   ],
   "bookings": [
@@ -78,7 +70,7 @@
       },
       "BookedOn": "17/09/2025",
       "totalCost": 1675,
-      "status": "pending",
+      "status": "booked",
       "id": 2
     },
     {
@@ -102,7 +94,7 @@
       },
       "BookedOn": "17/09/2025",
       "totalCost": 2375,
-      "status": "pending",
+      "status": "cancelled",
       "id": 3
     },
     {
@@ -122,7 +114,7 @@
       "beverages": {},
       "BookedOn": "17/09/2025",
       "totalCost": 3000,
-      "status": "pending",
+      "status": "booked",
       "id": 4
     },
     {
@@ -145,7 +137,7 @@
       },
       "BookedOn": "17/09/2025",
       "totalCost": 1900,
-      "status": "pending",
+      "status": "booked",
       "id": 5
     },
     {
@@ -167,7 +159,7 @@
       },
       "BookedOn": "17/09/2025",
       "totalCost": 4100,
-      "status": "pending",
+      "status": "booked",
       "id": 6
     },
     {
@@ -191,7 +183,7 @@
       },
       "BookedOn": "17/09/2025",
       "totalCost": 4500,
-      "status": "pending",
+      "status": "booked",
       "id": 7
     },
     {
@@ -236,7 +228,7 @@
       },
       "BookedOn": "17/09/2025",
       "totalCost": 8095,
-      "status": "pending",
+      "status": "booked",
       "id": 9
     },
     {
@@ -259,8 +251,75 @@
       },
       "BookedOn": "17/09/2025",
       "totalCost": 5285,
-      "status": "pending",
+      "status": "booked",
       "id": 10
+    },
+    {
+      "userId": 2,
+      "date": "2025-09-19",
+      "checkInTime": "03:00",
+      "checkOutTime": "05:00",
+      "venueCategory": "classic",
+      "roomId": "#006",
+      "firstName": "Sakthi",
+      "lastName": "Kumar",
+      "email": "msk@gmail.com",
+      "mobileNumber": "7806922311",
+      "address": "kandaiyaanallur tenkasi tamilnadu ",
+      "purpose": "Meeting regarding React project development and backend connectivity.",
+      "beverage": "yes",
+      "beverages": {
+        "snacks": 4,
+        "water": 4
+      },
+      "BookedOn": "17/09/2025",
+      "totalCost": 5220,
+      "status": "booked",
+      "id": 11
+    },
+    {
+      "userId": 2,
+      "date": "2025-09-18",
+      "checkInTime": "15:30",
+      "checkOutTime": "16:30",
+      "venueCategory": "classic",
+      "roomId": "#007",
+      "firstName": "Naveen",
+      "lastName": "Kumar",
+      "email": "727722eucs095@skcet.ac.in",
+      "mobileNumber": "7806922311",
+      "address": "Srivalliputhur tamilnadu india",
+      "purpose": "For team standUp meeting.",
+      "beverage": "yes",
+      "beverages": {
+        "water": 5
+      },
+      "BookedOn": "18/09/2025",
+      "totalCost": 2550,
+      "status": "booked",
+      "id": 12
+    },
+    {
+      "userId": 2,
+      "date": "2025-09-19",
+      "checkInTime": "13:38",
+      "checkOutTime": "14:38",
+      "venueCategory": "compact",
+      "roomId": "#003",
+      "firstName": "Madhan",
+      "lastName": "K",
+      "email": "727722eucs094@skcet.ac.in",
+      "mobileNumber": "7806922311",
+      "address": "India asia",
+      "purpose": "Just fun Just fun Just fun Just fun Just fun Just fun Just fun Just fun Just fun Just fun Just fun Just fun Just fun Just fun Just fun.",
+      "beverage": "yes",
+      "beverages": {
+        "water": 10
+      },
+      "BookedOn": "18/09/2025",
+      "totalCost": 1600,
+      "status": "cancelled",
+      "id": 13
     }
   ]
 }

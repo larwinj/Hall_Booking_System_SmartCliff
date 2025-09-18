@@ -29,7 +29,9 @@
                     animation: {
                         'fade-in': 'fadeIn 0.8s ease-in-out',
                         'slide-up': 'slideUp 0.8s ease-out',
-                        'fadeInUp': 'fadeInUp 1s ease-out'
+                        'fadeInUp': 'fadeInUp 1s ease-out',
+                        'modalSlide': 'modalSlide 0.3s ease-out',
+                        'fadeInModal': 'fadeInModal 0.3s ease-out'
                     },
                     fontFamily: {
                         sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']
@@ -75,11 +77,46 @@
             }
         }
 
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         .gradient-text {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+
+        .modal-overlay {
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .input-focus:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
         }
 
         @media (max-width: 639px) {
@@ -97,6 +134,11 @@
                 width: 1.5rem;
                 height: 1.5rem;
             }
+
+            .modal-content {
+                margin: 1rem;
+                max-height: calc(100vh - 2rem);
+            }
         }
 
         @media (min-width: 640px) and (max-width: 1023px) {
@@ -104,68 +146,180 @@
                 padding-top: 5rem;
                 padding-bottom: 3rem;
             }
+
+            .modal-content {
+                margin: 2rem;
+                max-height: calc(100vh - 4rem);
+            }
+        }
+
+        .animation-delay-200 {
+            animation-delay: 0.2s;
+        }
+        .animation-delay-400 {
+            animation-delay: 0.4s;
+        }
+        .animation-delay-600 {
+            animation-delay: 0.6s;
         }
     </style>
 </head>
 
 <body class="bg-gray-100 from-light-blue via-blue-50 to-white min-h-screen font-sans overflow-x-hidden">
-    <!-- Navbar -->
-    <div class="navbar-customer"></div>
-    <script>
-        fetch('../Navbar/navbar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.querySelector('.navbar-customer').innerHTML = data;
-                // Clear all active states in desktop nav
-                document.querySelectorAll('nav a').forEach(link => {
-                    link.classList.remove('border-b-2', 'border-primary-blue', 'text-primary-blue', 'font-medium');
-                    link.classList.add('text-gray-700', 'hover:text-primary-blue', 'pb-1');
-                });
-                // Set active for desktop Home (first link with href="#")
-                const desktopHomeLink = document.querySelector('nav a[href="../Dashboard/home.html"]');
-                if (desktopHomeLink) {
-                    desktopHomeLink.classList.add('border-b-2', 'border-primary-blue', 'text-primary-blue', 'font-medium');
-                    desktopHomeLink.classList.remove('hover:text-primary-blue');
-                }
-                // Clear all active states in mobile nav
-                const mobileNavLinks = document.querySelectorAll('#mobileMenu nav a');
-                mobileNavLinks.forEach(link => {
-                    link.classList.remove('border-l-2', 'border-primary-blue', 'font-medium');
-                    link.classList.add('text-gray-700', 'hover:text-primary-blue', 'pl-4');
-                });
-                // Set active for mobile Home (first link with href="#")
-                const mobileHomeLink = document.querySelector('#mobileMenu a[href="../Dashboard/home.html"]');
-                if (mobileHomeLink) {
-                    mobileHomeLink.classList.add('border-l-2', 'border-primary-blue', 'font-medium');
-                    mobileHomeLink.classList.remove('hover:text-primary-blue');
-                }
-                // Mobile menu setup
-                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-                const mobileMenu = document.getElementById('mobileMenu');
-                const closeMobileMenu = document.getElementById('closeMobileMenu');
-                if (mobileMenuBtn) {
-                    mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
-                }
-                if (closeMobileMenu) {
-                    closeMobileMenu.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-                }
-                if (mobileMenu) {
-                    mobileMenu.addEventListener('click', (e) => {
-                        if (e.target === mobileMenu) mobileMenu.classList.add('hidden');
-                    });
-                }
-            });
-    </script>
+    <!-- Navbar with Profile Icon -->
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-40 w-[100vw]">
+        <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-black">VenueVista</h1>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="border-b-2 border-primary-blue text-primary-blue font-medium pb-1">Home</a>
+                    <a href="../MyBookings/mybookings.html" class="text-gray-700 hover:text-primary-blue pb-1">My Bookings</a>
+                    <a href="../Halls/rooms.html" class="text-gray-700 hover:text-primary-blue pb-1">Rooms</a>
+                    <a href="#" class="text-gray-700 hover:text-primary-blue pb-1">contact</a>
+                </div>
+
+                <!-- Profile Icon -->
+                <div class="flex items-center space-x-4">
+                    <button id="profileBtn" class="bg-primary-blue text-white p-2 rounded-full hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="md:hidden bg-primary-blue text-white p-2 rounded-md">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="border-l-2 border-primary-blue font-medium block px-3 py-2 text-primary-blue">Home</a>
+                <a href="../MyBookings/mybookings.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">My Bookings</a>
+                <a href="../Halls/rooms.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Rooms</a>
+                <a href="#" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay absolute inset-0 animate-fadeInModal" id="modalOverlay"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-md animate-modalSlide relative">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-800">Profile Settings</h2>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 rounded-full p-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6">
+                    <form id="profileForm" class="space-y-4">
+                        <!-- Profile Picture Placeholder -->
+                        <div class="flex justify-center mb-6">
+                            <div class="w-20 h-20 bg-primary-blue rounded-full flex items-center justify-center">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- First Name -->
+                        <div>
+                            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                            <input type="text" id="firstName" name="firstName" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200" 
+                                required>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div>
+                            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200" 
+                                required>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" name="email" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200" 
+                                required>
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200" 
+                                required>
+                        </div>
+
+                        <!-- Password -->
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <div class="relative">
+                                <input type="password" id="password" name="password" 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200 pr-10" 
+                                    required>
+                                <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                    <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Loading Spinner -->
+                    <div id="loadingSpinner" class="hidden flex justify-center items-center py-4">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-blue"></div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mt-4">
+                        <p class="text-sm"></p>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div id="successMessage" class="hidden bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mt-4">
+                        <p class="text-sm">Profile updated successfully!</p>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="flex justify-end space-x-3 p-6 border-t border-gray-200">
+                    <button id="cancelBtn" type="button" 
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200">
+                        Cancel
+                    </button>
+                    <button id="saveBtn" type="button" 
+                        class="px-6 py-2 bg-primary-blue text-white rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <div class="relative flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 pt-20">
-        <!-- Background Video -->
-        <!-- <video autoplay muted loop playsinline class="absolute inset-0 w-full min-h-screen object-cover object-center z-[-10]">
-            <source src="../../Assests/HomePagevideo.mp4" type="video/mp4" />
-        </video> -->
-        <!-- Black Overlay -->
-        <!-- <div class="absolute inset-0 bg-black/60 z-10"></div> -->
-
         <!-- Main Content -->
         <div class="relative z-20 text-center max-w-4xl mx-auto hero-content">
             <h1
@@ -242,6 +396,244 @@
     </div>
 
     <script>
+        // Profile Modal Functionality
+        class ProfileManager {
+            constructor() {
+                this.apiUrl = 'http://localhost:3000/users';
+                this.currentUserId = localStorage.getItem("userId"); // Default user ID - you can modify this based on your auth system
+                this.currentUser = null;
+                
+                this.initializeElements();
+                this.setupEventListeners();
+                this.loadCurrentUser();
+            }
+
+            initializeElements() {
+                this.profileBtn = document.getElementById('profileBtn');
+                this.modal = document.getElementById('profileModal');
+                this.modalOverlay = document.getElementById('modalOverlay');
+                this.closeModalBtn = document.getElementById('closeModalBtn');
+                this.cancelBtn = document.getElementById('cancelBtn');
+                this.saveBtn = document.getElementById('saveBtn');
+                this.profileForm = document.getElementById('profileForm');
+                this.loadingSpinner = document.getElementById('loadingSpinner');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.successMessage = document.getElementById('successMessage');
+                this.togglePasswordBtn = document.getElementById('togglePassword');
+                this.passwordInput = document.getElementById('password');
+                this.eyeIcon = document.getElementById('eyeIcon');
+
+                // Form inputs
+                this.inputs = {
+                    firstName: document.getElementById('firstName'),
+                    lastName: document.getElementById('lastName'),
+                    email: document.getElementById('email'),
+                    phone: document.getElementById('phone'),
+                    password: document.getElementById('password')
+                };
+            }
+
+            setupEventListeners() {
+                // Open modal
+                this.profileBtn.addEventListener('click', () => this.openModal());
+
+                // Close modal events
+                this.closeModalBtn.addEventListener('click', () => this.closeModal());
+                this.cancelBtn.addEventListener('click', () => this.closeModal());
+                this.modalOverlay.addEventListener('click', () => this.closeModal());
+
+                // Save changes
+                this.saveBtn.addEventListener('click', () => this.saveChanges());
+
+                // Password toggle
+                this.togglePasswordBtn.addEventListener('click', () => this.togglePassword());
+
+                // Form validation
+                Object.values(this.inputs).forEach(input => {
+                    input.addEventListener('input', () => this.validateForm());
+                });
+
+                // Escape key to close modal
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
+                        this.closeModal();
+                    }
+                });
+
+                // Mobile menu toggle
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                const mobileMenu = document.getElementById('mobileMenu');
+                
+                if (mobileMenuBtn && mobileMenu) {
+                    mobileMenuBtn.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+            }
+
+            async loadCurrentUser() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/${this.currentUserId}`);
+                    if (response.ok) {
+                        this.currentUser = await response.json();
+                    } else {
+                        throw new Error('User not found');
+                    }
+                } catch (error) {
+                    console.error('Error loading user:', error);
+                    this.showError('Failed to load user data');
+                }
+            }
+
+            openModal() {
+                this.modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                this.populateForm();
+                this.hideMessages();
+                
+                // Focus first input after animation
+                setTimeout(() => {
+                    this.inputs.firstName.focus();
+                }, 300);
+            }
+
+            closeModal() {
+                this.modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                this.resetForm();
+                this.hideMessages();
+            }
+
+            populateForm() {
+                if (this.currentUser) {
+                    this.inputs.firstName.value = this.currentUser.firstName || '';
+                    this.inputs.lastName.value = this.currentUser.lastName || '';
+                    this.inputs.email.value = this.currentUser.email || '';
+                    this.inputs.phone.value = this.currentUser.phone || '';
+                    this.inputs.password.value = this.currentUser.password || '';
+                }
+            }
+
+            resetForm() {
+                this.profileForm.reset();
+                this.validateForm();
+            }
+
+            validateForm() {
+                const isValid = Object.values(this.inputs).every(input => {
+                    return input.value.trim() !== '' && input.checkValidity();
+                });
+                
+                this.saveBtn.disabled = !isValid;
+                return isValid;
+            }
+
+            async saveChanges() {
+                if (!this.validateForm()) {
+                    this.showError('Please fill in all required fields correctly.');
+                    return;
+                }
+
+                this.showLoading(true);
+                this.hideMessages();
+
+                try {
+                    const updatedUser = {
+                        firstName: this.inputs.firstName.value.trim(),
+                        lastName: this.inputs.lastName.value.trim(),
+                        email: this.inputs.email.value.trim(),
+                        phone: this.inputs.phone.value.trim(),
+                        password: this.inputs.password.value
+                    };
+
+                    // Email validation
+                    if (!this.isValidEmail(updatedUser.email)) {
+                        throw new Error('Please enter a valid email address.');
+                    }
+
+                    // Phone validation
+                    if (!this.isValidPhone(updatedUser.phone)) {
+                        throw new Error('Please enter a valid phone number.');
+                    }
+
+                    const response = await fetch(`${this.apiUrl}/${this.currentUserId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ ...this.currentUser, ...updatedUser })
+                    });
+
+                    if (response.ok) {
+                        this.currentUser = await response.json();
+                        this.showSuccess();
+                        
+                        // Close modal after success message
+                        setTimeout(() => {
+                            this.closeModal();
+                        }, 2000);
+                    } else {
+                        throw new Error('Failed to update profile. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error saving profile:', error);
+                    this.showError(error.message);
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            togglePassword() {
+                const isPassword = this.passwordInput.type === 'password';
+                this.passwordInput.type = isPassword ? 'text' : 'password';
+                
+                this.eyeIcon.innerHTML = isPassword 
+                    ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>`
+                    : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
+            }
+
+            isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            isValidPhone(phone) {
+                const phoneRegex = /^\d{10}$/;
+                return phoneRegex.test(phone.replace(/\D/g, ''));
+            }
+
+            showLoading(show) {
+                if (show) {
+                    this.loadingSpinner.classList.remove('hidden');
+                    this.saveBtn.disabled = true;
+                } else {
+                    this.loadingSpinner.classList.add('hidden');
+                    this.saveBtn.disabled = !this.validateForm();
+                }
+            }
+
+            showError(message) {
+                this.errorMessage.querySelector('p').textContent = message;
+                this.errorMessage.classList.remove('hidden');
+                this.successMessage.classList.add('hidden');
+            }
+
+            showSuccess() {
+                this.successMessage.classList.remove('hidden');
+                this.errorMessage.classList.add('hidden');
+            }
+
+            hideMessages() {
+                this.errorMessage.classList.add('hidden');
+                this.successMessage.classList.add('hidden');
+            }
+        }
+
+        // Initialize Profile Manager
+        document.addEventListener('DOMContentLoaded', () => {
+            new ProfileManager();
+        });
+
         // Add smooth scroll behavior to buttons
         document.querySelectorAll('button').forEach(button => {
             button.addEventListener('click', function (e) {
@@ -258,33 +650,6 @@
                 }
             });
         });
-
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            .animate-fadeInUp {
-                animation: fadeInUp 1s ease-out;
-            }
-            .animation-delay-200 {
-                animation-delay: 0.2s;
-            }
-            .animation-delay-400 {
-                animation-delay: 0.4s;
-            }
-            .animation-delay-600 {
-                animation-delay: 0.6s;
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 

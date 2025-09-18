@@ -177,6 +177,21 @@
             opacity: 1;
             transform: translateX(0);
         }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-border {
+            border-color: #ef4444 !important;
+        }
+
+        .success-border {
+            border-color: #10b981 !important;
+        }
     </style>
 </head>
 
@@ -264,6 +279,11 @@
                 <div class="w-12 h-0.5 bg-gray-300"></div>
                 <div class="flex items-center">
                     <div class="step-indicator" id="step3">3</div>
+                    <span class="ml-2 text-sm font-medium text-gray-700">Preview</span>
+                </div>
+                <div class="w-12 h-0.5 bg-gray-300"></div>
+                <div class="flex items-center">
+                    <div class="step-indicator" id="step4">4</div>
                     <span class="ml-2 text-sm font-medium text-gray-700">Confirmation</span>
                 </div>
             </div>
@@ -283,7 +303,7 @@
                     <div class="group">
                         <label class="block text-sm font-semibold text-gray-700 mb-3">📅 Select Date *</label>
                         <div class="relative">
-                            <input type="date" id="booking-date" required min="2025-09-15"
+                            <input type="date" id="booking-date" required min="2025-09-17"
                                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 group-hover:border-primary-blue/50">
                             <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-primary-blue" fill="none" viewBox="0 0 24 24"
@@ -293,18 +313,21 @@
                                 </svg>
                             </div>
                         </div>
+                        <div class="error-message" id="booking-date-error">Please select a valid date</div>
                     </div>
 
                     <div class="group">
                         <label class="block text-sm font-semibold text-gray-700 mb-3">⏰ Check In Time *</label>
                         <input type="time" id="check-in-time" required min="09:00" max="20:00" step="3600"
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 group-hover:border-primary-blue/50">
+                        <div class="error-message" id="check-in-time-error">Please select check-in time</div>
                     </div>
 
                     <div class="group">
                         <label class="block text-sm font-semibold text-gray-700 mb-3">⏰ Check Out Time *</label>
                         <input type="time" id="check-out-time" required min="10:00" max="21:00" step="3600"
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 group-hover:border-primary-blue/50">
+                        <div class="error-message" id="check-out-time-error">Please select check-out time</div>
                     </div>
 
                     <div class="group">
@@ -316,352 +339,27 @@
                             <option value="classic">Classic Hall (45 guests)</option>
                             <option value="grand">Grand Hall (80 guests)</option>
                         </select>
+                        <div class="error-message" id="venue-category-error">Please select a venue category</div>
                     </div>
 
                     <div class="group">
                         <label class="block text-sm font-semibold text-gray-700 mb-3">🚪 Selected Room *</label>
                         <input type="text" id="select-room" readonly
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50/50 focus:outline-none transition-all duration-300"
-                            placeholder="Select from options below">
+                            placeholder="Select from options">
+                        <div class="error-message" id="select-room-error">Please select a room</div>
                     </div>
                 </div>
 
-                <!-- Enhanced Room Cards -->
+                <!-- Room Cards (Dynamic) -->
                 <div id="room-cards" class="hidden">
                     <div class="text-center mb-8">
                         <h4 class="text-xl font-bold text-gray-900 mb-2">Available Rooms</h4>
                         <p class="text-gray-600">Click on any room to select it for your booking</p>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                        <!-- Compact Room Cards -->
-                        <div class="room-card compact card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#001" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Room #001</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://media.istockphoto.com/id/1077431262/photo/small-conference-room-with-whiteboard-on-blue-wall.jpg?s=612x612&w=0&k=20&c=SXlqI9JIh1UOyg3JcvbwsmrAHZRFwKLOThdSNvWoo-I="
-                                    alt="Room #001" class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    25 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Room
-                            </button>
-                        </div>
-
-                        <!-- Repeat similar structure for other rooms -->
-                        <div class="room-card compact card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#002" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Room #002</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://media.istockphoto.com/id/158587251/photo/multi-function-room-garden.jpg?s=612x612&w=0&k=20&c=V4LqcXmhAmY6crAAyjrQaOM05iz9Yt14Ie5YkaMkc7c="
-                                    alt="Room #002" class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    25 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Room
-                            </button>
-                        </div>
-
-                        <div class="room-card compact card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#003" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Room #003</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://media.istockphoto.com/id/1414903724/photo/conference-round-table-and-chairs.jpg?s=612x612&w=0&k=20&c=07g8JfGsos8eCHwb_zvV2_aYOnHcxSDsek0_tjIsLyY="
-                                    alt="Room #003" class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    25 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Room
-                            </button>
-                        </div>
-
-                        <div class="room-card compact card-hover bg-gray-100 rounded-2xl p-6 opacity-60 cursor-not-allowed border-2 border-gray-200"
-                            data-room="#004" data-available="false">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-500 text-lg">Room #004</h3>
-                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gray-200 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="../../Assests/Compact-rooms/compact-room-3.png" alt="Room #004"
-                                    class="h-full w-full object-cover rounded-xl opacity-50">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-500 flex items-center">
-                                    <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-500 flex items-center">
-                                    <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                                    25 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gray-400 text-white py-3 px-4 rounded-xl font-medium cursor-not-allowed not-available-btn">
-                                Not Available
-                            </button>
-                        </div>
-
-                        <!-- Classic Halls (Initially Hidden) -->
-                        <div class="room-card classic hidden card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#005" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Hall #005</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="../../Assests/Classic-rooms/classic-room-1.png" alt="Room #005"
-                                    class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    45 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Hall
-                            </button>
-                        </div>
-
-                        <!-- Add similar cards for other classic rooms -->
-                        <div class="room-card classic hidden card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#006" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Hall #006</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE=" alt="Room #006"
-                                    class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    45 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Hall
-                            </button>
-                        </div>
-
-                        <div class="room-card classic hidden card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#007" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Hall #007</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://static.vecteezy.com/system/resources/thumbnails/047/802/045/small_2x/wooden-office-interior-with-meeting-table-and-chairs-tv-screen-and-window-photo.jpg" alt="Room #007"
-                                    class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    45 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Hall
-                            </button>
-                        </div>
-
-                        <div class="room-card classic hidden card-hover bg-gray-100 rounded-2xl p-6 opacity-60 cursor-not-allowed border-2 border-gray-200"
-                            data-room="#008" data-available="false">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-500 text-lg">Hall #008</h3>
-                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gray-200 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://img.freepik.com/premium-photo/board-room-conference-room-meeting-room-white-board-corporate-office_57262-428.jpg" alt="Room #008"
-                                    class="h-full w-full object-cover rounded-xl opacity-50">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-500 flex items-center">
-                                    <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-500 flex items-center">
-                                    <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                                    45 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gray-400 text-white py-3 px-4 rounded-xl font-medium cursor-not-allowed not-available-btn">
-                                Not Available
-                            </button>
-                        </div>
-
-                        <!-- Grand Halls (Initially Hidden) -->
-                        <div class="room-card grand hidden card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#009" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Grand #009</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="../../Assests/Grand-rooms/grand-room-1.png" alt="Room #009"
-                                    class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    80 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Grand Hall
-                            </button>
-                        </div>
-
-                        <div class="room-card grand hidden card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#010" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Grand #010</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://www.bwpluswandagrand.com/wp-content/uploads/meetings-slide02-1.jpg" alt="Room #010"
-                                    class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    80 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Grand Hall
-                            </button>
-                        </div>
-
-                        <div class="room-card grand hidden card-hover bg-white rounded-2xl p-6 cursor-pointer border-2 border-transparent hover:border-primary-blue/30"
-                            data-room="#011" data-available="true">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-900 text-lg">Grand #011</h3>
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gradient-to-br from-light-blue to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://grandecentrepointsukhumvit55.com/upload/Meeting/04.jpg?v=76" alt="Room #011"
-                                    class="h-full w-full object-cover rounded-xl">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-600 flex items-center">
-                                    <span class="w-2 h-2 bg-primary-blue rounded-full mr-2"></span>
-                                    80 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gradient-to-r from-primary-blue to-dark-blue text-white py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 select-btn">
-                                Select Grand Hall
-                            </button>
-                        </div>
-
-                        <div class="room-card grand hidden card-hover bg-gray-100 rounded-2xl p-6 opacity-60 cursor-not-allowed border-2 border-gray-200"
-                            data-room="#012" data-available="false">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-gray-500 text-lg">Grand #012</h3>
-                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                            </div>
-                            <div
-                                class="h-32 bg-gray-200 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                                <img src="https://www.grandmirage.com/assets/uploads/images/meetings-events/meeting-slide-kecak.jpg" alt="Room #012"
-                                    class="h-full w-full object-cover rounded-xl opacity-50">
-                            </div>
-                            <div class="space-y-2 mb-4">
-                                <p class="text-sm text-gray-500 flex items-center">
-                                    <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                                    1 master table
-                                </p>
-                                <p class="text-sm text-gray-500 flex items-center">
-                                    <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                                    80 chairs
-                                </p>
-                            </div>
-                            <button
-                                class="w-full bg-gray-400 text-white py-3 px-4 rounded-xl font-medium cursor-not-allowed not-available-btn">
-                                Not Available
-                            </button>
-                        </div>
+                    <div id="room-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <!-- Room cards will be dynamically generated here -->
                     </div>
                 </div>
 
@@ -694,11 +392,13 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-3">👤 First Name *</label>
                         <input type="text" id="first-name" required
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 group-hover:border-primary-blue/50">
+                        <div class="error-message" id="first-name-error">First name is required</div>
                     </div>
                     <div class="group">
                         <label class="block text-sm font-semibold text-gray-700 mb-3">👤 Last Name *</label>
                         <input type="text" id="last-name" required
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 group-hover:border-primary-blue/50">
+                        <div class="error-message" id="last-name-error">Last name is required</div>
                     </div>
                 </div>
 
@@ -707,25 +407,29 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-3">📧 Email Address *</label>
                         <input type="email" id="email" required
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 group-hover:border-primary-blue/50">
+                        <div class="error-message" id="email-error">Please enter a valid email address</div>
                     </div>
                     <div class="group">
                         <label class="block text-sm font-semibold text-gray-700 mb-3">📱 Mobile Number *</label>
-                        <input type="tel" id="mobile-number" required
+                        <input type="tel" id="mobile-number" required maxlength="10" pattern="[0-9]{10}"
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 group-hover:border-primary-blue/50">
+                        <div class="error-message" id="mobile-number-error">Mobile number must be exactly 10 digits</div>
                     </div>
                 </div>
 
                 <div class="mb-8">
                     <label class="block text-sm font-semibold text-gray-700 mb-3">📍 Complete Address *</label>
-                    <textarea id="address" rows="3" required
+                    <textarea id="address" rows="3" required minlength="10"
                         class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 hover:border-primary-blue/50"></textarea>
+                    <div class="error-message" id="address-error">Address must be at least 10 characters long</div>
                 </div>
 
                 <div class="mb-8">
                     <label class="block text-sm font-semibold text-gray-700 mb-3">🎯 Purpose of Venue *</label>
-                    <textarea id="purpose" rows="4" required
+                    <textarea id="purpose" rows="4" required minlength="10"
                         placeholder="Tell us about your event - wedding, conference, birthday party, etc."
                         class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-primary-blue transition-all duration-300 hover:border-primary-blue/50"></textarea>
+                    <div class="error-message" id="purpose-error">Purpose must be at least 10 characters long</div>
                 </div>
 
                 <!-- Enhanced Beverage Selection -->
@@ -751,6 +455,7 @@
                                 thanks</span>
                         </label>
                     </div>
+                    <div class="error-message" id="beverage-error">Please select a beverage option</div>
 
                     <!-- Beverage Options -->
                     <div id="beverage-options" class="hidden">
@@ -814,7 +519,7 @@
                                     <span class="quantity w-8 text-center font-semibold text-lg"
                                         data-item="juice">0</span>
                                     <button
-                                        class="w-8 h-8 bg-primary-blue hover:bg-dark-blue text-white rounded-full text-lg font-bold increment-btn transition-colors"
+                                        class="w-8 h-8 bg-primary-blue hover:bg-dark-blue text-white rounded-full text-lg font-bold increment-colors"
                                         data-item="juice">+</button>
                                 </div>
                             </div>
@@ -862,7 +567,7 @@
                     </div>
                 </div>
 
-                <!-- Terms and Submit -->
+                <!-- Terms and Continue -->
                 <div class="glass-effect rounded-2xl p-6 mb-8">
                     <label class="flex items-start group cursor-pointer">
                         <input type="checkbox" id="terms" required
@@ -877,12 +582,46 @@
                                 policies and cancellation terms.</p>
                         </div>
                     </label>
+                    <div class="error-message" id="terms-error">Please accept terms and conditions</div>
                 </div>
 
-                <!-- Enhanced Payment Button -->
+                <!-- Continue to Preview Button -->
                 <div class="text-center">
-                    <button id="payment-btn" type="submit"
-                        class="group relative bg-gradient-to-r from-green-500 to-green-600 text-white px-16 py-4 rounded-full text-xl font-bold shadow-2xl hover:shadow-green-500/25 transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                    <button id="continue-to-preview"
+                        class="group relative bg-gradient-to-r from-primary-blue to-dark-blue text-white px-16 py-4 rounded-full text-xl font-bold shadow-2xl hover:shadow-primary-blue/25 transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                        <span class="flex items-center justify-center">
+                            Continue to Preview
+                            <svg class="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform duration-300"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Third Section: Preview (Initially Hidden) -->
+            <div id="preview-section" class="section-transition hidden space-y-8">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Review Your Booking</h3>
+                    <p class="text-gray-600">Please review all details before confirming your booking</p>
+                </div>
+
+                <div class="glass-effect rounded-2xl p-8">
+                    <div id="preview-content" class="space-y-6">
+                        <!-- Preview content will be dynamically generated -->
+                    </div>
+                </div>
+
+                <!-- Back and Proceed Buttons -->
+                <div class="flex justify-between">
+                    <button id="back-to-edit"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300">
+                        Back to Edit
+                    </button>
+                    <button id="proceed-to-payment"
+                        class="group relative bg-gradient-to-r from-green-500 to-green-600 text-white px-16 py-4 rounded-full text-xl font-bold shadow-2xl hover:shadow-green-500/25 transform hover:scale-105 transition-all duration-300">
                         <span class="flex items-center justify-center">
                             <svg class="mr-3 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -890,11 +629,6 @@
                                 </path>
                             </svg>
                             Proceed to Payment
-                            <svg class="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform duration-300"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
                         </span>
                     </button>
                 </div>
@@ -917,10 +651,30 @@
         </div>
     </div>
 
-    <!-- Enhanced JavaScript with animations and improved UX -->
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="bg-white rounded-3xl p-8 text-center max-w-2xl mx-4 transform scale-0 transition-all duration-500">
+            <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-gentle">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-3xl font-bold text-gray-900 mb-4">🎉 Booking Confirmed!</h3>
+            <div id="confirmation-details" class="text-left bg-gray-50 rounded-xl p-6 mb-6">
+                <!-- Confirmation details will be populated here -->
+            </div>
+            <p class="text-gray-600 mb-6">You will be redirected to your bookings page in <span id="countdown">7</span> seconds</p>
+            <button onclick="window.location.href='../MyBookings/mybookings.html'" 
+                    class="bg-primary-blue text-white px-8 py-3 rounded-full font-medium hover:bg-dark-blue transition-colors">
+                View My Bookings Now
+            </button>
+        </div>
+    </div>
+    <!-- Enhanced JavaScript with Dynamic Availability, Validation, and Preview -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const currentDate = new Date('2025-09-15');
+            // Get current date
+            const currentDate = new Date();
             const today = currentDate.toISOString().split('T')[0];
 
             // Set min date to today
@@ -942,31 +696,215 @@
                 water: 10
             };
 
-            // Room data based on category
+            // Room data with images
             const roomData = {
                 compact: [
-                    { id: '#001', available: true, tables: 1, chairs: 25 },
-                    { id: '#002', available: true, tables: 1, chairs: 25 },
-                    { id: '#003', available: true, tables: 1, chairs: 25 },
-                    { id: '#004', available: false, tables: 1, chairs: 25 }
+                    { 
+                        id: '#001', 
+                        name: 'Room #001',
+                        tables: 1, 
+                        chairs: 25,
+                        image: 'https://i.pinimg.com/1200x/4f/33/db/4f33db3e033a8f5d2ed3f87ba753e221.jpg'
+                    },
+                    { 
+                        id: '#002', 
+                        name: 'Room #002',
+                        tables: 1, 
+                        chairs: 25,
+                        image: 'https://media.istockphoto.com/id/158587251/photo/multi-function-room-garden.jpg?s=612x612&w=0&k=20&c=V4LqcXmhAmY6crAAyjrQaOM05iz9Yt14Ie5YkaMkc7c='
+                    },
+                    { 
+                        id: '#003', 
+                        name: 'Room #003',
+                        tables: 1, 
+                        chairs: 25,
+                        image: 'https://media.istockphoto.com/id/1414903724/photo/conference-round-table-and-chairs.jpg?s=612x612&w=0&k=20&c=07g8JfGsos8eCHwb_zvV2_aYOnHcxSDsek0_tjIsLyY='
+                    },
+                    { 
+                        id: '#004', 
+                        name: 'Room #004',
+                        tables: 1, 
+                        chairs: 25,
+                        image: 'https://i.pinimg.com/736x/2b/93/8d/2b938d18466bc7f95cc10cc87dea0678.jpg'
+                    }
                 ],
                 classic: [
-                    { id: '#005', available: true, tables: 1, chairs: 45 },
-                    { id: '#006', available: true, tables: 1, chairs: 45 },
-                    { id: '#007', available: true, tables: 1, chairs: 45 },
-                    { id: '#008', available: false, tables: 1, chairs: 45 }
+                    { 
+                        id: '#005', 
+                        name: 'Hall #005',
+                        tables: 1, 
+                        chairs: 45,
+                        image: 'https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE='
+                    },
+                    { 
+                        id: '#006', 
+                        name: 'Hall #006',
+                        tables: 1, 
+                        chairs: 45,
+                        image: 'https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE='
+                    },
+                    { 
+                        id: '#007', 
+                        name: 'Hall #007',
+                        tables: 1, 
+                        chairs: 45,
+                        image: 'https://static.vecteezy.com/system/resources/thumbnails/047/802/045/small_2x/wooden-office-interior-with-meeting-table-and-chairs-tv-screen-and-window-photo.jpg'
+                    },
+                    { 
+                        id: '#008', 
+                        name: 'Hall #008',
+                        tables: 1, 
+                        chairs: 45,
+                        image: 'https://img.freepik.com/premium-photo/board-room-conference-room-meeting-room-white-board-corporate-office_57262-428.jpg'
+                    }
                 ],
                 grand: [
-                    { id: '#009', available: true, tables: 1, chairs: 80 },
-                    { id: '#010', available: true, tables: 1, chairs: 80 },
-                    { id: '#011', available: true, tables: 1, chairs: 80 },
-                    { id: '#012', available: false, tables: 1, chairs: 80 }
+                    { 
+                        id: '#009', 
+                        name: 'Grand #009',
+                        tables: 1, 
+                        chairs: 80,
+                        image: 'https://www.bwpluswandagrand.com/wp-content/uploads/meetings-slide02-1.jpg'
+                    },
+                    { 
+                        id: '#010', 
+                        name: 'Grand #010',
+                        tables: 1, 
+                        chairs: 80,
+                        image: 'https://www.bwpluswandagrand.com/wp-content/uploads/meetings-slide02-1.jpg'
+                    },
+                    { 
+                        id: '#011', 
+                        name: 'Grand #011',
+                        tables: 1, 
+                        chairs: 80,
+                        image: 'https://grandecentrepointsukhumvit55.com/upload/Meeting/04.jpg?v=76'
+                    },
+                    { 
+                        id: '#012', 
+                        name: 'Grand #012',
+                        tables: 1, 
+                        chairs: 80,
+                        image: 'https://www.grandmirage.com/assets/uploads/images/meetings-events/meeting-slide-kecak.jpg'
+                    }
                 ]
             };
 
+            // API URL for JSON Server
+            const API_URL = 'http://localhost:3000';
+
+            // Validation functions
+            function validateField(fieldId, errorId, validationFn, errorMessage) {
+                const field = document.getElementById(fieldId);
+                const errorElement = document.getElementById(errorId);
+
+                if (validationFn(field.value)) {
+                    field.classList.remove('error-border');
+                    field.classList.add('success-border');
+                    errorElement.style.display = 'none';
+                    return true;
+                } else {
+                    field.classList.remove('success-border');
+                    field.classList.add('error-border');
+                    errorElement.textContent = errorMessage;
+                    errorElement.style.display = 'block';
+                    return false;
+                }
+            }
+
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function validateMobile(mobile) {
+                const mobileRegex = /^[0-9]{10}$/;
+                return mobileRegex.test(mobile);
+            }
+
+            // Real-time validation
+            document.getElementById('first-name').addEventListener('input', function() {
+                validateField('first-name', 'first-name-error', 
+                    (value) => value.trim().length > 0, 
+                    'First name is required');
+            });
+
+            document.getElementById('last-name').addEventListener('input', function() {
+                validateField('last-name', 'last-name-error', 
+                    (value) => value.trim().length > 0, 
+                    'Last name is required');
+            });
+
+            document.getElementById('email').addEventListener('input', function() {
+                validateField('email', 'email-error', 
+                    validateEmail, 
+                    'Please enter a valid email address');
+            });
+
+            document.getElementById('mobile-number').addEventListener('input', function() {
+                validateField('mobile-number', 'mobile-number-error', 
+                    validateMobile, 
+                    'Mobile number must be exactly 10 digits');
+            });
+
+            document.getElementById('address').addEventListener('input', function() {
+                validateField('address', 'address-error', 
+                    (value) => value.trim().length >= 10, 
+                    'Address must be at least 10 characters long');
+            });
+
+            document.getElementById('purpose').addEventListener('input', function() {
+                validateField('purpose', 'purpose-error', 
+                    (value) => value.trim().length >= 10, 
+                    'Purpose must be at least 10 characters long');
+            });
+
+            // Date and time validation
+            document.getElementById('booking-date').addEventListener('change', function() {
+                const selectedDate = new Date(this.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                validateField('booking-date', 'booking-date-error', 
+                    () => selectedDate >= today, 
+                    'Booking date must be today or in the future');
+            });
+
+            document.getElementById('check-in-time').addEventListener('change', function() {
+                validateTimeFields();
+            });
+
+            document.getElementById('check-out-time').addEventListener('change', function() {
+                validateTimeFields();
+            });
+
+            function validateTimeFields() {
+                const checkInTime = document.getElementById('check-in-time').value;
+                const checkOutTime = document.getElementById('check-out-time').value;
+                const bookingDate = document.getElementById('booking-date').value;
+
+                if (checkInTime && checkOutTime) {
+                    const isValid = checkOutTime > checkInTime;
+                    const errorMessage = 'Check-out time must be after check-in time';
+
+                    validateField('check-out-time', 'check-out-time-error', 
+                        () => isValid, errorMessage);
+
+                    // Additional validation for today's bookings
+                    if (bookingDate === today) {
+                        const now = new Date();
+                        const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+                        validateField('check-in-time', 'check-in-time-error', 
+                            () => checkInTime > currentTime, 
+                            'Check-in time must be in the future for today\'s bookings');
+                    }
+                }
+            }
+
             // Update step indicators
             function updateSteps(activeStep) {
-                const steps = ['step1', 'step2', 'step3'];
+                const steps = ['step1', 'step2', 'step3', 'step4'];
                 steps.forEach((step, index) => {
                     const element = document.getElementById(step);
                     if (index < activeStep - 1) {
@@ -982,63 +920,154 @@
                 });
             }
 
-            // Function to update room cards for a category with animations
-            function updateRoomCards(category) {
+            // Function to check room availability dynamically
+            async function checkRoomAvailability(category, date, checkInTime, checkOutTime) {
+                try {
+                    const response = await fetch(`${API_URL}/bookings`);
+                    const bookings = await response.json();
+
+                    const availabilityStatus = {};
+
+                    // Initialize all rooms as available
+                    roomData[category].forEach(room => {
+                        availabilityStatus[room.id] = true;
+                    });
+
+                    // Check for conflicts
+                    bookings.forEach(booking => {
+                        if (booking.date === date && booking.venueCategory === category) {
+                            const bookingCheckIn = booking.checkInTime;
+                            const bookingCheckOut = booking.checkOutTime;
+
+                            // Check for time overlap
+                            const hasOverlap = (
+                                (checkInTime >= bookingCheckIn && checkInTime < bookingCheckOut) ||
+                                (checkOutTime > bookingCheckIn && checkOutTime <= bookingCheckOut) ||
+                                (checkInTime <= bookingCheckIn && checkOutTime >= bookingCheckOut)
+                            );
+
+                            if (hasOverlap) {
+                                availabilityStatus[booking.roomId] = false;
+                            }
+                        }
+                    });
+
+                    return availabilityStatus;
+                } catch (error) {
+                    console.error('Error checking availability:', error);
+                    // Return all rooms as available if there's an error
+                    const availabilityStatus = {};
+                    roomData[category].forEach(room => {
+                        availabilityStatus[room.id] = true;
+                    });
+                    return availabilityStatus;
+                }
+            }
+
+            // Function to create room card HTML
+            function createRoomCard(room, isAvailable, category) {
+                const buttonText = category === 'grand' ? 'Select Grand Hall' : 
+                                 category === 'classic' ? 'Select Hall' : 'Select Room';
+
+                return `
+                    <div class="room-card ${category} card-hover ${isAvailable ? 'bg-white' : 'bg-gray-100 opacity-60'} rounded-2xl p-6 cursor-${isAvailable ? 'pointer' : 'not-allowed'} border-2 border-${isAvailable ? 'transparent hover:border-primary-blue/30' : 'gray-200'}"
+                        data-room="${room.id}" data-available="${isAvailable}">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold ${isAvailable ? 'text-gray-900' : 'text-gray-500'} text-lg">${room.name}</h3>
+                            <div class="w-3 h-3 ${isAvailable ? 'bg-green-500 animate-pulse-slow' : 'bg-red-500'} rounded-full"></div>
+                        </div>
+                        <div class="h-32 ${isAvailable ? 'bg-gradient-to-br from-light-blue to-blue-100' : 'bg-gray-200'} rounded-xl mb-4 flex items-center justify-center overflow-hidden">
+                            <img src="${room.image}" alt="${room.name}" class="h-full w-full object-cover rounded-xl ${isAvailable ? '' : 'opacity-50'}">
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <p class="text-sm ${isAvailable ? 'text-gray-600' : 'text-gray-500'} flex items-center">
+                                <span class="w-2 h-2 ${isAvailable ? 'bg-primary-blue' : 'bg-gray-400'} rounded-full mr-2"></span>
+                                ${room.tables} master table
+                            </p>
+                            <p class="text-sm ${isAvailable ? 'text-gray-600' : 'text-gray-500'} flex items-center">
+                                <span class="w-2 h-2 ${isAvailable ? 'bg-primary-blue' : 'bg-gray-400'} rounded-full mr-2"></span>
+                                ${room.chairs} chairs
+                            </p>
+                        </div>
+                        <button class="w-full ${isAvailable ? 'bg-gradient-to-r from-primary-blue to-dark-blue hover:shadow-lg select-btn' : 'bg-gray-400 cursor-not-allowed not-available-btn'} text-white py-3 px-4 rounded-xl font-medium transition-all duration-300">
+                            ${isAvailable ? buttonText : 'Not Available'}
+                        </button>
+                    </div>
+                `;
+            }
+
+            // Function to update room cards with dynamic availability
+            async function updateRoomCards(category) {
                 if (!category) return;
 
-                const roomCardsContainer = document.getElementById('room-cards');
-                roomCardsContainer.classList.remove('hidden');
+                const date = document.getElementById('booking-date').value;
+                const checkInTime = document.getElementById('check-in-time').value;
+                const checkOutTime = document.getElementById('check-out-time').value;
 
-                // Hide all cards first with fade out
-                document.querySelectorAll('.room-card').forEach(card => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        card.classList.add('hidden');
-                    }, 200);
-                });
+                if (!date || !checkInTime || !checkOutTime) {
+                    showNotification('Please select date and time first', 'error');
+                    return;
+                }
 
-                // Show and update current category cards with staggered animation
-                setTimeout(() => {
-                    document.querySelectorAll(`.room-card.${category}`).forEach((card, index) => {
-                        card.classList.remove('hidden');
+                const roomCardsContainer = document.getElementById('room-cards-container');
+                const roomCardsSection = document.getElementById('room-cards');
+
+                // Show loading state
+                roomCardsContainer.innerHTML = '<div class="col-span-full text-center py-8"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-blue mx-auto"></div><p class="mt-4 text-gray-600">Checking availability...</p></div>';
+                roomCardsSection.classList.remove('hidden');
+
+                try {
+                    const availabilityStatus = await checkRoomAvailability(category, date, checkInTime, checkOutTime);
+
+                    // Generate room cards HTML
+                    const roomCardsHTML = roomData[category].map(room => 
+                        createRoomCard(room, availabilityStatus[room.id], category)
+                    ).join('');
+
+                    roomCardsContainer.innerHTML = roomCardsHTML;
+
+                    // Add staggered animation
+                    const cards = roomCardsContainer.querySelectorAll('.room-card');
+                    cards.forEach((card, index) => {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
                         setTimeout(() => {
                             card.style.opacity = '1';
                             card.style.transform = 'translateY(0)';
                         }, index * 100);
-
-                        const data = roomData[category][index];
-                        const button = card.querySelector('button');
-
-                        // Reset selection state
-                        const selectBtn = card.querySelector('.select-btn');
-                        if (selectBtn) {
-                            selectBtn.textContent = selectBtn.textContent.includes('Grand') ? 'Select Grand Hall' :
-                                selectBtn.textContent.includes('Hall') ? 'Select Hall' : 'Select Room';
-                            selectBtn.classList.remove('bg-green-600', 'cursor-default');
-                            selectBtn.classList.add('hover:shadow-lg', 'cursor-pointer');
-                        }
                     });
-                }, 200);
+
+                } catch (error) {
+                    console.error('Error updating room cards:', error);
+                    roomCardsContainer.innerHTML = '<div class="col-span-full text-center py-8 text-red-600"><p>Error loading rooms. Please try again.</p></div>';
+                }
             }
 
-            // Category change event with enhanced animation
+            // Category change event
             document.getElementById('venue-category').addEventListener('change', (e) => {
                 const category = e.target.value;
                 const roomInput = document.getElementById('select-room');
                 roomInput.value = '';
-                updateRoomCards(category);
+
+                if (category) {
+                    updateRoomCards(category);
+                } else {
+                    document.getElementById('room-cards').classList.add('hidden');
+                }
                 updateCostSummary();
             });
 
-            // Enhanced room card click event
+            // Room card selection
             document.addEventListener('click', (e) => {
                 const button = e.target.closest('button');
                 if (button && button.classList.contains('select-btn')) {
                     const card = button.closest('.room-card');
                     const roomId = card.dataset.room;
+                    const isAvailable = card.dataset.available === 'true';
 
-                    // Clear previous selections with animation
+                    if (!isAvailable) return;
+
+                    // Clear previous selections
                     document.querySelectorAll('.select-btn').forEach(btn => {
                         const originalText = btn.textContent.includes('Grand') ? 'Select Grand Hall' :
                             btn.textContent.includes('Hall') ? 'Select Hall' : 'Select Room';
@@ -1048,14 +1077,14 @@
                         btn.closest('.room-card').classList.remove('border-green-400');
                     });
 
-                    // Set current as selected with animation
+                    // Set current as selected
                     button.textContent = '✓ Selected';
                     button.classList.remove('hover:shadow-lg', 'cursor-pointer');
                     button.classList.add('bg-green-600', 'cursor-default');
                     card.classList.add('border-green-400');
                     document.getElementById('select-room').value = roomId;
 
-                    // Animate card selection
+                    // Animation
                     card.style.transform = 'scale(1.05)';
                     setTimeout(() => {
                         card.style.transform = 'scale(1)';
@@ -1068,33 +1097,41 @@
             // Enhanced Check Availability button
             document.getElementById('check-availability').addEventListener('click', () => {
                 const requiredFields = ['booking-date', 'check-in-time', 'check-out-time', 'venue-category', 'select-room'];
-                const isValid = requiredFields.every(field => document.getElementById(field).value.trim() !== '');
+                let isValid = true;
+
+                // Validate each field
+                requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    const errorElement = document.getElementById(fieldId + '-error');
+
+                    if (!field.value.trim()) {
+                        field.classList.add('error-border');
+                        errorElement.style.display = 'block';
+                        isValid = false;
+                    }
+                });
+
+                // Additional time validation
+                const checkInTime = document.getElementById('check-in-time').value;
+                const checkOutTime = document.getElementById('check-out-time').value;
+                const bookingDate = document.getElementById('booking-date').value;
+
+                if (checkInTime && checkOutTime && checkInTime >= checkOutTime) {
+                    showNotification('Check-out time must be after check-in time', 'error');
+                    isValid = false;
+                }
+
+                if (bookingDate === today) {
+                    const now = new Date();
+                    const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+                    if (checkInTime <= currentTime) {
+                        showNotification('Check-in time must be in the future for today\'s bookings', 'error');
+                        isValid = false;
+                    }
+                }
 
                 if (isValid) {
-                    // Validate date and time
-                    const bookingDate = new Date(document.getElementById('booking-date').value);
-                    const currentDate = new Date('2025-09-15');
-                    const checkInTime = document.getElementById('check-in-time').value;
-                    const checkOutTime = document.getElementById('check-out-time').value;
-
-                    if (bookingDate < currentDate) {
-                        showNotification('Booking date must be today or in the future.', 'error');
-                        return;
-                    }
-
-                    if (bookingDate.toDateString() === currentDate.toDateString()) {
-                        const currentTime = new Date().toTimeString().slice(0, 5);
-                        if (checkInTime <= currentTime) {
-                            showNotification('Check-in time must be in the future if booking for today.', 'error');
-                            return;
-                        }
-                    }
-
-                    if (checkInTime >= checkOutTime) {
-                        showNotification('Check-out time must be after check-in time.', 'error');
-                        return;
-                    }
-
                     // Animated transition to next step
                     const bookingDetails = document.getElementById('booking-details');
                     const contactSection = document.getElementById('contact-section');
@@ -1113,18 +1150,17 @@
                             contactSection.style.opacity = '1';
                         }, 50);
 
-                        document.getElementById('check-availability').classList.add('hidden');
                         updateSteps(2);
                         updateCostSummary();
                     }, 300);
 
                     showNotification('Great! Now let\'s get your details.', 'success');
                 } else {
-                    showNotification('Please fill all required fields.', 'error');
+                    showNotification('Please fill all required fields correctly.', 'error');
                 }
             });
 
-            // Enhanced beverage radio buttons
+            // Beverage options handling
             document.getElementById('beverage-yes').addEventListener('change', () => {
                 const options = document.getElementById('beverage-options');
                 options.classList.remove('hidden');
@@ -1152,7 +1188,7 @@
                 updateCostSummary();
             });
 
-            // Enhanced beverage quantity buttons
+            // Beverage quantity buttons
             document.addEventListener('click', (e) => {
                 if (e.target.classList.contains('increment-btn')) {
                     const item = e.target.dataset.item;
@@ -1160,7 +1196,6 @@
                     let current = parseInt(quantity.textContent);
                     quantity.textContent = current + 1;
 
-                    // Animate button
                     e.target.style.transform = 'scale(0.9)';
                     setTimeout(() => {
                         e.target.style.transform = 'scale(1)';
@@ -1174,7 +1209,6 @@
                     if (current > 0) {
                         quantity.textContent = current - 1;
 
-                        // Animate button
                         e.target.style.transform = 'scale(0.9)';
                         setTimeout(() => {
                             e.target.style.transform = 'scale(1)';
@@ -1185,13 +1219,460 @@
                 }
             });
 
+            // Continue to Preview button
+            document.getElementById('continue-to-preview').addEventListener('click', () => {
+                const personalFields = ['first-name', 'last-name', 'email', 'mobile-number', 'address', 'purpose'];
+                const beverageSelected = document.querySelector('input[name="beverage"]:checked');
+                const termsAccepted = document.getElementById('terms').checked;
+
+                let isValid = true;
+
+                // Validate personal information fields
+                isValid &= validateField('first-name', 'first-name-error', 
+                    (value) => value.trim().length > 0, 'First name is required');
+
+                isValid &= validateField('last-name', 'last-name-error', 
+                    (value) => value.trim().length > 0, 'Last name is required');
+
+                isValid &= validateField('email', 'email-error', 
+                    validateEmail, 'Please enter a valid email address');
+
+                isValid &= validateField('mobile-number', 'mobile-number-error', 
+                    validateMobile, 'Mobile number must be exactly 10 digits');
+
+                isValid &= validateField('address', 'address-error', 
+                    (value) => value.trim().length >= 10, 'Address must be at least 10 characters long');
+
+                isValid &= validateField('purpose', 'purpose-error', 
+                    (value) => value.trim().length >= 10, 'Purpose must be at least 10 characters long');
+
+                // Validate beverage selection
+                if (!beverageSelected) {
+                    document.getElementById('beverage-error').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('beverage-error').style.display = 'none';
+                }
+
+                // Validate terms acceptance
+                if (!termsAccepted) {
+                    document.getElementById('terms-error').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('terms-error').style.display = 'none';
+                }
+
+                if (isValid) {
+                    showPreview();
+                } else {
+                    showNotification('Please fill all required fields correctly.', 'error');
+                }
+            });
+
+            // Function to show preview
+            function showPreview() {
+                const contactSection = document.getElementById('contact-section');
+                const previewSection = document.getElementById('preview-section');
+                const previewContent = document.getElementById('preview-content');
+
+                // Get all form data
+                const bookingData = {
+                    date: document.getElementById('booking-date').value,
+                    checkInTime: document.getElementById('check-in-time').value,
+                    checkOutTime: document.getElementById('check-out-time').value,
+                    venueCategory: document.getElementById('venue-category').value,
+                    roomId: document.getElementById('select-room').value,
+                    firstName: document.getElementById('first-name').value,
+                    lastName: document.getElementById('last-name').value,
+                    email: document.getElementById('email').value,
+                    mobileNumber: document.getElementById('mobile-number').value,
+                    address: document.getElementById('address').value,
+                    purpose: document.getElementById('purpose').value,
+                    beverage: document.querySelector('input[name="beverage"]:checked').value
+                };
+
+                // Get beverage quantities
+                const beverages = {};
+                let beverageTotal = 0;
+                Object.keys(beveragePrices).forEach(item => {
+                    const qty = parseInt(document.querySelector(`[data-item="${item}"].quantity`)?.textContent || '0');
+                    if (qty > 0) {
+                        beverages[item] = qty;
+                        beverageTotal += qty * beveragePrices[item];
+                    }
+                });
+
+                // Calculate costs
+                const checkInHour = parseInt(bookingData.checkInTime.split(':')[0]);
+                const checkOutHour = parseInt(bookingData.checkOutTime.split(':')[0]);
+                const hours = checkOutHour - checkInHour;
+                const hallCost = hallCosts[bookingData.venueCategory] * hours;
+                const totalCost = hallCost + beverageTotal;
+
+                // Format date
+                const formattedDate = new Date(bookingData.date).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Generate beverages HTML
+                let beveragesHTML = '';
+                if (bookingData.beverage === 'yes' && Object.keys(beverages).length > 0) {
+                    beveragesHTML = `
+                        <div class="bg-orange-50 rounded-xl p-4">
+                            <h5 class="font-semibold text-gray-900 mb-3 flex items-center">
+                                <span class="text-orange-500 mr-2">🍽️</span>
+                                Refreshments
+                            </h5>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                ${Object.entries(beverages).map(([item, qty]) => `
+                                    <div class="flex justify-between">
+                                        <span>${qty}x ${item.charAt(0).toUpperCase() + item.slice(1)}</span>
+                                        <span class="font-medium">₹${qty * beveragePrices[item]}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="border-t border-orange-200 mt-2 pt-2 flex justify-between font-semibold">
+                                <span>Refreshments Total:</span>
+                                <span class="text-orange-600">₹${beverageTotal}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    beveragesHTML = `
+                        <div class="bg-gray-50 rounded-xl p-4 text-center text-gray-500">
+                            <span class="text-2xl mb-2 block">🚫</span>
+                            No refreshments selected
+                        </div>
+                    `;
+                }
+
+                // Generate preview HTML
+                previewContent.innerHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Venue Details -->
+                        <div class="space-y-6">
+                            <div class="bg-blue-50 rounded-xl p-6">
+                                <h4 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                                    <span class="text-blue-500 mr-2">🏢</span>
+                                    Venue Details
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Date:</span>
+                                        <span class="font-medium">${formattedDate}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Time:</span>
+                                        <span class="font-medium">${bookingData.checkInTime} - ${bookingData.checkOutTime} (${hours} hours)</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Category:</span>
+                                        <span class="font-medium capitalize">${bookingData.venueCategory}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Room:</span>
+                                        <span class="font-medium">${bookingData.roomId}</span>
+                                    </div>
+                                    <div class="border-t border-blue-200 pt-3 flex justify-between font-semibold text-lg">
+                                        <span>Venue Cost:</span>
+                                        <span class="text-blue-600">₹${hallCost}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            ${beveragesHTML}
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="space-y-6">
+                            <div class="bg-green-50 rounded-xl p-6">
+                                <h4 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                                    <span class="text-green-500 mr-2">👤</span>
+                                    Personal Information
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Name:</span>
+                                        <span class="font-medium">${bookingData.firstName} ${bookingData.lastName}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Email:</span>
+                                        <span class="font-medium">${bookingData.email}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Mobile:</span>
+                                        <span class="font-medium">${bookingData.mobileNumber}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-purple-50 rounded-xl p-6">
+                                <h5 class="font-semibold text-gray-900 mb-3 flex items-center">
+                                    <span class="text-purple-500 mr-2">📍</span>
+                                    Address
+                                </h5>
+                                <p class="text-gray-700">${bookingData.address}</p>
+                            </div>
+
+                            <div class="bg-yellow-50 rounded-xl p-6">
+                                <h5 class="font-semibold text-gray-900 mb-3 flex items-center">
+                                    <span class="text-yellow-500 mr-2">🎯</span>
+                                    Purpose
+                                </h5>
+                                <p class="text-gray-700">${bookingData.purpose}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Cost -->
+                    <div class="mt-8 bg-gradient-to-r from-primary-blue to-dark-blue rounded-xl p-6 text-white text-center">
+                        <h4 class="text-2xl font-bold mb-2">Total Booking Cost</h4>
+                        <p class="text-4xl font-bold">₹${totalCost}</p>
+                        <p class="mt-2 opacity-90">All inclusive</p>
+                    </div>
+                `;
+
+                // Animate transition to preview
+                contactSection.style.transform = 'translateX(-50px)';
+                contactSection.style.opacity = '0';
+
+                setTimeout(() => {
+                    contactSection.classList.add('hidden');
+                    previewSection.classList.remove('hidden');
+                    previewSection.style.transform = 'translateX(50px)';
+                    previewSection.style.opacity = '0';
+
+                    setTimeout(() => {
+                        previewSection.style.transform = 'translateX(0)';
+                        previewSection.style.opacity = '1';
+                    }, 50);
+
+                    updateSteps(3);
+                }, 300);
+
+                showNotification('Please review your booking details', 'success');
+            }
+
+            // Back to edit button
+            document.getElementById('back-to-edit').addEventListener('click', () => {
+                const previewSection = document.getElementById('preview-section');
+                const contactSection = document.getElementById('contact-section');
+
+                previewSection.style.transform = 'translateX(50px)';
+                previewSection.style.opacity = '0';
+
+                setTimeout(() => {
+                    previewSection.classList.add('hidden');
+                    contactSection.classList.remove('hidden');
+                    contactSection.style.transform = 'translateX(-50px)';
+                    contactSection.style.opacity = '0';
+
+                    setTimeout(() => {
+                        contactSection.style.transform = 'translateX(0)';
+                        contactSection.style.opacity = '1';
+                    }, 50);
+
+                    updateSteps(2);
+                }, 300);
+            });
+
+            // Proceed to payment button
+            document.getElementById('proceed-to-payment').addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                const userId = localStorage.getItem('userId');
+                if (!userId) {
+                    showNotification('Please log in to book a venue.', 'error');
+                    setTimeout(() => {
+                        window.location.href = '../login.html';
+                    }, 2000);
+                    return;
+                }
+
+                // Show loading state
+                const paymentBtn = document.getElementById('proceed-to-payment');
+                const originalText = paymentBtn.innerHTML;
+                paymentBtn.innerHTML = `
+                    <span class="flex items-center justify-center">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                    </span>
+                `;
+                paymentBtn.disabled = true;
+
+                const bookingDate = document.getElementById('booking-date').value;
+                const checkInTime = document.getElementById('check-in-time').value;
+                const checkOutTime = document.getElementById('check-out-time').value;
+                const venueCategory = document.getElementById('venue-category').value;
+                const roomId = document.getElementById('select-room').value;
+                const firstName = document.getElementById('first-name').value;
+                const lastName = document.getElementById('last-name').value;
+                const email = document.getElementById('email').value;
+                const mobileNumber = document.getElementById('mobile-number').value;
+                const address = document.getElementById('address').value;
+                const purpose = document.getElementById('purpose').value;
+                const beverage = document.querySelector('input[name="beverage"]:checked').value;
+
+                const beverages = {};
+                Object.keys(beveragePrices).forEach(item => {
+                    const qty = parseInt(document.querySelector(`[data-item="${item}"].quantity`)?.textContent || '0');
+                    if (qty > 0) {
+                        beverages[item] = qty;
+                    }
+                });
+
+                const today = new Date();
+                let day = today.getDate();
+                let month = today.getMonth() + 1;
+                let year = today.getFullYear();
+
+                day = day < 10 ? '0' + day : day;
+                month = month < 10 ? '0' + month : month;
+
+                const BookedOn = `${day}/${month}/${year}`;
+
+                const totalCost = calculateTotalCost(venueCategory, checkInTime, checkOutTime);
+
+                const bookingData = {
+                    userId: parseInt(userId),
+                    date: bookingDate,
+                    checkInTime,
+                    checkOutTime,
+                    venueCategory,
+                    roomId,
+                    firstName,
+                    lastName,
+                    email,
+                    mobileNumber,
+                    address,
+                    purpose,
+                    beverage,
+                    beverages,
+                    BookedOn,
+                    totalCost,
+                    status: 'booked'
+                };
+
+                try {
+                    const response = await fetch(`${API_URL}/bookings`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(bookingData)
+                    });
+
+                    if (response.ok) {
+                        updateSteps(4);
+                        showConfirmation(bookingData);
+                    } else {
+                        showNotification('Error creating booking. Please try again.', 'error');
+                        paymentBtn.innerHTML = originalText;
+                        paymentBtn.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Error during booking:', error);
+                    showNotification('An error occurred. Please try again later.', 'error');
+                    paymentBtn.innerHTML = originalText;
+                    paymentBtn.disabled = false;
+                }
+            });
+
+            // Function to show confirmation modal
+            function showConfirmation(bookingData) {
+                const modal = document.getElementById('confirmation-modal');
+                const confirmationDetails = document.getElementById('confirmation-details');
+
+                // Format date
+                const formattedDate = new Date(bookingData.date).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Generate beverages list
+                let beveragesList = '';
+                if (bookingData.beverage === 'yes' && Object.keys(bookingData.beverages).length > 0) {
+                    beveragesList = Object.entries(bookingData.beverages).map(([item, qty]) => 
+                        `<div class="flex justify-between"><span>${qty}x ${item.charAt(0).toUpperCase() + item.slice(1)}</span><span>₹${qty * beveragePrices[item]}</span></div>`
+                    ).join('');
+                } else {
+                    beveragesList = '<div class="text-gray-500 text-center">No refreshments</div>';
+                }
+
+                confirmationDetails.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="font-semibold text-gray-600">Booking ID:</span>
+                                <div class="font-mono text-primary-blue">#${Date.now().toString().slice(-6)}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Date:</span>
+                                <div>${formattedDate}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Time:</span>
+                                <div>${bookingData.checkInTime} - ${bookingData.checkOutTime}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Room:</span>
+                                <div>${bookingData.roomId}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Customer:</span>
+                                <div>${bookingData.firstName} ${bookingData.lastName}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Total Cost:</span>
+                                <div class="text-xl font-bold text-green-600">₹${bookingData.totalCost}</div>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <span class="font-semibold text-gray-600 block mb-2">Refreshments:</span>
+                            <div class="space-y-1 text-sm">
+                                ${beveragesList}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                modal.classList.remove('hidden');
+
+                setTimeout(() => {
+                    modal.querySelector('div').style.transform = 'scale(1)';
+                }, 100);
+
+                // Start countdown
+                let countdown = 7;
+                const countdownElement = document.getElementById('countdown');
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        window.location.href = '../MyBookings/mybookings.html';
+                    }
+                }, 1000);
+            }
+
             // Function to show notifications
             function showNotification(message, type = 'info') {
                 const notification = document.createElement('div');
-                notification.className = `fixed top-24 right-6 z-50 p-4 rounded-xl shadow-lg transform translate-x-full transition-all duration-300 ${type === 'success' ? 'bg-green-500 text-white' :
-                        type === 'error' ? 'bg-red-500 text-white' :
-                            'bg-blue-500 text-white'
-                    }`;
+                notification.className = `fixed top-24 right-6 z-50 p-4 rounded-xl shadow-lg transform translate-x-full transition-all duration-300 ${
+                    type === 'success' ? 'bg-green-500 text-white' :
+                    type === 'error' ? 'bg-red-500 text-white' :
+                    'bg-blue-500 text-white'
+                }`;
                 notification.textContent = message;
 
                 document.body.appendChild(notification);
@@ -1208,7 +1689,7 @@
                 }, 3000);
             }
 
-            // Function to calculate and display total cost
+            // Function to calculate total cost
             function calculateTotalCost(venueCategory, checkInTime, checkOutTime) {
                 if (!venueCategory || !checkInTime || !checkOutTime) return 0;
 
@@ -1266,177 +1747,12 @@
                     `;
 
                     totalCostElement.textContent = `₹${totalCost}`;
+                } else {
+                    document.getElementById('cost-summary').classList.add('hidden');
                 }
             }
 
-            // API URL for JSON Server
-            const API_URL = 'http://localhost:3000';
-
-            // Enhanced Payment button submission
-            document.getElementById('payment-btn').addEventListener('click', async (e) => {
-                e.preventDefault();
-
-                const userId = localStorage.getItem('userId');
-                if (!userId) {
-                    showNotification('Please log in to book a venue.', 'error');
-                    setTimeout(() => {
-                        window.location.href = '../login.html';
-                    }, 2000);
-                    return;
-                }
-
-                const requiredFields = ['first-name', 'last-name', 'email', 'mobile-number', 'address', 'purpose', 'terms'];
-                const beverageSelected = document.querySelector('input[name="beverage"]:checked');
-                const isValid = requiredFields.every(field => {
-                    if (field === 'terms') {
-                        return document.getElementById(field).checked;
-                    }
-                    return document.getElementById(field).value.trim() !== '';
-                }) && beverageSelected;
-
-                if (!isValid) {
-                    showNotification('Please fill all required fields, including beverage selection.', 'error');
-                    return;
-                }
-
-                // Show loading state
-                const paymentBtn = document.getElementById('payment-btn');
-                const originalText = paymentBtn.innerHTML;
-                paymentBtn.innerHTML = `
-                    <span class="flex items-center justify-center">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Processing...
-                    </span>
-                `;
-                paymentBtn.disabled = true;
-
-                const bookingDate = document.getElementById('booking-date').value;
-                const checkInTime = document.getElementById('check-in-time').value;
-                const checkOutTime = document.getElementById('check-out-time').value;
-                const venueCategory = document.getElementById('venue-category').value;
-                const roomId = document.getElementById('select-room').value;
-                const firstName = document.getElementById('first-name').value;
-                const lastName = document.getElementById('last-name').value;
-                const email = document.getElementById('email').value;
-                const mobileNumber = document.getElementById('mobile-number').value;
-                const address = document.getElementById('address').value;
-                const purpose = document.getElementById('purpose').value;
-                const beverage = beverageSelected.value;
-
-                const beverages = {};
-                Object.keys(beveragePrices).forEach(item => {
-                    const qty = parseInt(document.querySelector(`[data-item="${item}"].quantity`)?.textContent || '0');
-                    if (qty > 0) {
-                        beverages[item] = qty;
-                    }
-                });
-
-                const today = new Date();
-                let day = today.getDate();
-                let month = today.getMonth() + 1;
-                let year = today.getFullYear();
-
-                day = day < 10 ? '0' + day : day;
-                month = month < 10 ? '0' + month : month;
-
-                const BookedOn = `${day}/${month}/${year}`;
-
-                // console.log(formattedDate);
-
-                const totalCost = calculateTotalCost(venueCategory, checkInTime, checkOutTime);
-
-                const bookingData = {
-                    userId: parseInt(userId),
-                    date: bookingDate,
-                    checkInTime,
-                    checkOutTime,
-                    venueCategory,
-                    roomId,
-                    firstName,
-                    lastName,
-                    email,
-                    mobileNumber,
-                    address,
-                    purpose,
-                    beverage,
-                    beverages,
-                    BookedOn,
-                    totalCost,
-                    status: 'pending'
-                };
-
-                try {
-                    const response = await fetch(`${API_URL}/bookings`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(bookingData)
-                    });
-
-                    if (response.ok) {
-                        updateSteps(3);
-                        showNotification(`Booking created successfully! Total Cost: ₹${totalCost}`, 'success');
-
-                        // Show success animation
-                        const successDiv = document.createElement('div');
-                        successDiv.className = 'fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50';
-                        successDiv.innerHTML = `
-                            <div class="bg-white rounded-3xl p-8 text-center max-w-md mx-4 transform scale-0 transition-all duration-500">
-                                <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Booking Confirmed!</h3>
-                                <p class="text-gray-600 mb-4">Your venue has been successfully booked.</p>
-                                <p class="text-xl font-bold text-primary-blue mb-4">Total: ₹${totalCost}</p>
-                                <button onclick="window.location.href='../MyBookings/mybookings.html'" 
-                                        class="bg-primary-blue text-white px-6 py-3 rounded-full font-medium hover:bg-dark-blue transition-colors">
-                                    View My Bookings
-                                </button>
-                            </div>
-                        `;
-
-                        document.body.appendChild(successDiv);
-
-                        setTimeout(() => {
-                            successDiv.querySelector('div').style.transform = 'scale(1)';
-                        }, 100);
-
-                        setTimeout(() => {
-                            window.location.href = '../MyBookings/mybookings.html';
-                        }, 10000);
-                    } else {
-                        showNotification('Error creating booking. Please try again.', 'error');
-                        paymentBtn.innerHTML = originalText;
-                        paymentBtn.disabled = false;
-                    }
-                } catch (error) {
-                    console.error('Error during booking:', error);
-                    showNotification('An error occurred. Please try again later.', 'error');
-                    paymentBtn.innerHTML = originalText;
-                    paymentBtn.disabled = false;
-                }
-            });
-
-            // Add input validation and real-time feedback
-            document.querySelectorAll('input, select, textarea').forEach(element => {
-                element.addEventListener('input', function () {
-                    if (this.checkValidity()) {
-                        this.classList.remove('border-red-300');
-                        this.classList.add('border-green-300');
-                    } else {
-                        this.classList.remove('border-green-300');
-                        this.classList.add('border-red-300');
-                    }
-                });
-            });
-
-            // Initialize cost summary update
+            // Initialize cost summary update listeners
             ['booking-date', 'check-in-time', 'check-out-time', 'venue-category'].forEach(id => {
                 document.getElementById(id).addEventListener('change', updateCostSummary);
             });

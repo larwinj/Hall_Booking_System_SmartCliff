@@ -6,11 +6,16 @@
                 <h1 class="text-2xl font-bold font-serif">VenueVista</h1>
             </div>
             <nav class="hidden md:flex items-center space-x-6">
-                <a href="../Dashboard/home.html" class="text-gray-700 hover:text-primary-blue border-b-2 border-primary-blue pb-1 font-medium transition-colors duration-300">Home</a>
-                <a href="../Halls/rooms.html" class="text-gray-700 hover:text-primary-blue pb-1 font-medium transition-colors duration-300">Rooms</a>
-                <a href="../MyBookings/mybookings.html" class="text-gray-700 hover:text-primary-blue pb-1 font-medium transition-colors duration-300">My Bookings</a>
+                <a href="../Dashboard/home.html"
+                    class="text-gray-700 hover:text-primary-blue border-b-2 border-primary-blue pb-1 font-medium transition-colors duration-300">Home</a>
+                <a href="../Halls/rooms.html"
+                    class="text-gray-700 hover:text-primary-blue pb-1 font-medium transition-colors duration-300">Rooms</a>
+                <a href="../MyBookings/mybookings.html"
+                    class="text-gray-700 hover:text-primary-blue pb-1 font-medium transition-colors duration-300">My
+                    Bookings</a>
                 <!-- <a href="#" class="text-gray-700 hover:text-primary-blue pb-1 font-medium transition-colors duration-300">Features</a> -->
-                <a href="#" class="text-gray-700 hover:text-primary-blue pb-1 font-medium transition-colors duration-300">Contact</a>
+                <a href="#"
+                    class="text-gray-700 hover:text-primary-blue pb-1 font-medium transition-colors duration-300">Contact</a>
             </nav>
             <div class="flex items-center space-x-4">
                 <a href="../BookingsForm/bookingform.html"
@@ -19,7 +24,8 @@
                 </a>
                 <div class="w-8 h-8 bg-primary-800 rounded-full flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                            clip-rule="evenodd"></path>
                     </svg>
                 </div>
             </div>
@@ -38,29 +44,66 @@
 
 <!-- Mobile Menu Overlay -->
 <div id="mobileMenu" class="md:hidden fixed inset-0 z-40 hidden">
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm"></div>
-    <div class="fixed right-0 top-0 w-64 h-full bg-white/95 backdrop-blur-sm shadow-xl">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-8">
-                <h1 class="text-xl font-bold gradient-text">VenueVista</h1>
-                <button id="closeMobileMenu" class="text-gray-600 hover:text-gray-800">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <nav class="space-y-4">
-                <a href="#" class="block text-gray-700 hover:text-primary-blue font-medium border-l-2 border-primary-blue pl-4">Home</a>
-                <a href="../Halls/rooms.html" class="block text-gray-700 hover:text-primary-blue pl-4 font-medium">Rooms</a>
-                <a href="../MyBookings/mybookings.html" class="block text-gray-700 hover:text-primary-blue pl-4 font-medium">My Bookings</a>
-                <a href="#" class="block text-gray-700 hover:text-primary-blue pl-4 font-medium">Features</a>
-                <a href="#" class="block text-gray-700 hover:text-primary-blue pl-4 font-medium">Contact</a>
-            </nav>
-            <div class="mt-8">
-                <a href="../BookingsForm/bookingform.html" class="block w-full bg-primary-blue text-white px-6 py-3 rounded-full font-medium hover:bg-primary-700 transition-colors duration-300">
-                    Start Booking
-                </a>
+        <!-- Backdrop -->
+        <div id="mobileMenuBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"></div>
+        
+        <!-- Sidebar -->
+        <div id="mobileMenuSidebar" class="absolute right-0 top-0 w-80 max-w-sm h-full bg-white/95 backdrop-blur-sm shadow-2xl">
+            <div class="p-6 h-full overflow-y-auto">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-xl font-bold gradient-text">VenueVista</h1>
+                    <button id="closeMobileMenu" class="text-gray-600 hover:text-gray-800 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Navigation Links -->
+                <nav class="space-y-1 mb-8">
+                    <div>
+                    <a href="#home" class="flex items-center text-primary-blue bg-blue-50 border-l-4 border-primary-blue px-4 py-3 rounded-r-lg font-medium">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        <p>Home</p>
+                    </a>
+                    <a href="#rooms" class="flex items-center text-gray-700 hover:text-primary-blue hover:bg-gray-50 px-4 py-3 rounded-lg font-medium transition-all duration-200">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        Rooms
+                    </a>
+                    <a href="#bookings" class="flex items-center text-gray-700 hover:text-primary-blue hover:bg-gray-50 px-4 py-3 rounded-lg font-medium transition-all duration-200">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        My Bookings
+                    </a>
+                    <a href="#contact" class="flex items-center text-gray-700 hover:text-primary-blue hover:bg-gray-50 px-4 py-3 rounded-lg font-medium transition-all duration-200">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        Contact
+                    </a>
+                    </div>
+                </nav>
+                
+                <!-- Mobile CTA Button -->
+                <div class="space-y-4">
+                    <a href="#book" class="block w-full bg-primary-blue text-white px-6 py-3 rounded-full font-medium hover:bg-primary-700 transition-all duration-300 text-center hover:scale-105">
+                        Start Booking
+                    </a>
+                    <div class="flex items-center justify-center space-x-2 text-gray-600">
+                        <div class="w-8 h-8 bg-primary-800 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-sm">Account</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
