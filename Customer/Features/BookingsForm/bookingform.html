@@ -266,7 +266,7 @@
 
         <!-- Progress Steps -->
         <div class="flex justify-center mb-12">
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 overflow-x-auto">
                 <div class="flex items-center">
                     <div class="step-indicator active" id="step1">1</div>
                     <span class="ml-2 text-sm font-medium text-gray-700">Venue Details</span>
@@ -1080,7 +1080,7 @@
                     // Set current as selected
                     button.textContent = '✓ Selected';
                     button.classList.remove('hover:shadow-lg', 'cursor-pointer');
-                    button.classList.add('bg-green-600', 'cursor-default');
+                    button.classList.add('bg-green-900', 'cursor-default');
                     card.classList.add('border-green-400');
                     document.getElementById('select-room').value = roomId;
 

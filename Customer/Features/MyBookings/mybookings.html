@@ -288,7 +288,7 @@
     </style>
 </head>
 
-<body class="font-sans bg-gray-100">
+<body class="bg-blue-100 font-sans bg-gray-100">
     <!-- Navigation -->
     <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-40 w-[100vw]">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -296,24 +296,44 @@
                 <div class="flex items-center">
                     <h1 class="text-2xl font-bold text-black">VenueVista</h1>
                 </div>
-                
+
                 <div class="hidden md:flex space-x-8">
                     <a href="../Dashboard/home.html" class="text-gray-700 hover:text-primary-blue pb-1">Home</a>
-                    <a href="#" class="border-b-2 border-primary-blue text-primary-blue text-gray-700 hover:text-primary-blue pb-1">My Bookings</a>
+                    <a href="#"
+                        class="border-b-2 border-primary-blue text-primary-blue text-gray-700 hover:text-primary-blue pb-1">My
+                        Bookings</a>
                     <a href="../Halls/rooms.html" class="text-gray-700 hover:text-primary-blue pb-1">Rooms</a>
                     <a href="#" class="text-gray-700 hover:text-primary-blue pb-1">contact</a>
                 </div>
 
+
+                <div class="w-8 h-8 bg-primary-800 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="flex items-center space-y-4">
+                    <a href="../BookingsForm/bookingform.html"
+                        class="bg-primary-blue text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-primary-700 transition-colors duration-300">
+                        Start Booking
+                    </a>
+                </div>
+
+
                 <div class="flex items-center space-x-4">
-                    <button id="profileBtn" class="bg-primary-blue text-white p-2 rounded-full hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
+                    <button id="profileBtn"
+                        class="bg-primary-blue text-white p-2 rounded-full hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                     </button>
 
                     <button id="mobileMenuBtn" class="md:hidden bg-primary-blue text-white p-2 rounded-md">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
@@ -322,7 +342,8 @@
 
         <div id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="../Dashboard/home.html" class="border-l-2 border-primary-blue font-medium block px-3 py-2 text-primary-blue">Home</a>
+                <a href="../Dashboard/home.html"
+                    class="border-l-2 border-primary-blue font-medium block px-3 py-2 text-primary-blue">Home</a>
                 <a href="#" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">My Bookings</a>
                 <a href="../Halls/rooms.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Rooms</a>
                 <a href="#" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Contact</a>
@@ -331,7 +352,7 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="pt-20 pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl sm:text-4xl font-bold text-gray-800 mb-6 animate-fade-in">My Bookings</h2>
 
         <!-- Filter -->
@@ -350,14 +371,17 @@
             <table class="w-full">
                 <thead class="sticky-header">
                     <tr>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Category Type</th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Room Number</th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Date</th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Check In</th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Check Out</th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Status</th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Booked Date</th>
-                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-xs sm:text-sm">Actions</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-sm sm:text-base">Category Type
+                        </th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-sm sm:text-base">Room Number
+                        </th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-sm sm:text-base">Date</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-sm sm:text-base">Check In</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-sm sm:text-base">Check Out</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-sm sm:text-base">Status</th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-sm sm:text-base">Booked Date
+                        </th>
+                        <th class="p-2 sm:p-4 text-left text-dark-blue font-semibold text-sm sm:text-base">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="bookings-table">
@@ -387,30 +411,32 @@
                 <div class="bg-blue-500 -mx-8 -mt-8 px-8 py-4 mb-6">
                     <h3 class="text-xl font-bold text-white flex items-center">
                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
                         </svg>
                         Reschedule Booking
                     </h3>
                     <p class="text-blue-100 text-sm mt-2">Select a new date and time for your booking</p>
                 </div>
-                
+
                 <form id="reschedule-form" class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">New Date</label>
-                            <input type="date" id="new-date" required 
+                            <input type="date" id="new-date" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Check-in Time</label>
-                            <input type="time" id="new-checkin" required 
+                            <input type="time" id="new-checkin" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         </div>
                     </div>
-                    
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Check-out Time</label>
-                        <input type="time" id="new-checkout" required 
+                        <input type="time" id="new-checkout" required
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
 
@@ -419,15 +445,15 @@
                     </div>
 
                     <div class="flex justify-end space-x-3 pt-4">
-                        <button type="button" onclick="closeRescheduleModal()" 
+                        <button type="button" onclick="closeRescheduleModal()"
                             class="px-4 py-2 text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors">
                             Cancel
                         </button>
-                        <button type="button" onclick="checkAvailability()" 
+                        <button type="button" onclick="checkAvailability()"
                             class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
                             Check Availability
                         </button>
-                        <button type="submit" id="confirm-reschedule" 
+                        <button type="submit" id="confirm-reschedule"
                             class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors hidden">
                             Confirm Reschedule
                         </button>
@@ -499,23 +525,41 @@
                 const updatedBadge = booking.updated ? '<span class="updated-badge ml-2">Rescheduled</span>' : '';
 
                 return `
-                    <tr class="border-t hover:bg-gray-50 transition-colors table-row" data-status="${booking.status}" data-booking-id="${booking.id}">
-                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${categoryName}${updatedBadge}</td>
-                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${booking.roomId || '-'}</td>
-                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${formattedDate}</td>
-                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${booking.checkInTime || '-'}</td>
-                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${booking.checkOutTime || '-'}</td>
-                        <td class="p-2 sm:p-4 ${statusClass} font-semibold text-xs sm:text-sm">${statusText}</td>
-                        <td class="p-2 sm:p-4 text-gray-600 text-xs sm:text-sm">${formattedBookedDate}</td>
+                    <tr class="border-t hover:bg-gray-50 transition-colors table-row" 
+                        data-status="${booking.status}" data-booking-id="${booking.id}">
+                        <td class="p-2 sm:p-4 text-gray-600 text-sm sm:text-base">
+                            ${categoryName}${updatedBadge}
+                        </td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-sm sm:text-base">
+                            ${booking.roomId || '-'}
+                        </td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-sm sm:text-base">
+                            ${formattedDate}
+                        </td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-sm sm:text-base">
+                            ${booking.checkInTime || '-'}
+                        </td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-sm sm:text-base">
+                            ${booking.checkOutTime || '-'}
+                        </td>
+                        <td class="p-2 sm:p-4 ${statusClass} font-semibold text-sm sm:text-base">
+                            ${statusText}
+                        </td>
+                        <td class="p-2 sm:p-4 text-gray-600 text-sm sm:text-base">
+                            ${formattedBookedDate}
+                        </td>
                         <td class="p-2 sm:p-4 relative">
-                            <button class="actions-btn text-gray-500 hover:text-gray-700 text-sm" data-booking-id="${booking.id}" aria-haspopup="true" aria-expanded="false">
-                                <svg class="w-5 h-5" fill="none" stroke="#000000" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01"></path>
+                            <button class="actions-btn text-gray-500 hover:text-gray-700 text-base" 
+                                    data-booking-id="${booking.id}" aria-haspopup="true" aria-expanded="false">
+                                <svg class="w-6 h-6" fill="none" stroke="#000000" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        d="M12 5v.01M12 12v.01M12 19v.01"></path>
                                 </svg>
                             </button>
                             <div class="actions-dropdown" id="dropdown-${booking.id}" aria-hidden="true"></div>
                         </td>
                     </tr>
+
                 `;
             }).join('');
         }
@@ -662,17 +706,17 @@
 
         function openRescheduleModal(booking) {
             currentBookingForReschedule = booking;
-            
+
             // Pre-fill with current booking details
             document.getElementById('new-date').value = booking.date;
             document.getElementById('new-checkin').value = booking.checkInTime;
             document.getElementById('new-checkout').value = booking.checkOutTime;
-            
+
             // Reset availability check
             const availabilityDiv = document.getElementById('availability-check');
             availabilityDiv.classList.add('hidden');
             document.getElementById('confirm-reschedule').classList.add('hidden');
-            
+
             const modal = document.getElementById('reschedule-modal');
             modal.classList.remove('hidden');
             requestAnimationFrame(() => modal.classList.add('show'));
@@ -712,7 +756,7 @@
                 const hasConflict = allBookings.some(booking => {
                     if (booking.id === currentBookingForReschedule.id) return false; // Skip current booking
                     if (booking.status === 'cancelled') return false; // Skip cancelled bookings
-                    
+
                     return (
                         booking.date === newDate &&
                         booking.venueCategory === currentBookingForReschedule.venueCategory &&
