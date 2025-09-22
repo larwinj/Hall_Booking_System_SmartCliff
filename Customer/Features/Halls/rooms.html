@@ -4,162 +4,453 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rooms - Hall Booking</title>
+    <title>Rooms - Hall Booking - VenueVista</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        },
+                        secondary: '#f1f5f9',
+                        accent: '#facc15',
                         'light-blue': '#e0f2fe',
                         'primary-blue': '#0284c7',
                         'dark-blue': '#0c4a6e'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'fadeInUp': 'fadeInUp 1s ease-out',
+                        'modalSlide': 'modalSlide 0.3s ease-out',
+                        'fadeInModal': 'fadeInModal 0.3s ease-out'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']
                     }
                 }
             }
         }
     </script>
+    <style>
+        /* Navbar Styles */
+        nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .text-primary-blue {
+            color: #0284c7;
+        }
+
+        nav .hover\:text-primary-blue:hover {
+            color: #0284c7;
+        }
+
+        nav .bg-primary-blue {
+            background-color: #0284c7;
+        }
+
+        nav .hover\:bg-primary-700:hover {
+            background-color: #1d4ed8;
+        }
+
+        nav .border-primary-blue {
+            border-color: #0284c7;
+        }
+
+        nav .focus\:ring-primary-blue:focus {
+            --tw-ring-color: #0284c7;
+        }
+
+        #mobileMenu {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* General Styles */
+        body {
+            background-color: #f8fafc;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-content {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .page-content.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .amenity-icon {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        .room-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: #374151;
+        }
+
+        .input-focus:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 639px) {
+            .hero-content {
+                padding-top: 5rem;
+                padding-bottom: 3rem;
+            }
+            .feature-icon {
+                width: 3.5rem;
+                height: 3.5rem;
+            }
+            .feature-icon svg {
+                width: 1.75rem;
+                height: 1.75rem;
+            }
+            .hall-details-container {
+                padding: 1.5rem;
+            }
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .hero-content {
+                padding-top: 6rem;
+                padding-bottom: 4rem;
+            }
+            .hall-details-container {
+                padding: 2rem;
+            }
+            .modal-content {
+                max-width: 550px;
+            }
+        }
+
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-400 { animation-delay: 0.4s; }
+        .animation-delay-600 { animation-delay: 0.6s; }
+    </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen font-sans">
+<body class="min-h-screen font-sans overflow-x-hidden">
     <!-- Navbar -->
-    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-40 w-[100vw]">
+    <nav class="fixed top-0 left-0 right-0 z-50 w-full">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-black">VenueVista</h1>
+                    <h1 class="text-2xl font-bold text-primary-blue">VenueVista</h1>
                 </div>
-                
-                <!-- Desktop Navigation -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="../Dashboard/home.html" class="text-gray-700 hover:text-primary-blue pb-1">Home</a>
-                    <a href="../MyBookings/mybookings.html" class="text-gray-700 hover:text-primary-blue pb-1">My Bookings</a>
-                    <a href="#" class="border-b-2 border-primary-blue text-primary-blue text-gray-700 hover:text-primary-blue pb-1">Rooms</a>
-                    <a href="#" class="text-gray-700 hover:text-primary-blue pb-1">contact</a>
+                    <a href="../Dashboard/home.html" class="text-gray-600 hover:text-primary-blue py-2 transition-colors duration-300">Home</a>
+                    <a href="../MyBookings/mybookings.html" class="text-gray-600 hover:text-primary-blue py-2 transition-colors duration-300">My Bookings</a>
+                    <a href="#" class="border-b-2 border-primary-blue text-primary-blue font-medium py-2 hover:text-primary-700 transition-colors duration-300">Rooms</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue py-2 transition-colors duration-300">Contact</a>
                 </div>
-
-                <!-- Profile Icon -->
                 <div class="flex items-center space-x-4">
-                    <button id="profileBtn" class="bg-primary-blue text-white p-2 rounded-full hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="../BookingsForm/bookingform.html"
+                        class="bg-primary-blue text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-primary-700 transition-all duration-300 hover:scale-105 shadow-md">
+                        Start Booking
+                    </a>
+                    <button id="profileBtn" class="bg-primary-blue text-white p-2.5 rounded-full hover:bg-primary-700 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                     </button>
-
-                    <!-- Mobile Menu Button -->
-                    <button id="mobileMenuBtn" class="md:hidden bg-primary-blue text-white p-2 rounded-md">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="mobileMenuBtn" class="md:hidden bg-primary-blue text-white p-2.5 rounded-md hover:bg-primary-700 transition-all duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="../Dashboard/home.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Home</a>
-                <a href="../MyBookings/mybookings.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">My Bookings</a>
-                <a href="#" class="block border-l-2 border-primary-blue px-3 py-2 text-gray-700 hover:text-primary-blue">Rooms</a>
-                <a href="#" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Contact</a>
+        <div id="mobileMenu" class="md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200 hidden transition-all duration-300">
+            <div class="px-4 pt-2 pb-3 space-y-2">
+                <a href="../Dashboard/home.html" class="block px-3 py-2 text-gray-600 hover:text-primary-blue transition-colors duration-300">Home</a>
+                <a href="../MyBookings/mybookings.html" class="block px-3 py-2 text-gray-600 hover:text-primary-blue transition-colors duration-300">My Bookings</a>
+                <a href="#" class="block px-3 py-2 text-primary-blue border-l-2 border-primary-blue font-medium">Rooms</a>
+                <a href="#" class="block px-3 py-2 text-gray-600 hover:text-primary-blue transition-colors duration-300">Contact</a>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal-overlay hidden">
+        <div class="modal-content rounded-2xl shadow-xl w-full max-w-md animate-modalSlide">
+            <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                <h2 class="text-2xl font-bold text-gray-800">Profile Settings</h2>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 rounded-full p-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="profileForm" class="space-y-4">
+                    <div class="flex justify-center mb-6">
+                        <div class="w-20 h-20 bg-primary-blue rounded-full flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <input type="text" id="firstName" name="firstName" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus" 
+                            required>
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus" 
+                            required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="email" name="email" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus" 
+                            required>
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus" 
+                            required>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus pr-10" 
+                                required>
+                            <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div id="loadingSpinner" class="hidden flex justify-center items-center py-4">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-blue"></div>
+                </div>
+                <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mt-4">
+                    <p class="text-sm"></p>
+                </div>
+                <div id="successMessage" class="hidden bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mt-4">
+                    <p class="text-sm">Profile updated successfully!</p>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 p-6 border-t border-gray-200">
+                <button id="cancelBtn" type="button" 
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200">
+                    Cancel
+                </button>
+                <button id="saveBtn" type="button" 
+                    class="px-6 py-2 bg-primary-blue text-white rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Main Content Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
         <!-- Page 1: Rooms Overview -->
-        <div id="roomsOverview" class="page-content">
-            <div class="mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                    From Small Meets to Grand<br>
-                    Events – We've Got You Covered
+        <div id="roomsOverview" class="page-content animate-fadeInUp">
+            <div class="mb-12 text-center">
+                <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-4">
+                    Find the Perfect Hall for <span class="gradient-text">Your Event</span>
                 </h2>
-                <div class="w-16 h-1 bg-gray-800 rounded"></div>
+                <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+                    Choose from our range of premium meeting halls, tailored for every occasion.
+                </p>
+                <div class="w-24 h-1 bg-primary-blue rounded mx-auto mt-4"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Compact Hall -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+                <div class="room-card rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-xl animate-fadeInUp animation-delay-200"
                     onclick="showHallDetails('compact')">
                     <div class="h-64 relative overflow-hidden group">
-                        <img src="../../Assests/compactRoom.png" alt="Compact Hall"
+                        <img src="https://media.istockphoto.com/id/1077431262/photo/small-conference-room-with-whiteboard-on-blue-wall.jpg?s=612x612&w=0&k=20&c=SXlqI9JIh1UOyg3JcvbwsmrAHZRFwKLOThdSNvWoo-I=" alt="Compact Hall"
                             class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Compact Hall</h3>
-                        <p class="text-gray-600">Upto 10-20 members</p>
+                        <p class="text-gray-600 text-sm">Up to 10-20 members</p>
+                        <p class="text-primary-blue font-semibold mt-2">₹1500/hr</p>
                     </div>
                 </div>
 
                 <!-- Classic Hall -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+                <div class="room-card rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-xl animate-fadeInUp animation-delay-400"
                     onclick="showHallDetails('classic')">
                     <div class="h-64 relative overflow-hidden group">
-                        <img src="../../Assests/classicHall.png" alt="Classic Hall"
+                        <img src="https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE=" alt="Classic Hall"
                             class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Classic Hall</h3>
-                        <p class="text-gray-600">Upto 20-50 members</p>
+                        <p class="text-gray-600 text-sm">Up to 20-50 members</p>
+                        <p class="text-primary-blue font-semibold mt-2">₹2500/hr</p>
                     </div>
                 </div>
 
                 <!-- Grand Hall -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition duration-500 hover:scale-105 hover:shadow-2xl"
+                <div class="room-card rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-xl animate-fadeInUp animation-delay-600"
                     onclick="showHallDetails('grand')">
                     <div class="h-64 relative overflow-hidden group">
-                        <img src="../../Assests/GrandHall.png" alt="Grand Hall"
+                        <img src="https://www.bwpluswandagrand.com/wp-content/uploads/meetings-slide02-1.jpg" alt="Grand Hall"
                             class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Grand Hall</h3>
-                        <p class="text-gray-600">Upto 50-80 members</p>
+                        <p class="text-gray-600 text-sm">Up to 50-80 members</p>
+                        <p class="text-primary-blue font-semibold mt-2">₹4000/hr</p>
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- Page 2: Hall Details -->
         <div id="hallDetails" class="page-content hidden">
-            <div class="bg-light-blue rounded-lg p-8">
+            <div class="hall-details-container bg-white/95 backdrop-blur-lg rounded-xl p-8 shadow-lg">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Left Side - Hall Info -->
                     <div>
-                        <h2 id="hallTitle" class="text-3xl font-bold text-gray-800 mb-2">Compact Hall</h2>
-                        <p id="hallCapacity" class="text-gray-600 mb-6">Upto 10-20 members</p>
+                        <h2 id="hallTitle" class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">Compact Hall</h2>
+                        <p id="hallCapacity" class="text-gray-600 mb-6">Up to 10-20 members</p>
 
                         <div class="mb-8">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Amenities :</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="amenitiesList">
-                                <!-- Amenities will be populated by JavaScript -->
-                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Amenities</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="amenitiesList"></div>
                         </div>
 
                         <div class="mb-6">
-                            <p id="costInfo" class="text-lg font-semibold text-gray-800">Cost per hr : ₹1500</p>
+                            <p id="costInfo" class="text-lg font-semibold text-primary-blue">Cost per hr: ₹1500</p>
                         </div>
 
-                        <p class="text-gray-600  text-sm">
-                            Parking Facilities will be provided according to room booked.
+                        <p class="text-gray-600 text-sm">
+                            Parking facilities provided based on room booked.
                         </p>
                     </div>
 
                     <!-- Right Side - Room Grid -->
                     <div>
-                        <div class="grid grid-cols-2 gap-4" id="roomsGrid">
-                            <!-- Rooms will be populated by JavaScript -->
-                        </div>
+                        <div class="grid grid-cols-2 gap-4" id="roomsGrid"></div>
                     </div>
                 </div>
 
                 <!-- Back Button -->
                 <div class="mt-8">
                     <button onclick="showPage('rooms')"
-                        class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                        class="bg-primary-blue text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-all duration-300 hover:scale-105 shadow-md">
                         ← Back to Rooms
                     </button>
                 </div>
@@ -167,14 +458,241 @@
         </div>
     </div>
 
-    <!-- Rest of your HTML remains unchanged -->
-
     <script>
+        const API_URL = 'http://localhost:3000';
+
+        class ProfileManager {
+            constructor() {
+                this.apiUrl = `${API_URL}/users`;
+                this.currentUserId = localStorage.getItem('userId');
+                this.currentUser = null;
+
+                this.initializeElements();
+                this.setupEventListeners();
+                if (this.currentUserId) {
+                    this.loadCurrentUser();
+                }
+            }
+
+            initializeElements() {
+                this.profileBtn = document.getElementById('profileBtn');
+                this.modal = document.getElementById('profileModal');
+                this.closeModalBtn = document.getElementById('closeModalBtn');
+                this.cancelBtn = document.getElementById('cancelBtn');
+                this.saveBtn = document.getElementById('saveBtn');
+                this.profileForm = document.getElementById('profileForm');
+                this.loadingSpinner = document.getElementById('loadingSpinner');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.successMessage = document.getElementById('successMessage');
+                this.togglePasswordBtn = document.getElementById('togglePassword');
+                this.passwordInput = document.getElementById('password');
+                this.eyeIcon = document.getElementById('eyeIcon');
+                this.inputs = {
+                    firstName: document.getElementById('firstName'),
+                    lastName: document.getElementById('lastName'),
+                    email: document.getElementById('email'),
+                    phone: document.getElementById('phone'),
+                    password: document.getElementById('password')
+                };
+            }
+
+            setupEventListeners() {
+                // Debounce to prevent rapid clicks
+                let openModalTimeout;
+                this.profileBtn.addEventListener('click', () => {
+                    clearTimeout(openModalTimeout);
+                    openModalTimeout = setTimeout(() => this.openModal(), 100);
+                });
+
+                this.closeModalBtn.addEventListener('click', () => this.closeModal());
+                this.cancelBtn.addEventListener('click', () => this.closeModal());
+                this.modal.addEventListener('click', (e) => {
+                    if (e.target === this.modal) this.closeModal();
+                });
+                this.saveBtn.addEventListener('click', () => this.saveChanges());
+                this.togglePasswordBtn.addEventListener('click', () => this.togglePassword());
+                Object.values(this.inputs).forEach(input => {
+                    input.addEventListener('input', () => this.validateForm());
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
+                        this.closeModal();
+                    }
+                });
+            }
+
+            async loadCurrentUser() {
+                if (!this.currentUserId) {
+                    this.showError('Please log in to view your profile.');
+                    setTimeout(() => {
+                        window.location.href = '../login.html';
+                    }, 2000);
+                    return;
+                }
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+                    const response = await fetch(`${this.apiUrl}/${this.currentUserId}`, {
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    if (!response.ok) {
+                        throw new Error('User not found');
+                    }
+                    this.currentUser = await response.json();
+                    this.populateForm();
+                } catch (error) {
+                    console.error('Error loading user:', error);
+                    this.showError('Failed to load user data. Please try again.');
+                }
+            }
+
+            openModal() {
+                if (!this.currentUserId) {
+                    this.showError('Please log in to view your profile.');
+                    setTimeout(() => {
+                        window.location.href = '../login.html';
+                    }, 2000);
+                    return;
+                }
+                this.modal.classList.remove('hidden');
+                requestAnimationFrame(() => this.modal.classList.add('show'));
+                document.body.style.overflow = 'hidden';
+                this.populateForm();
+                this.hideMessages();
+                this.inputs.firstName.focus();
+            }
+
+            closeModal() {
+                this.modal.classList.remove('show');
+                setTimeout(() => {
+                    this.modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                    this.resetForm();
+                    this.hideMessages();
+                }, 300);
+            }
+
+            populateForm() {
+                if (this.currentUser) {
+                    this.inputs.firstName.value = this.currentUser.firstName || '';
+                    this.inputs.lastName.value = this.currentUser.lastName || '';
+                    this.inputs.email.value = this.currentUser.email || '';
+                    this.inputs.phone.value = this.currentUser.phone || '';
+                    this.inputs.password.value = this.currentUser.password || '';
+                    this.validateForm();
+                }
+            }
+
+            resetForm() {
+                this.profileForm.reset();
+                this.validateForm();
+            }
+
+            validateForm() {
+                const isValid = Object.values(this.inputs).every(input => {
+                    return input.value.trim() !== '' && input.checkValidity();
+                });
+                this.saveBtn.disabled = !isValid;
+                return isValid;
+            }
+
+            async saveChanges() {
+                if (!this.validateForm()) {
+                    this.showError('Please fill in all required fields correctly.');
+                    return;
+                }
+
+                this.showLoading(true);
+                this.hideMessages();
+
+                try {
+                    const updatedUser = {
+                        firstName: this.inputs.firstName.value.trim(),
+                        lastName: this.inputs.lastName.value.trim(),
+                        email: this.inputs.email.value.trim(),
+                        phone: this.inputs.phone.value.trim(),
+                        password: this.inputs.password.value
+                    };
+
+                    if (!this.isValidEmail(updatedUser.email)) {
+                        throw new Error('Please enter a valid email address.');
+                    }
+
+                    if (!this.isValidPhone(updatedUser.phone)) {
+                        throw new Error('Please enter a valid phone number.');
+                    }
+
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+                    const response = await fetch(`${this.apiUrl}/${this.currentUserId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updatedUser),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+
+                    if (response.ok) {
+                        this.currentUser = await response.json();
+                        this.showSuccess();
+                        setTimeout(() => this.closeModal(), 2000);
+                    } else {
+                        throw new Error('Failed to update profile. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error saving profile:', error);
+                    this.showError(error.message || 'An error occurred. Please try again.');
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            togglePassword() {
+                const isPassword = this.passwordInput.type === 'password';
+                this.passwordInput.type = isPassword ? 'text' : 'password';
+                this.eyeIcon.innerHTML = isPassword
+                    ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>`
+                    : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
+            }
+
+            isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            isValidPhone(phone) {
+                const phoneRegex = /^\d{10}$/;
+                return phoneRegex.test(phone.replace(/\D/g, ''));
+            }
+
+            showLoading(show) {
+                this.loadingSpinner.classList.toggle('hidden', !show);
+                this.saveBtn.disabled = show || !this.validateForm();
+            }
+
+            showError(message) {
+                this.errorMessage.querySelector('p').textContent = message;
+                this.errorMessage.classList.remove('hidden');
+                this.successMessage.classList.add('hidden');
+            }
+
+            showSuccess() {
+                this.successMessage.classList.remove('hidden');
+                this.errorMessage.classList.add('hidden');
+            }
+
+            hideMessages() {
+                this.errorMessage.classList.add('hidden');
+                this.successMessage.classList.add('hidden');
+            }
+        }
+
         // Hall data
         const hallData = {
             compact: {
                 title: 'Compact Hall',
-                capacity: 'Upto 10-20 members',
+                capacity: 'Up to 10-20 members',
                 cost: '₹1500',
                 amenities: [
                     { icon: '📶', name: 'High Speed WiFi' },
@@ -186,13 +704,13 @@
                 rooms: [
                     { id: '#001', image: 'https://media.istockphoto.com/id/1077431262/photo/small-conference-room-with-whiteboard-on-blue-wall.jpg?s=612x612&w=0&k=20&c=SXlqI9JIh1UOyg3JcvbwsmrAHZRFwKLOThdSNvWoo-I=' },
                     { id: '#002', image: 'https://media.istockphoto.com/id/158587251/photo/multi-function-room-garden.jpg?s=612x612&w=0&k=20&c=V4LqcXmhAmY6crAAyjrQaOM05iz9Yt14Ie5YkaMkc7c=' },
-                    { id: '#003', image: 'https://media.istockphoto.com/id/1414903724/photo/conference-round-table-and-chairs.jpg?s=612x612&w=0&k=20&c=07g8JfGsos8eCHwb_zvV2_aYOnHcxSDsek0_tjIsLyY=' }, // Placeholder: Replace with actual path
-                    { id: '#004', image: '../../Assests/Compact-rooms/compact-room-3.png' }  // Placeholder: Replace with actual path
+                    { id: '#003', image: 'https://media.istockphoto.com/id/1414903724/photo/conference-round-table-and-chairs.jpg?s=612x612&w=0&k=20&c=07g8JfGsos8eCHwb_zvV2_aYOnHcxSDsek0_tjIsLyY=' },
+                    { id: '#004', image: 'https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE=' }
                 ]
             },
             classic: {
                 title: 'Classic Hall',
-                capacity: 'Upto 20-50 members',
+                capacity: 'Up to 20-50 members',
                 cost: '₹2500',
                 amenities: [
                     { icon: '📶', name: 'High Speed WiFi' },
@@ -203,15 +721,15 @@
                     { icon: '🎤', name: 'Audio System' }
                 ],
                 rooms: [
-                    { id: '#005', image: '../../Assests/Classic-rooms/classic-room-1.png' }, // Placeholder: Replace with actual path
-                    { id: '#006', image: 'https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE=' }, // Placeholder: Replace with actual path
-                    { id: '#007', image: 'https://static.vecteezy.com/system/resources/thumbnails/047/802/045/small_2x/wooden-office-interior-with-meeting-table-and-chairs-tv-screen-and-window-photo.jpg' }, // Placeholder: Replace with actual path
-                    { id: '#008', image: 'https://img.freepik.com/premium-photo/board-room-conference-room-meeting-room-white-board-corporate-office_57262-428.jpg' }  // Placeholder: Replace with actual path
+                    { id: '#005', image: 'https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE=' },
+                    { id: '#006', image: 'https://static.vecteezy.com/system/resources/thumbnails/047/802/045/small_2x/wooden-office-interior-with-meeting-table-and-chairs-tv-screen-and-window-photo.jpg' },
+                    { id: '#007', image: 'https://img.freepik.com/premium-photo/board-room-conference-room-meeting-room-white-board-corporate-office_57262-428.jpg' },
+                    { id: '#008', image: 'https://media.istockphoto.com/id/1414903724/photo/conference-round-table-and-chairs.jpg?s=612x612&w=0&k=20&c=07g8JfGsos8eCHwb_zvV2_aYOnHcxSDsek0_tjIsLyY=' }
                 ]
             },
             grand: {
                 title: 'Grand Hall',
-                capacity: 'Upto 50-80 members',
+                capacity: 'Up to 50-80 members',
                 cost: '₹4000',
                 amenities: [
                     { icon: '📶', name: 'High Speed WiFi' },
@@ -224,10 +742,10 @@
                     { icon: '🍽️', name: 'Catering Area' }
                 ],
                 rooms: [
-                    { id: '#009', image: '../../Assests/Grand-rooms/grand-room-1.png' }, // Placeholder: Replace with actual path
-                    { id: '#010', image: 'https://www.bwpluswandagrand.com/wp-content/uploads/meetings-slide02-1.jpg' }, // Placeholder: Replace with actual path
-                    { id: '#011', image: 'https://grandecentrepointsukhumvit55.com/upload/Meeting/04.jpg?v=76' }, // Placeholder: Replace with actual path
-                    { id: '#012', image: 'https://www.grandmirage.com/assets/uploads/images/meetings-events/meeting-slide-kecak.jpg' }  // Placeholder: Replace with actual path
+                    { id: '#009', image: 'https://www.bwpluswandagrand.com/wp-content/uploads/meetings-slide02-1.jpg' },
+                    { id: '#010', image: 'https://grandecentrepointsukhumvit55.com/upload/Meeting/04.jpg?v=76' },
+                    { id: '#011', image: 'https://www.grandmirage.com/assets/uploads/images/meetings-events/meeting-slide-kecak.jpg' },
+                    { id: '#012', image: 'https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE=' }
                 ]
             }
         };
@@ -246,7 +764,7 @@
             // Update hall information
             document.getElementById('hallTitle').textContent = hall.title;
             document.getElementById('hallCapacity').textContent = hall.capacity;
-            document.getElementById('costInfo').textContent = `Cost per hr : ${hall.cost}`;
+            document.getElementById('costInfo').textContent = `Cost per hr: ${hall.cost}`;
 
             // Populate amenities
             const amenitiesContainer = document.getElementById('amenitiesList');
@@ -254,13 +772,13 @@
 
             hall.amenities.forEach(amenity => {
                 const amenityDiv = document.createElement('div');
-                amenityDiv.className = 'flex items-center space-x-2';
+                amenityDiv.className = 'flex items-center space-x-3';
                 amenityDiv.innerHTML = `
-                <div class="w-6 h-6 bg-white rounded flex items-center justify-center text-sm">
-                    ${amenity.icon}
-                </div>
-                <span class="text-sm text-gray-700">${amenity.name}</span>
-            `;
+                    <div class="amenity-icon w-8 h-8 bg-primary-blue rounded-full flex items-center justify-center text-white text-lg">
+                        ${amenity.icon}
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">${amenity.name}</span>
+                `;
                 amenitiesContainer.appendChild(amenityDiv);
             });
 
@@ -270,15 +788,16 @@
 
             hall.rooms.forEach(room => {
                 const roomDiv = document.createElement('div');
-                roomDiv.className = 'bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition duration-500 hover:scale-105 hover:shadow-2xl';
+                roomDiv.className = 'room-card rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-xl';
                 roomDiv.innerHTML = `
-                <div class="h-32 relative overflow-hidden group">
-                    <img src="${room.image}" alt="Room ${room.id}" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
-                </div>
-                <div class="p-4 text-center">
-                    <span class="text-gray-800 font-medium">Room: ${room.id}</span>
-                </div>
-            `;
+                    <div class="h-32 relative overflow-hidden group">
+                        <img src="${room.image}" alt="Room ${room.id}" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-4 text-center">
+                        <span class="text-gray-800 font-medium">Room: ${room.id}</span>
+                    </div>
+                `;
                 roomsContainer.appendChild(roomDiv);
             });
 
@@ -287,60 +806,40 @@
             document.getElementById('hallDetails').classList.remove('hidden');
         }
 
-        // Add smooth transitions
-        const style = document.createElement('style');
-        style.textContent = `
-        .page-content {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .page-content.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-    `;
-        document.head.appendChild(style);
+        // Mobile menu toggle and profile initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            new ProfileManager();
 
-        // Enhanced Mobile Menu Setup (run after navbar fetch)
-        document.addEventListener('DOMContentLoaded', function() {
-            // Wait for navbar to load, then set up mobile menu with animations
-            const checkNavbarLoaded = setInterval(() => {
-                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-                if (mobileMenuBtn) {
-                    clearInterval(checkNavbarLoaded);
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
 
-                    const mobileMenu = document.getElementById('mobileMenu');
-                    const mobileBackdrop = document.getElementById('mobileBackdrop');
-                    const closeMobileMenu = document.getElementById('closeMobileMenu');
-                    const mobileMenuContent = document.getElementById('mobileMenuContent');
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
 
-                    function openMenu() {
-                        mobileMenu.classList.remove('hidden');
+                // Close on escape key
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Button ripple effect
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    if (this.textContent.includes('Back to Rooms') || this.textContent.includes('Start Booking')) {
+                        const ripple = document.createElement('span');
+                        ripple.className = 'absolute inset-0 rounded-full bg-white/30 scale-0 animate-ping';
+                        this.style.position = 'relative';
+                        this.appendChild(ripple);
                         setTimeout(() => {
-                            mobileMenuContent.classList.remove('translate-x-full');
-                        }, 10); // Small delay for smooth transition
+                            ripple.remove();
+                        }, 600);
                     }
-
-                    function closeMenu() {
-                        mobileMenuContent.classList.add('translate-x-full');
-                        setTimeout(() => {
-                            mobileMenu.classList.add('hidden');
-                        }, 300); // Match transition duration
-                    }
-
-                    mobileMenuBtn.addEventListener('click', openMenu);
-                    closeMobileMenu.addEventListener('click', closeMenu);
-                    if (mobileBackdrop) {
-                        mobileBackdrop.addEventListener('click', closeMenu);
-                    }
-
-                    // Close on escape key
-                    document.addEventListener('keydown', function(event) {
-                        if (event.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
-                            closeMenu();
-                        }
-                    });
-                }
-            }, 50); // Poll every 50ms until loaded
+                });
+            });
         });
     </script>
 </body>

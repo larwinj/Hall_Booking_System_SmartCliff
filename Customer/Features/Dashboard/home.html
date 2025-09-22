@@ -31,7 +31,8 @@
                         'slide-up': 'slideUp 0.8s ease-out',
                         'fadeInUp': 'fadeInUp 1s ease-out',
                         'modalSlide': 'modalSlide 0.3s ease-out',
-                        'fadeInModal': 'fadeInModal 0.3s ease-out'
+                        'fadeInModal': 'fadeInModal 0.3s ease-out',
+                        'carousel-slide': 'carouselSlide 0.5s ease-in-out'
                     },
                     fontFamily: {
                         sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']
@@ -41,64 +42,49 @@
         }
     </script>
     <style>
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Navbar Styles */
+        nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        nav .text-primary-blue {
+            color: #0284c7;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        nav .hover\:text-primary-blue:hover {
+            color: #0284c7;
         }
 
-        @keyframes modalSlide {
-            from {
-                opacity: 0;
-                transform: scale(0.9) translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+        nav .bg-primary-blue {
+            background-color: #0284c7;
         }
 
-        @keyframes fadeInModal {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        nav .hover\:bg-primary-700:hover {
+            background-color: #1d4ed8;
+        }
+
+        nav .border-primary-blue {
+            border-color: #0284c7;
+        }
+
+        nav .focus\:ring-primary-blue:focus {
+            --tw-ring-color: #0284c7;
+        }
+
+        #mobileMenu {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* General Styles */
+        body {
+            background-color: #f8fafc;
         }
 
         .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -106,35 +92,135 @@
 
         .modal-overlay {
             backdrop-filter: blur(8px);
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
         }
 
         .modal-content {
             max-height: 90vh;
             overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
         }
 
         .input-focus:focus {
             border-color: #0284c7;
-            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn.prev {
+            left: 10px;
+        }
+
+        .carousel-btn.next {
+            right: 10px;
+        }
+
+        .card-hover {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes carouselSlide {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         @media (max-width: 639px) {
             .hero-content {
-                padding-top: 4rem;
-                padding-bottom: 2rem;
+                padding-top: 5rem;
+                padding-bottom: 3rem;
             }
-
             .feature-icon {
-                width: 3rem;
-                height: 3rem;
+                width: 3.5rem;
+                height: 3.5rem;
             }
-
             .feature-icon svg {
-                width: 1.5rem;
-                height: 1.5rem;
+                width: 1.75rem;
+                height: 1.75rem;
             }
-
             .modal-content {
                 margin: 1rem;
                 max-height: calc(100vh - 2rem);
@@ -143,87 +229,68 @@
 
         @media (min-width: 640px) and (max-width: 1023px) {
             .hero-content {
-                padding-top: 5rem;
-                padding-bottom: 3rem;
+                padding-top: 6rem;
+                padding-bottom: 4rem;
             }
-
             .modal-content {
                 margin: 2rem;
                 max-height: calc(100vh - 4rem);
             }
         }
 
-        .animation-delay-200 {
-            animation-delay: 0.2s;
-        }
-        .animation-delay-400 {
-            animation-delay: 0.4s;
-        }
-        .animation-delay-600 {
-            animation-delay: 0.6s;
-        }
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-400 { animation-delay: 0.4s; }
+        .animation-delay-600 { animation-delay: 0.6s; }
     </style>
 </head>
 
-<body class="bg-gray-100 from-light-blue via-blue-50 to-white min-h-screen font-sans overflow-x-hidden">
-    <!-- Navbar with Profile Icon -->
-    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-40 w-[100vw]">
+<body class="min-h-screen font-sans overflow-x-hidden">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 w-full">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-black">VenueVista</h1>
+                    <h1 class="text-2xl font-bold text-primary-blue">VenueVista</h1>
                 </div>
-                
-                <!-- Desktop Navigation -->
                 <div class="hidden md:flex space-x-8">
-                    <a href="#" class="border-b-2 border-primary-blue text-primary-blue font-medium pb-1">Home</a>
-                    <a href="../MyBookings/mybookings.html" class="text-gray-700 hover:text-primary-blue pb-1">My Bookings</a>
-                    <a href="../Halls/rooms.html" class="text-gray-700 hover:text-primary-blue pb-1">Rooms</a>
-                    <a href="#" class="text-gray-700 hover:text-primary-blue pb-1">contact</a>
+                    <a href="#" class="border-b-2 border-primary-blue text-primary-blue font-medium py-2 hover:text-primary-700 transition-colors duration-300">Home</a>
+                    <a href="../MyBookings/mybookings.html" class="text-gray-600 hover:text-primary-blue py-2 transition-colors duration-300">My Bookings</a>
+                    <a href="../Halls/rooms.html" class="text-gray-600 hover:text-primary-blue py-2 transition-colors duration-300">Rooms</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue py-2 transition-colors duration-300">Contact</a>
                 </div>
-
-                <div class="flex items-center space-y-4">
+                <div class="flex items-center space-x-4">
                     <a href="../BookingsForm/bookingform.html"
-                        class="bg-primary-blue text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-primary-700 transition-colors duration-300">
+                        class="bg-primary-blue text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-primary-700 transition-all duration-300 hover:scale-105 shadow-md">
                         Start Booking
                     </a>
-                </div>
-
-                <!-- Profile Icon -->
-                <div class="flex items-center space-x-4">
-                    <button id="profileBtn" class="bg-primary-blue text-white p-2 rounded-full hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="profileBtn" class="bg-primary-blue text-white p-2.5 rounded-full hover:bg-primary-700 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                     </button>
-
-                    <!-- Mobile Menu Button -->
-                    <button id="mobileMenuBtn" class="md:hidden bg-primary-blue text-white p-2 rounded-md">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="mobileMenuBtn" class="md:hidden bg-primary-blue text-white p-2.5 rounded-md hover:bg-primary-700 transition-all duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="md:hidden bg-white border-t border-gray-200 hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#" class="border-l-2 border-primary-blue font-medium block px-3 py-2 text-primary-blue">Home</a>
-                <a href="../MyBookings/mybookings.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">My Bookings</a>
-                <a href="../Halls/rooms.html" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Rooms</a>
-                <a href="#" class="block px-3 py-2 text-gray-700 hover:text-primary-blue">Contact</a>
+        <div id="mobileMenu" class="md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200 hidden transition-all duration-300">
+            <div class="px-4 pt-2 pb-3 space-y-2">
+                <a href="#" class="block px-3 py-2 text-primary-blue border-l-2 border-primary-blue font-medium">Home</a>
+                <a href="../MyBookings/mybookings.html" class="block px-3 py-2 text-gray-600 hover:text-primary-blue transition-colors duration-300">My Bookings</a>
+                <a href="../Halls/rooms.html" class="block px-3 py-2 text-gray-600 hover:text-primary-blue transition-colors duration-300">Rooms</a>
+                <a href="#" class="block px-3 py-2 text-gray-600 hover:text-primary-blue transition-colors duration-300">Contact</a>
             </div>
         </div>
     </nav>
 
     <!-- Profile Modal -->
     <div id="profileModal" class="fixed inset-0 z-50 hidden">
-        <div class="modal-overlay absolute inset-0 animate-fadeInModal" id="modalOverlay"></div>
+        <div id="modalOverlay" class="modal-overlay absolute inset-0 bg-black/50 backdrop-blur-sm animate-fadeInModal"></div>
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-md animate-modalSlide relative">
-                <!-- Modal Header -->
+            <div class="modal-content rounded-2xl shadow-xl w-full max-w-md animate-modalSlide">
                 <div class="flex justify-between items-center p-6 border-b border-gray-200">
                     <h2 class="text-2xl font-bold text-gray-800">Profile Settings</h2>
                     <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 rounded-full p-1">
@@ -232,11 +299,8 @@
                         </svg>
                     </button>
                 </div>
-
-                <!-- Modal Body -->
                 <div class="p-6">
                     <form id="profileForm" class="space-y-4">
-                        <!-- Profile Picture Placeholder -->
                         <div class="flex justify-center mb-6">
                             <div class="w-20 h-20 bg-primary-blue rounded-full flex items-center justify-center">
                                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,45 +308,35 @@
                                 </svg>
                             </div>
                         </div>
-
-                        <!-- First Name -->
                         <div>
                             <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                             <input type="text" id="firstName" name="firstName" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus" 
                                 required>
                         </div>
-
-                        <!-- Last Name -->
                         <div>
                             <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
                             <input type="text" id="lastName" name="lastName" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus" 
                                 required>
                         </div>
-
-                        <!-- Email -->
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                             <input type="email" id="email" name="email" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus" 
                                 required>
                         </div>
-
-                        <!-- Phone -->
                         <div>
                             <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                             <input type="tel" id="phone" name="phone" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus" 
                                 required>
                         </div>
-
-                        <!-- Password -->
                         <div>
                             <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                             <div class="relative">
                                 <input type="password" id="password" name="password" 
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-200 pr-10" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-200 input-focus pr-10" 
                                     required>
                                 <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
                                     <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -293,24 +347,16 @@
                             </div>
                         </div>
                     </form>
-
-                    <!-- Loading Spinner -->
                     <div id="loadingSpinner" class="hidden flex justify-center items-center py-4">
                         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-blue"></div>
                     </div>
-
-                    <!-- Error Message -->
                     <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mt-4">
                         <p class="text-sm"></p>
                     </div>
-
-                    <!-- Success Message -->
                     <div id="successMessage" class="hidden bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mt-4">
                         <p class="text-sm">Profile updated successfully!</p>
                     </div>
                 </div>
-
-                <!-- Modal Footer -->
                 <div class="flex justify-end space-x-3 p-6 border-t border-gray-200">
                     <button id="cancelBtn" type="button" 
                         class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200">
@@ -326,93 +372,156 @@
     </div>
 
     <!-- Hero Section -->
-    <div class="relative flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 pt-20">
-        <!-- Main Content -->
-        <div class="relative z-20 text-center max-w-4xl mx-auto hero-content">
-            <h1
-                class="sm:text-4xl md:text-5xl lg:text-6xl font-bold text-blue-800 mb-6 sm:mb-8 leading-tight animate-fadeInUp">
-                Make your occasions grand with<br>
-                <span class="text-yellow-500">a simple click</span>
+    <div class="relative flex items-center justify-center min-h-screen bg-[url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2')] bg-cover bg-center bg-no-repeat">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-black/20"></div>
+        <div class="relative z-20 text-center max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 hero-content">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight animate-fadeInUp">
+                Seamless Meeting Hall Booking with <span class="gradient-text">VenueVista</span>
             </h1>
-
-            <p
-                class="text-base sm:text-lg md:text-xl text-primary mb-8 sm:mb-12 max-w-xl mx-auto animate-fadeInUp animation-delay-200">
-                Book the perfect venue for your special events with just a few clicks.
-                Choose from our premium halls and make your celebration memorable.
+            <p class="text-lg sm:text-xl lg:text-2xl text-gray-100 mb-10 max-w-3xl mx-auto animate-fadeInUp animation-delay-200">
+                Discover and reserve premium venues for your meetings, conferences, and events in just a few clicks.
             </p>
-
-            <div
-                class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center animate-fadeInUp animation-delay-400">
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center animate-fadeInUp animation-delay-400">
                 <a href="../BookingsForm/bookingform.html"
-                    class="w-full sm:w-auto bg-primary-blue text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg cursor-pointer font-medium  transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm">
+                    class="w-full sm:w-auto bg-primary-blue text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-primary-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm">
                     Start Booking
                 </a>
-
                 <a href="../Halls/rooms.html"
-                    class="w-full sm:w-auto bg-white/90 backdrop-blur-sm text-gray-800 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border border-gray-200">
+                    class="w-full sm:w-auto bg-white/95 text-primary-blue px-8 py-3 rounded-full text-lg font-semibold hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border border-gray-200 backdrop-blur-sm">
                     View Rooms
                 </a>
-            </div>
-
-            <!-- Feature Icons -->
-            <div
-                class="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto animate-fadeInUp animation-delay-600">
-                <div class="text-center">
-                    <div
-                        class="feature-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-primary-blue" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="font-semibold text-primary mb-2 text-sm sm:text-base">Easy Booking</h3>
-                    <p class="text-primary text-xs sm:text-sm">Quick and simple reservation process</p>
-                </div>
-
-                <div class="text-center">
-                    <div
-                        class="feature-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-primary-blue" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="font-semibold text-primary mb-2 text-sm sm:text-base">Premium Venues</h3>
-                    <p class="text-primary text-xs sm:text-sm">High-quality halls for every occasion</p>
-                </div>
-
-                <div class="text-center">
-                    <div
-                        class="feature-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-primary-blue" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V18.75A.75.75 0 0112 18zM3.75 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H4.5a.75.75 0 01-.75-.75zM18 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18.75A.75.75 0 0118 12z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="font-semibold text-primary mb-2 text-sm sm:text-base">24/7 Support</h3>
-                    <p class="text-primary text-xs sm:text-sm">Round-the-clock customer service</p>
-                </div>
             </div>
         </div>
     </div>
 
+    <!-- Testimonials Section -->
+    <section class="bg-gray-50 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold text-gray-900 mb-3 tracking-tight">What Our Customers Say</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Hear from those who have experienced the magic of VenueVista for their events.</p>
+            </div>
+            <div class="carousel-container relative">
+                <div class="carousel flex">
+                    <div class="carousel-item glass-effect rounded-2xl p-8 mx-4 card-hover">
+                        <div class="flex items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Sarah M." class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Sarah M.</h4>
+                                <p class="text-sm text-gray-600">Wedding Planner</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic mb-4">"VenueVista made our wedding venue booking a breeze! The process was seamless, and the venue was perfect for our special day."</p>
+                        <div class="flex justify-center">
+                            <span class="text-yellow-400">★★★★★</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item glass-effect rounded-2xl p-8 mx-4 card-hover">
+                        <div class="flex items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="Michael R." class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Michael R.</h4>
+                                <p class="text-sm text-gray-600">Corporate Event Organizer</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic mb-4">"The selection of venues and the easy booking system saved us so much time for our corporate event. Highly recommend VenueVista!"</p>
+                        <div class="flex justify-center">
+                            <span class="text-yellow-400">★★★★☆</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item glass-effect rounded-2xl p-8 mx-4 card-hover">
+                        <div class="flex items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/3.jpg" alt="Emily T." class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Emily T.</h4>
+                                <p class="text-sm text-gray-600">Birthday Party Host</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic mb-4">"I booked a beautiful hall for my daughter's birthday through VenueVista. The service was exceptional, and everything went perfectly!"</p>
+                        <div class="flex justify-center">
+                            <span class="text-yellow-400">★★★★★</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item glass-effect rounded-2xl p-8 mx-4 card-hover">
+                        <div class="flex items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="James L." class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">James L.</h4>
+                                <p class="text-sm text-gray-600">Conference Organizer</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic mb-4">"VenueVista's customer support and venue options were top-notch. Our conference was a huge success thanks to their platform!"</p>
+                        <div class="flex justify-center">
+                            <span class="text-yellow-400">★★★★☆</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn prev" onclick="moveCarousel(-1)">
+                    <svg class="w-6 h-6 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <button class="carousel-btn next" onclick="moveCarousel(1)">
+                    <svg class="w-6 h-6 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 animate-fadeInUp animation-delay-600">
+                <div class="text-center bg-white/95 backdrop-blur-lg rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="feature-icon w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-primary-blue text-lg mb-2">Seamless Booking</h3>
+                    <p class="text-gray-600 text-sm">Book your meeting hall effortlessly in minutes.</p>
+                </div>
+                <div class="text-center bg-white/95 backdrop-blur-lg rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="feature-icon w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-primary-blue text-lg mb-2">Premium Venues</h3>
+                    <p class="text-gray-600 text-sm">Elegant halls for professional events and meetings.</p>
+                </div>
+                <div class="text-center bg-white/95 backdrop-blur-lg rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="feature-icon w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V18.75A.75.75 0 0112 18zM3.75 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H4.5a.75.75 0 01-.75-.75zM18 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18.75A.75.75 0 0118 12z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-primary-blue text-lg mb-2">24/7 Support</h3>
+                    <p class="text-gray-600 text-sm">Expert help for your booking needs, anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script>
-        // Profile Modal Functionality
         class ProfileManager {
             constructor() {
                 this.apiUrl = 'http://localhost:3000/users';
-                this.currentUserId = localStorage.getItem("userId"); // Default user ID - you can modify this based on your auth system
+                this.currentUserId = localStorage.getItem("userId");
                 this.currentUser = null;
                 
                 this.initializeElements();
                 this.setupEventListeners();
-                this.loadCurrentUser();
+                if (this.currentUserId) {
+                    this.loadCurrentUser();
+                } else {
+                    this.showError('Please log in to view your profile.');
+                    setTimeout(() => {
+                        window.location.href = '../login.html';
+                    }, 2000);
+                }
             }
 
             initializeElements() {
@@ -430,7 +539,6 @@
                 this.passwordInput = document.getElementById('password');
                 this.eyeIcon = document.getElementById('eyeIcon');
 
-                // Form inputs
                 this.inputs = {
                     firstName: document.getElementById('firstName'),
                     lastName: document.getElementById('lastName'),
@@ -441,33 +549,20 @@
             }
 
             setupEventListeners() {
-                // Open modal
                 this.profileBtn.addEventListener('click', () => this.openModal());
-
-                // Close modal events
                 this.closeModalBtn.addEventListener('click', () => this.closeModal());
                 this.cancelBtn.addEventListener('click', () => this.closeModal());
                 this.modalOverlay.addEventListener('click', () => this.closeModal());
-
-                // Save changes
                 this.saveBtn.addEventListener('click', () => this.saveChanges());
-
-                // Password toggle
                 this.togglePasswordBtn.addEventListener('click', () => this.togglePassword());
-
-                // Form validation
                 Object.values(this.inputs).forEach(input => {
                     input.addEventListener('input', () => this.validateForm());
                 });
-
-                // Escape key to close modal
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
                         this.closeModal();
                     }
                 });
-
-                // Mobile menu toggle
                 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
                 const mobileMenu = document.getElementById('mobileMenu');
                 
@@ -483,22 +578,29 @@
                     const response = await fetch(`${this.apiUrl}/${this.currentUserId}`);
                     if (response.ok) {
                         this.currentUser = await response.json();
+                        this.populateForm();
                     } else {
                         throw new Error('User not found');
                     }
                 } catch (error) {
                     console.error('Error loading user:', error);
-                    this.showError('Failed to load user data');
+                    this.showError('Failed to load user data. Please try again.');
                 }
             }
 
             openModal() {
+                if (!this.currentUserId) {
+                    this.showError('Please log in to view your profile.');
+                    setTimeout(() => {
+                        window.location.href = '../login.html';
+                    }, 2000);
+                    return;
+                }
                 this.modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
                 this.populateForm();
                 this.hideMessages();
                 
-                // Focus first input after animation
                 setTimeout(() => {
                     this.inputs.firstName.focus();
                 }, 300);
@@ -553,12 +655,10 @@
                         password: this.inputs.password.value
                     };
 
-                    // Email validation
                     if (!this.isValidEmail(updatedUser.email)) {
                         throw new Error('Please enter a valid email address.');
                     }
 
-                    // Phone validation
                     if (!this.isValidPhone(updatedUser.phone)) {
                         throw new Error('Please enter a valid phone number.');
                     }
@@ -575,7 +675,6 @@
                         this.currentUser = await response.json();
                         this.showSuccess();
                         
-                        // Close modal after success message
                         setTimeout(() => {
                             this.closeModal();
                         }, 2000);
@@ -636,21 +735,44 @@
             }
         }
 
-        // Initialize Profile Manager
+        // Carousel Functionality
+        let currentIndex = 0;
+        const carouselItems = document.querySelectorAll('.carousel-item');
+        const totalItems = carouselItems.length;
+
+        function updateCarousel() {
+            carouselItems.forEach((item, index) => {
+                item.classList.remove('active');
+                if (index === currentIndex) {
+                    item.classList.add('active');
+                }
+            });
+            document.querySelector('.carousel').style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        function moveCarousel(direction) {
+            currentIndex = (currentIndex + direction + totalItems) % totalItems;
+            updateCarousel();
+        }
+
+        // Initialize carousel
         document.addEventListener('DOMContentLoaded', () => {
             new ProfileManager();
+            updateCarousel(); // Show first testimonial
+            // Auto-advance carousel every 5 seconds
+            setInterval(() => {
+                moveCarousel(1);
+            }, 5000);
         });
 
-        // Add smooth scroll behavior to buttons
+        // Button ripple effect
         document.querySelectorAll('button').forEach(button => {
             button.addEventListener('click', function (e) {
                 if (this.textContent.includes('Start Booking') || this.textContent.includes('View Rooms')) {
-                    // Add ripple effect
                     const ripple = document.createElement('span');
                     ripple.className = 'absolute inset-0 rounded-full bg-white/30 scale-0 animate-ping';
                     this.style.position = 'relative';
                     this.appendChild(ripple);
-
                     setTimeout(() => {
                         ripple.remove();
                     }, 600);
