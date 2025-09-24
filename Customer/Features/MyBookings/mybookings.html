@@ -320,9 +320,7 @@
             transition: color 0.2s ease;
         }
 
-        .star.selected,
-        .star:hover,
-        .star:hover ~ .star {
+        .star.selected {
             color: #facc15;
         }
 
@@ -548,7 +546,7 @@
                             class="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all duration-300 hover:scale-105 shadow-sm">
                             Cancel
                         </button>
-                        <button type="submit"
+                        <button id="submit-review-btn" type="submit"
                             class="px-4 py-2 bg-primary-blue text-white rounded-lg hover:bg-primary-700 transition-all duration-300 hover:scale-105 shadow-sm">
                             Submit Review
                         </button>
@@ -601,6 +599,7 @@
                 </tbody>
             </table>
         </div>
+        <div id="pagination" class="flex justify-center mt-4 space-x-2"></div>
     </div>
 
     <!-- Booking Details Modal -->
@@ -644,6 +643,9 @@
                         <input type="time" id="new-checkout" required
                             class="w-full px-4 py-2.5 bg-white/95 backdrop-blur-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all duration-300">
                     </div>
+                    <div>
+                        <label class="block text-md font-medium text-red-400 mb-2">To change the hall type or room number, please cancel the existing booking and make a new one.</label>
+                    </div>
                     <div id="availability-check" class="availability-status hidden"></div>
                     <div class="flex justify-end space-x-3 pt-4">
                         <button type="button" onclick="closeRescheduleModal()"
@@ -668,6 +670,10 @@
         const API_URL = 'http://localhost:3000';
         let currentBookingForReschedule = null;
         let currentBookingForReview = null;
+        let allBookings = [];
+        let currentPage = 1;
+        let currentFilter = 'all';
+        const rowsPerPage = 8;
 
         class ProfileManager {
             constructor() {
@@ -906,20 +912,17 @@
 
             try {
                 const response = await fetch(`${API_URL}/bookings?userId=${userId}`);
-                const bookings = await response.json();
-                bookings.sort((a, b) => b.id - a.id);
-                populateBookingsTable(bookings);
+                allBookings = await response.json();
+                allBookings.sort((a, b) => b.id - a.id);
+                renderTable(1);
             } catch (error) {
                 console.error('Error fetching bookings:', error);
                 document.getElementById('bookings-table').innerHTML = '<tr><td colspan="8" class="p-4 text-center text-red-500">Error loading bookings. Please try again.</td></tr>';
             }
 
             document.getElementById('filter-bookings').addEventListener('change', (e) => {
-                const filterValue = e.target.value;
-                const rows = document.querySelectorAll('.table-row');
-                rows.forEach(row => {
-                    row.style.display = (filterValue === 'all' || row.dataset.status === filterValue) ? '' : 'none';
-                });
+                currentFilter = e.target.value;
+                renderTable(1);
             });
 
             setupActions();
@@ -956,6 +959,18 @@
             });
         });
 
+        function renderTable(page) {
+            currentPage = page;
+            const filteredBookings = currentFilter === 'all' 
+                ? allBookings 
+                : allBookings.filter(booking => booking.status === currentFilter);
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const pageBookings = filteredBookings.slice(start, end);
+            populateBookingsTable(pageBookings);
+            renderPagination(filteredBookings.length);
+        }
+
         function populateBookingsTable(bookings) {
             const tbody = document.getElementById('bookings-table');
             if (!Array.isArray(bookings) || bookings.length === 0) {
@@ -988,7 +1003,7 @@
                         <td class="p-3 sm:p-4 text-sm sm:text-base"><span class="inline-flex items-center px-2.5 py-1 rounded-full font-semibold ${statusClass}">${statusText}</span></td>
                         <td class="p-3 sm:p-4 text-gray-600 text-sm sm:text-base">${formattedBookedDate}</td>
                         <td class="p-3 sm:p-4 relative">
-                            <button class="actions-btn text-gray-500 hover:text-gray-700 text-base" 
+                            <button class="actions-btn text-black-900 hover:text-black-700 text-base" 
                                     data-booking-id="${booking.id}" aria-haspopup="true" aria-expanded="false">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01"></path>
@@ -999,6 +1014,21 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        function renderPagination(totalBookings) {
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(totalBookings / rowsPerPage);
+            let html = '';
+            for (let i = 1; i <= totalPages; i++) {
+                html += `
+                    <button onclick="renderTable(${i})"
+                        class="px-3 py-1 rounded ${i === currentPage ? 'bg-primary-blue text-white' : 'bg-gray-200 text-gray-700'} hover:bg-primary-blue hover:text-white transition">
+                        ${i}
+                    </button>
+                `;
+            }
+            pagination.innerHTML = html;
         }
 
         function setupActions() {
@@ -1134,15 +1164,32 @@
         function setupReviewModal() {
             const form = document.getElementById('review-form');
             const stars = document.querySelectorAll('.star');
+            const ratingContainer = document.querySelector('.star-rating');
             let selectedRating = 0;
+            let hoverRating = 0;
+
+            function updateStarsDisplay() {
+                const effectiveRating = hoverRating || selectedRating;
+                stars.forEach(s => {
+                    s.classList.toggle('selected', parseInt(s.dataset.value) <= effectiveRating);
+                });
+            }
 
             stars.forEach(star => {
                 star.addEventListener('click', () => {
                     selectedRating = parseInt(star.dataset.value);
-                    stars.forEach(s => {
-                        s.classList.toggle('selected', parseInt(s.dataset.value) <= selectedRating);
-                    });
+                    updateStarsDisplay();
                 });
+
+                star.addEventListener('mouseover', () => {
+                    hoverRating = parseInt(star.dataset.value);
+                    updateStarsDisplay();
+                });
+            });
+
+            ratingContainer.addEventListener('mouseout', () => {
+                hoverRating = 0;
+                updateStarsDisplay();
             });
 
             form.addEventListener('submit', async (e) => {
@@ -1151,13 +1198,46 @@
             });
         }
 
-        function openReviewModal(booking) {
+        async function openReviewModal(booking) {
             currentBookingForReview = booking;
+            let existingReview = null;
+            try {
+                const response = await fetch(`${API_URL}/reviews?bookingId=${booking.id}`);
+                const reviews = await response.json();
+                if (reviews.length > 0) {
+                    existingReview = reviews[0];
+                }
+            } catch (error) {
+                console.error('Error fetching review:', error);
+            }
+
+            const modal = document.getElementById('review-modal');
+            const title = modal.querySelector('h3');
+            const submitBtn = document.getElementById('submit-review-btn');
+            const successMsg = document.getElementById('review-success').querySelector('p');
+            const stars = document.querySelectorAll('.star');
+            let selectedRating = 0;
+
             document.getElementById('review-comment').value = '';
-            document.querySelectorAll('.star').forEach(star => star.classList.remove('selected'));
+            stars.forEach(star => star.classList.remove('selected'));
             document.getElementById('review-error').classList.add('hidden');
             document.getElementById('review-success').classList.add('hidden');
-            const modal = document.getElementById('review-modal');
+
+            if (existingReview) {
+                title.textContent = 'Edit Review';
+                submitBtn.textContent = 'Update Review';
+                successMsg.textContent = 'Review updated successfully!';
+                selectedRating = existingReview.rating;
+                document.getElementById('review-comment').value = existingReview.comment;
+                stars.forEach(s => s.classList.toggle('selected', parseInt(s.dataset.value) <= selectedRating));
+                currentBookingForReview.existingReview = existingReview;
+            } else {
+                title.textContent = 'Add Review';
+                submitBtn.textContent = 'Submit Review';
+                successMsg.textContent = 'Review submitted successfully!';
+                currentBookingForReview.existingReview = null;
+            }
+
             modal.classList.remove('hidden');
             requestAnimationFrame(() => modal.classList.add('show'));
         }
@@ -1183,17 +1263,27 @@
                 return;
             }
             try {
-                const response = await fetch(`${API_URL}/reviews`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        bookingId: currentBookingForReview.id,
-                        userId: localStorage.getItem('userId'),
-                        rating,
-                        comment,
-                        createdAt: new Date().toISOString()
-                    })
-                });
+                let response;
+                const reviewData = {
+                    bookingId: currentBookingForReview.id,
+                    userId: localStorage.getItem('userId'),
+                    rating,
+                    comment,
+                    createdAt: new Date().toISOString()
+                };
+                if (currentBookingForReview.existingReview) {
+                    response = await fetch(`${API_URL}/reviews/${currentBookingForReview.existingReview.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(reviewData)
+                    });
+                } else {
+                    response = await fetch(`${API_URL}/reviews`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(reviewData)
+                    });
+                }
                 if (response.ok) {
                     document.getElementById('review-success').classList.remove('hidden');
                     document.getElementById('review-error').classList.add('hidden');
@@ -1403,8 +1493,7 @@
                     </div>
                 </div>
                 <!-- Customer Information -->
-                <!-- Customer Information (continued from showBookingModal) -->
-<div class="bg-white/95 backdrop-blur-lg rounded-xl p-5 shadow-sm">
+                <div class="bg-white/95 backdrop-blur-lg rounded-xl p-5 shadow-sm">
     <div class="flex items-center mb-4">
         <div class="bg-green-500 rounded-lg p-2 mr-3">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1456,7 +1545,7 @@
                     </svg>
                 </div>
                 <div>
-                    <div class="font-semibold text-gray-900">${booking.address || '-'}</div>
+                    <div class="font-semibold text-gray-900 break-words">${booking.address || '-'}</div>
                     <div class="text-sm text-gray-600">Address</div>
                 </div>
             </div>

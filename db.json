@@ -376,73 +376,158 @@
     {
       "userId": 2,
       "date": "2025-09-26",
-      "checkInTime": "17:20",
-      "checkOutTime": "18:20",
-      "venueCategory": "classic",
-      "roomId": "#006",
-      "firstName": "oscar",
-      "lastName": "F",
-      "email": "rith@gmail.com",
-      "mobileNumber": "7418529630",
-      "address": "trichytrichytrichytrichytrichytrichytrichy",
-      "purpose": "SummaaSummaaSummaaSummaaSummaaSummaaSummaa",
-      "beverage": "yes",
-      "beverages": {
-        "snacks": 4,
-        "water": 4
-      },
-      "BookedOn": "19/09/2025",
-      "totalCost": 2720,
-      "status": "booked",
-      "id": 16
-    },
-    {
-      "userId": 2,
-      "date": "2025-09-26",
-      "checkInTime": "15:44",
-      "checkOutTime": "16:44",
-      "venueCategory": "compact",
-      "roomId": "#003",
-      "firstName": "Kirthick ",
-      "lastName": "B",
-      "email": "kirthick@gmail.com",
-      "mobileNumber": "7806922311",
-      "address": "EB-Colony Sathiyamagalam Erode.",
-      "purpose": "This meeting is for mine clients to investigate the sprink meeting.",
-      "beverage": "yes",
-      "beverages": {
-        "water": 10
-      },
-      "BookedOn": "21/09/2025",
-      "totalCost": 1600,
-      "status": "completed",
-      "id": 17
-    },
-    {
-      "userId": 2,
-      "date": "2025-09-26",
-      "checkInTime": "01:00",
-      "checkOutTime": "02:20",
+      "checkInTime": "18:00",
+      "checkOutTime": "19:00",
       "venueCategory": "classic",
       "roomId": "#007",
-      "firstName": "Kavin",
-      "lastName": "cse",
-      "email": "kavin@gmail.com",
-      "mobileNumber": "7896541365",
-      "address": "Annur tiruppur india..",
-      "purpose": "This is blockchain program to college students.",
+      "firstName": "naveen",
+      "lastName": "kumar",
+      "email": "naveen@gmail.com",
+      "mobileNumber": "7418529635",
+      "address": "Sri valiputhur tamilnadu",
+      "purpose": "For frontend tech.",
       "beverage": "yes",
       "beverages": {
         "tea": 5,
-        "coffee": 5,
-        "juice": 4,
-        "snacks": 5,
+        "juice": 5,
         "water": 5
       },
       "BookedOn": "22/09/2025",
-      "totalCost": 5615,
-      "status": "booked",
-      "id": 18
+      "totalCost": 2800,
+      "status": "cancelled",
+      "id": 16,
+      "updated": true
+    }
+  ],
+  "reviews": [
+    {
+      "bookingId": 17,
+      "userId": "2",
+      "rating": 3,
+      "comment": "It is soo amazing,also the room is looks good.",
+      "createdAt": "2025-09-22T06:56:55.627Z",
+      "id": 1
+    },
+    {
+      "bookingId": 1,
+      "userId": "2",
+      "rating": 3,
+      "comment": "n iceee",
+      "createdAt": "2025-09-22T11:24:18.454Z",
+      "id": 2
+    }
+  ],
+  "halls": [
+    {
+      "id": 1,
+      "name": "Compact Hall",
+      "capacity": "10-20",
+      "pricePerHour": 1500,
+      "image": "https://media.istockphoto.com/id/1077431262/photo/small-conference-room-with-whiteboard-on-blue-wall.jpg?s=612x612&w=0&k=20&c=SXlqI9JIh1UOyg3JcvbwsmrAHZRFwKLOThdSNvWoo-I=",
+      "amenities": [
+        "High Speed WiFi",
+        "Power Backup",
+        "Television",
+        "Whiteboard",
+        "AC"
+      ],
+      "rooms": [
+        {
+          "roomNumber": "#001",
+          "status": "active",
+          "image": "https://media.istockphoto.com/id/1077431262/photo/small-conference-room-with-whiteboard-on-blue-wall.jpg?s=612x612&w=0&k=20&c=SXlqI9JIh1UOyg3JcvbwsmrAHZRFwKLOThdSNvWoo-I="
+        },
+        {
+          "roomNumber": "#002",
+          "status": "active",
+          "image": "https://media.istockphoto.com/id/158587251/photo/multi-function-room-garden.jpg?s=612x612&w=0&k=20&c=V4LqcXmhAmY6crAAyjrQaOM05iz9Yt14Ie5YkaMkc7c="
+        },
+        {
+          "roomNumber": "#003",
+          "status": "active",
+          "image": "https://media.istockphoto.com/id/1414903724/photo/conference-round-table-and-chairs.jpg?s=612x612&w=0&k=20&c=07g8JfGsos8eCHwb_zvV2_aYOnHcxSDsek0_tjIsLyY="
+        },
+        {
+          "roomNumber": "#004",
+          "status": "active",
+          "image": "https://i.pinimg.com/1200x/08/c0/21/08c021a75b58decc3f6b3d591fbacb03.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Classic Hall",
+      "capacity": "20-50",
+      "pricePerHour": 2500,
+      "image": "https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE=",
+      "amenities": [
+        "High Speed WiFi",
+        "Power Backup",
+        "Television",
+        "Whiteboard",
+        "AC",
+        "Audio System"
+      ],
+      "rooms": [
+        {
+          "roomNumber": "#005",
+          "status": "active",
+          "image": "https://media.istockphoto.com/id/1479587535/photo/eco-friendly-open-plan-modern-office-interior-with-meeting-room-wooden-meeting-table-yellow.jpg?s=612x612&w=0&k=20&c=_ECheLlQXPrgvcffXv6hOehCxrrpBLkio-Y5x4TYnIE="
+        },
+        {
+          "roomNumber": "#006",
+          "status": "active",
+          "image": "https://static.vecteezy.com/system/resources/thumbnails/047/802/045/small_2x/wooden-office-interior-with-meeting-table-and-chairs-tv-screen-and-window-photo.jpg"
+        },
+        {
+          "roomNumber": "#007",
+          "status": "active",
+          "image": "https://img.freepik.com/premium-photo/board-room-conference-room-meeting-room-white-board-corporate-office_57262-428.jpg"
+        },
+        {
+          "roomNumber": "#008",
+          "status": "active",
+          "image": "https://i.pinimg.com/736x/82/27/eb/8227eb4461f1d2eaf28996795457670f.jpg"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Grand Hall",
+      "capacity": "50-80",
+      "pricePerHour": 4000,
+      "image": "https://www.bwpluswandagrand.com/wp-content/uploads/meetings-slide02-1.jpg",
+      "amenities": [
+        "High Speed WiFi",
+        "Power Backup",
+        "Television",
+        "Whiteboard",
+        "AC",
+        "Audio System",
+        "High powered Projector"
+      ],
+      "rooms": [
+        {
+          "roomNumber": "#009",
+          "status": "active",
+          "image": "https://www.bwpluswandagrand.com/wp-content/uploads/meetings-slide02-1.jpg"
+        },
+        {
+          "roomNumber": "#010",
+          "status": "active",
+          "image": "https://grandecentrepointsukhumvit55.com/upload/Meeting/04.jpg?v=76"
+        },
+        {
+          "roomNumber": "#011",
+          "status": "active",
+          "image": "https://www.grandmirage.com/assets/uploads/images/meetings-events/meeting-slide-kecak.jpg"
+        },
+        {
+          "roomNumber": "#012",
+          "status": "active",
+          "image": "https://i.pinimg.com/1200x/9e/4d/37/9e4d3767104e0ad9af160e661932ea6e.jpg"
+        }
+      ]
     }
   ]
 }

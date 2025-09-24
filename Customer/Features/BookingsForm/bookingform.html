@@ -192,6 +192,25 @@
         .success-border {
             border-color: #10b981 !important;
         }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #facc15;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100%) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -265,8 +284,8 @@
         </div>
 
         <!-- Progress Steps -->
-        <div class="flex justify-center mb-12">
-            <div class="flex items-center space-x-4 overflow-x-auto">
+        <div class="flex justify-center mb-12 overflow-x-auto">
+            <div class="flex items-center space-x-4 min-w-max">
                 <div class="flex items-center">
                     <div class="step-indicator active" id="step1">1</div>
                     <span class="ml-2 text-sm font-medium text-gray-700">Venue Details</span>
@@ -391,7 +410,8 @@
                     <button id="back-to-venue"
                         class="inline-flex items-center text-primary-blue hover:text-dark-blue font-medium transition-colors">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
                         Back to Venue Details
                     </button>
@@ -579,22 +599,44 @@
                     </div>
                 </div>
 
-                <!-- Terms and Continue -->
+                <!-- Your booking form terms block -->
                 <div class="glass-effect rounded-2xl p-6 mb-8">
                     <label class="flex items-start group cursor-pointer">
                         <input type="checkbox" id="terms" required
-                            class="mt-1 w-5 h-5 text-primary-blue focus:ring-primary-blue border-2 border-gray-300 rounded">
+                            class="mt-1 w-5 h-5 text-primary-blue focus:ring-primary-blue border-2 border-gray-300 rounded" />
                         <div class="ml-3">
                             <span class="text-gray-700 group-hover:text-primary-blue transition-colors">
-                                I accept the <a href="#" class="text-primary-blue font-semibold hover:underline">terms
-                                    and conditions</a> and
-                                <a href="#" class="text-primary-blue font-semibold hover:underline">privacy policy</a> *
+                                I accept the
+                                <a href="#" id="open-terms" class="text-primary-blue font-semibold hover:underline">
+                                    terms and conditions
+                                </a>
+                                and
+                                <a href="#" id="open-privacy" class="text-primary-blue font-semibold hover:underline">
+                                    privacy policy
+                                </a>
+                                *
                             </span>
-                            <p class="text-sm text-gray-500 mt-1">By checking this box, you agree to our booking
-                                policies and cancellation terms.</p>
+                            <p class="text-sm text-gray-500 mt-1">
+                                By checking this box, you agree to our booking policies and cancellation terms.
+                            </p>
                         </div>
                     </label>
-                    <div class="error-message" id="terms-error">Please accept terms and conditions</div>
+                    <div class="error-message hidden" id="terms-error">Please accept terms and conditions</div>
+                </div>
+
+                <!-- Modal Background -->
+                <div id="modal-overlay"
+                    class="hidden fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+                    <!-- Modal Card -->
+                    <div id="modal-card" class="bg-white rounded-2xl shadow-xl p-6 w-11/12 md:w-2/3 lg:w-1/2 relative">
+                        <!-- Close Button -->
+                        <button id="modal-close"
+                            class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl">&times;</button>
+                        <h2 id="modal-title" class="text-2xl font-bold mb-4 text-primary-blue">Title</h2>
+                        <p id="modal-content" class="text-gray-700 leading-relaxed">
+                            Content will be loaded here dynamically...
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Continue to Preview Button -->
@@ -627,7 +669,7 @@
                 </div>
 
                 <!-- Back and Proceed Buttons -->
-                <div class="flex justify-between">
+                <div class="flex flex-col sm:flex-row justify-between gap-4">
                     <button id="back-to-edit"
                         class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300">
                         Back to Edit
@@ -649,7 +691,7 @@
 
         <!-- Cost Summary Card (Fixed Position) -->
         <div id="cost-summary"
-            class="hidden fixed bottom-6 right-6 glass-effect rounded-2xl p-4 shadow-xl z-50 min-w-64">
+            class="hidden lg:block fixed bottom-6 right-6 glass-effect rounded-2xl p-4 shadow-xl z-50 min-w-64">
             <h4 class="font-bold text-gray-900 mb-2">Booking Summary</h4>
             <div id="summary-details" class="text-sm space-y-1">
                 <!-- Dynamic content will be inserted here -->
@@ -665,31 +707,90 @@
 
     <!-- Confirmation Modal -->
     <div id="confirmation-modal"
-        class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div class="bg-white rounded-3xl p-8 text-center max-w-2xl mx-4 transform scale-0 transition-all duration-500">
+        class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center overflow-hidden">
+        <div class="relative bg-white rounded-3xl p-8 text-center max-w-2xl mx-4 transform scale-0 transition-all duration-500">
+            <div id="confetti-container" class="absolute inset-0 pointer-events-none"></div>
             <div
-                class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-gentle">
+                class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-gentle shadow-lg">
                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
-            <h3 class="text-3xl font-bold text-gray-900 mb-4">🎉 Booking Confirmed!</h3>
-            <div id="confirmation-details" class="text-left bg-gray-50 rounded-xl p-6 mb-6">
+            <h3 class="text-3xl font-bold text-gray-900 mb-4 gradient-text">🎉 Booking Confirmed Successfully!</h3>
+            <p class="text-xl text-gray-600 mb-6">Your venue is ready for an unforgettable experience!</p>
+            <div id="confirmation-details" class="text-left bg-gray-50 rounded-xl p-6 mb-6 shadow-inner">
                 <!-- Confirmation details will be populated here -->
             </div>
-            <div class="flex justify-center space-x-4">
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <button id="view-bookings-btn"
-                    class="bg-primary-blue text-white px-8 py-3 rounded-full font-medium hover:bg-dark-blue transition-colors">
+                    class="bg-primary-blue text-white px-8 py-3 rounded-full font-medium hover:bg-dark-blue transition-colors shadow-md hover:shadow-lg">
                     View My Bookings
                 </button>
                 <button id="close-confirmation"
-                    class="bg-gray-300 text-gray-700 px-8 py-3 rounded-full font-medium hover:bg-gray-400 transition-colors">
+                    class="bg-gray-300 text-gray-700 px-8 py-3 rounded-full font-medium hover:bg-gray-400 transition-colors shadow-md hover:shadow-lg">
                     Close
                 </button>
             </div>
         </div>
     </div>
+    <script>
+        const modalOverlay = document.getElementById("modal-overlay");
+        const modalCard = document.getElementById("modal-card");
+        const modalTitle = document.getElementById("modal-title");
+        const modalContent = document.getElementById("modal-content");
+        const modalClose = document.getElementById("modal-close");
 
+        // Modal texts
+        const modalData = {
+            terms: {
+                title: "Terms & Conditions",
+                content: `
+        Welcome to our Meeting Hall Booking service. Please read carefully:
+        <br><br>
+        1. Bookings must be confirmed with valid details.<br>
+        2. Cancellation is allowed up to 24 hours before check-in.<br>
+        3. Guests are responsible for damages caused during the booking.<br>
+        4. Management reserves the right to refuse service.<br>
+        5. By proceeding, you agree to comply with all listed policies.
+      `
+            },
+            privacy: {
+                title: "Privacy Policy",
+                content: `
+        We value your privacy and ensure:<br><br>
+        - Your personal data is securely stored.<br>
+        - We never share information with third parties.<br>
+        - Data is used only for booking confirmation and communication.<br>
+        - By booking, you consent to our data usage policies.
+      `
+            }
+        };
+
+        // Open modal
+        document.getElementById("open-terms").addEventListener("click", (e) => {
+            e.preventDefault();
+            modalTitle.innerHTML = modalData.terms.title;
+            modalContent.innerHTML = modalData.terms.content;
+            modalOverlay.classList.remove("hidden");
+        });
+
+        document.getElementById("open-privacy").addEventListener("click", (e) => {
+            e.preventDefault();
+            modalTitle.innerHTML = modalData.privacy.title;
+            modalContent.innerHTML = modalData.privacy.content;
+            modalOverlay.classList.remove("hidden");
+        });
+
+        // Close modal
+        modalClose.addEventListener("click", () => modalOverlay.classList.add("hidden"));
+
+        // Close when clicking outside the modal card
+        modalOverlay.addEventListener("click", (e) => {
+            if (!modalCard.contains(e.target)) {
+                modalOverlay.classList.add("hidden");
+            }
+        });
+    </script>
     <!-- Enhanced JavaScript with Dynamic Availability, Validation, and Preview -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -1539,7 +1640,7 @@
                     <span class="flex items-center justify-center">
                         <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 1 7.938l3-2.647z"></path>
                         </svg>
                         Processing...
                     </span>
@@ -1625,6 +1726,30 @@
                 }
             });
 
+            // Function to create confetti
+            function createConfetti() {
+                const container = document.getElementById('confetti-container');
+                const colors = ['#facc15', '#0284c7', '#10b981', '#ef4444', '#8b5cf6'];
+
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = `${Math.random() * 10 + 5}px`;
+                    confetti.style.height = `${Math.random() * 10 + 5}px`;
+                    confetti.style.animationDelay = `${Math.random() * 2}s`;
+                    confetti.style.animationDuration = `${Math.random() * 2 + 3}s`;
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    container.appendChild(confetti);
+
+                    // Remove after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+            }
+
             // Function to show confirmation modal (Updated to stay until user dismisses)
             function showConfirmation(bookingData) {
                 const modal = document.getElementById('confirmation-modal');
@@ -1650,7 +1775,7 @@
 
                 confirmationDetails.innerHTML = `
                     <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                             <div>
                                 <span class="font-semibold text-gray-600">Booking ID:</span>
                                 <div class="font-mono text-primary-blue">#${Date.now().toString().slice(-6)}</div>
@@ -1668,8 +1793,32 @@
                                 <div>${bookingData.roomId}</div>
                             </div>
                             <div>
+                                <span class="font-semibold text-gray-600">Category:</span>
+                                <div class="capitalize">${bookingData.venueCategory}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Purpose:</span>
+                                <div>${bookingData.purpose}</div>
+                            </div>
+                            <div>
                                 <span class="font-semibold text-gray-600">Customer:</span>
                                 <div>${bookingData.firstName} ${bookingData.lastName}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Email:</span>
+                                <div>${bookingData.email}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Mobile:</span>
+                                <div>${bookingData.mobileNumber}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Address:</span>
+                                <div>${bookingData.address}</div>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Booked On:</span>
+                                <div>${bookingData.BookedOn}</div>
                             </div>
                             <div>
                                 <span class="font-semibold text-gray-600">Total Cost:</span>
@@ -1690,6 +1839,7 @@
 
                 setTimeout(() => {
                     modal.querySelector('div').style.transform = 'scale(1)';
+                    createConfetti();
                 }, 100);
 
                 // Add event listeners for modal buttons
