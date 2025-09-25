@@ -1116,6 +1116,7 @@
                 
                 // Store user ID in sessionStorage for booking association
                 sessionStorage.setItem('userId', user.id);
+                localStorage.setItem('userId', user.id);
                 console.log(user);
                 
                 Toastify({
@@ -1133,6 +1134,7 @@
                         window.location.href = '../../../Admin/Features/DashBoard/dashboard.html';
                         return;
                     }
+                    
                     window.location.href = '../Dashboard/home.html'; // Adjust path to your dashboard
                 }, 1000);
             } catch (error) {

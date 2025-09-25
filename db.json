@@ -26,6 +26,14 @@
       "password": "Test@123",
       "id": 3,
       "role": "admin"
+    },
+    {
+      "firstName": "Mano",
+      "lastName": "Vignesh",
+      "email": "727722eucs095@skcet.ac.in",
+      "phone": "7806922311",
+      "password": "Test@123",
+      "id": 4
     }
   ],
   "bookings": [
@@ -459,7 +467,7 @@
       "beverages": {},
       "BookedOn": "25/09/2025",
       "totalCost": 3000,
-      "status": "booked",
+      "status": "cancelled",
       "id": 19
     },
     {
@@ -481,6 +489,51 @@
       "totalCost": 2500,
       "status": "booked",
       "id": 20
+    },
+    {
+      "userId": 4,
+      "date": "2025-09-27",
+      "checkInTime": "14:00",
+      "checkOutTime": "15:16",
+      "venueCategory": "compact",
+      "roomId": "#003",
+      "firstName": "Larwin",
+      "lastName": "J",
+      "email": "727722eucs095@skcet.ac.in",
+      "mobileNumber": "7806922311",
+      "address": "Eb-colony kunniyamuttur coimbatore",
+      "purpose": "This is for my team members to investigate about their work progress..",
+      "beverage": "yes",
+      "beverages": {
+        "tea": 5,
+        "snacks": 5,
+        "water": 5
+      },
+      "BookedOn": "25/09/2025",
+      "totalCost": 3350,
+      "status": "booked",
+      "id": 21,
+      "updated": true
+    },
+    {
+      "userId": 4,
+      "date": "2025-09-27",
+      "checkInTime": "14:00",
+      "checkOutTime": "15:30",
+      "venueCategory": "compact",
+      "roomId": "#002",
+      "firstName": "Kavin",
+      "lastName": "J",
+      "email": "rith@gmail.com",
+      "mobileNumber": "7806922311",
+      "address": "tiruppur tamilmnadu",
+      "purpose": "this is for my team to interact..",
+      "beverage": "no",
+      "beverages": {},
+      "BookedOn": "25/09/2025",
+      "totalCost": 3000,
+      "status": "booked",
+      "id": 22
     }
   ],
   "reviews": [
@@ -507,6 +560,14 @@
       "comment": "nice!!!",
       "createdAt": "2025-09-24T11:42:44.554Z",
       "id": 3
+    },
+    {
+      "bookingId": 12,
+      "userId": "2",
+      "rating": 3,
+      "comment": "It's nice!!",
+      "createdAt": "2025-09-25T05:21:01.312Z",
+      "id": 4
     }
   ],
   "halls": [
@@ -633,6 +694,17 @@
       "timestamp": "2025-09-24T08:27:46.701Z",
       "status": "pending",
       "id": 2
+    },
+    {
+      "UserId": "2",
+      "name": "John",
+      "email": "john@example.com",
+      "phone": "8300216725",
+      "subject": "venue-information",
+      "description": "I need the entire details about your grand hall,because i want upto 10days.",
+      "timestamp": "2025-09-25T03:53:00.551Z",
+      "status": "pending",
+      "id": 3
     }
   ],
   "content": {
