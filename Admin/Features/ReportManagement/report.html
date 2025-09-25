@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Management System</title>
+    <title>Report Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -28,11 +27,11 @@
         }
     </script>
 </head>
-
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 font-sans">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <div class="w-64 bg-primary-500 text-white flex-shrink-0 hidden lg:block">
+        <div
+            class="w-64 bg-primary-900 text-white flex-shrink-0 hidden lg:block shadow-xl fixed h-full">
             <div class="p-6">
                 <div class="flex items-center space-x-2">
                     <h1 class="text-2xl font-bold">VenueVista</h1>
@@ -43,272 +42,403 @@
             <nav class="mt-8">
                 <div class="px-4 space-y-2">
                     <a href="../DashBoard/dashboard.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        <!-- <i class="fas fa-tachometer-alt mr-3"></i> -->
                         Dashboard
                     </a>
                     <a href="../Bookingmanagement/booking.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        <!-- <i class="fas fa-calendar-check mr-3"></i> -->
                         Booking Management
                     </a>
                     <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        <!-- <i class="fas fa-home mr-3"></i> -->
                         Hall Management
                     </a>
-                    <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
-                        <!-- <i class="fas fa-home mr-3"></i> -->
+                    <a href="../QueryManagement/query.html"
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        <!-- <i class="fas fa-question-circle mr-3"></i> -->
                         Query Management
                     </a>
                     <a href="#"
-                        class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-white bg-primary-700 rounded-lg font-medium">
+                        <!-- <i class="fas fa-chart-bar mr-3"></i> -->
                         Report Management
                     </a>
                     <a href="../ContentManagement/content.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        <!-- <i class="fas fa-edit mr-3"></i> -->
                         Content Management
                     </a>
-                    <a href="#"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                    <a href="../Backup & Recovery/backup&recovery.html"
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        <!-- <i class="fas fa-shield-alt mr-3"></i> -->
                         Backup & Recovery
                     </a>
                 </div>
 
                 <div class="absolute bottom-4 w-64 px-4">
-                    <button
-                        class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
+                    <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                        class="w-full flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-left">
+                        
+                        <i class="fas fa-sign-out-alt mr-3"></i>
                         Log Out
-                    </button>
+                    </a>
                 </div>
             </nav>
         </div>
 
         <!-- Mobile Menu Button -->
         <div class="lg:hidden fixed top-4 left-4 z-50">
-            <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                    </path>
-                </svg>
+            <button id="mobileMenuBtn" class="bg-primary-600 text-white p-3 rounded-lg shadow-lg">
+                <i class="fas fa-bars"></i>
             </button>
         </div>
 
         <!-- Mobile Sidebar Overlay -->
         <div id="mobileMenu" class="lg:hidden fixed inset-0 z-40 hidden">
             <div class="fixed inset-0 bg-black opacity-50"></div>
-            <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white">
-                <div class="p-6">
-                    <div class="flex justify-between items-center">
-                        <h1 class="text-xl font-bold">VenueVista</h1>
+            <div
+                class="fixed left-0 top-0 w-3/4 sm:w-64 h-full bg-gradient-to-b from-primary-600 to-primary-800 text-white transition-transform transform translate-x-0 shadow-xl">
+                <div class="p-4 sm:p-6">
+                    <div class="flex justify-center items-center">
+                        <div class="flex items-center space-x-2">
+                            <h1 class="text-lg font-bold ml-[3rem]">VenueVista</h1>
+                        </div>
                         <button id="closeMobileMenu" class="text-white">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
+                            <i class="fas fa-times text-xl"></i>
                         </button>
                     </div>
                 </div>
 
                 <nav class="mt-4">
-                    <div class="px-4 space-y-2">
+                    <div class="px-3 sm:px-4 space-y-2 text-sm sm:text-base">
                         <a href="../DashBoard/dashboard.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Dashboard</a>
+                            class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
+                            <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                        </a>
                         <a href="../Bookingmanagement/booking.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Booking
-                            Management</a>
+                            class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
+                            <i class="fas fa-calendar-check mr-3"></i>Booking Management
+                        </a>
                         <a href="../HallsManagement/hall.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Hall
-                            Management</a>
-                        <a href="../HallsManagement/hall.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Query
-                            Management</a>
+                            class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
+                            <i class="fas fa-home mr-3"></i>Hall Management
+                        </a>
+                        <a href="../QueryManagement/query.html"
+                            class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
+                            <i class="fas fa-question-circle mr-3"></i>Query Management
+                        </a>
                         <a href="#"
-                            class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Report
-                            Management</a>
+                            class="flex items-center px-4 py-3 text-white bg-primary-700 rounded-lg font-medium">
+                            <i class="fas fa-chart-bar mr-3"></i>Report Management
+                        </a>
                         <a href="../ContentManagement/content.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Content
-                            Management</a>
-                        <a href="#"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Backup
-                            & Recovery</a>
-                        <a href="#"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Log
-                            Out</a>
+                            class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
+                            <i class="fas fa-edit mr-3"></i>Content Management
+                        </a>
+                        <a href="../Backup & Recovery/backup&recovery.html"
+                            class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
+                            <i class="fas fa-shield-alt mr-3"></i>Backup & Recovery
+                        </a>
+                        <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                            class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
+                            <i class="fas fa-sign-out-alt mr-3"></i>Log Out
+                        </a>
                     </div>
                 </nav>
             </div>
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-4 lg:p-8">
-            <div class="max-w-6xl mx-auto">
-                <h1 class="text-3xl lg:text-4xl font-bold text-primary-800 mb-12 ml-12 lg:ml-0">Report Management</h1>
-
-                <!-- Loading State -->
-                <div id="loading" class="flex justify-center items-center h-64">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-                </div>
-
-                <!-- Error State -->
-                <div id="error" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                    <div class="flex">
-                        <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                        </svg>
-                        <p class="text-red-700" id="errorMessage">Failed to load data. Please try again.</p>
+        <div class="flex-1 flex flex-col ml-0 lg:ml-64">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200 p-4 lg:p-6">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 ml-12 lg:ml-0">Report Management</h1>
                     </div>
                 </div>
+            </header>
 
-                <div id="content" class="hidden">
-                    <!-- Report Form -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 lg:p-8">
-                        <form id="reportForm" class="space-y-8">
-                            <!-- Date Selection Row -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                                <!-- Start Date -->
-                                <div>
-                                    <label class="block text-lg font-semibold text-gray-800 mb-3">Start Date</label>
-                                    <div class="relative">
-                                        <input type="date" id="startDate"
-                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
-                                    </div>
-                                </div>
-
-                                <!-- End Date -->
-                                <div>
-                                    <label class="block text-lg font-semibold text-gray-800 mb-3">End Date</label>
-                                    <div class="relative">
-                                        <input type="date" id="endDate"
-                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Category and Room Selection Row -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                                <!-- Select Venue Category -->
-                                <div>
-                                    <label class="block text-lg font-semibold text-gray-800 mb-3">Select Venue Category</label>
-                                    <div class="relative">
-                                        <select id="venueCategory"
-                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-all cursor-pointer">
-                                            <option value="">Select Category</option>
-                                            <option value="compact">Compact Halls</option>
-                                            <option value="classic">Classic Halls</option>
-                                            <option value="grand">Grand Halls</option>
-                                            <option value="all">All Categories</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Select Room -->
-                                <div>
-                                    <label class="block text-lg font-semibold text-gray-800 mb-3">Select Room</label>
-                                    <div class="relative">
-                                        <select id="roomSelect"
-                                            class="w-full px-4 py-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-all cursor-pointer">
-                                            <option value="">Select Room</option>
-                                            <option value="all">All Rooms</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Export Button -->
-                            <div class="flex justify-center pt-6">
-                                <button type="submit" id="exportBtn"
-                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-4 px-12 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
-                                    Export PDF Report
-                                </button>
-                            </div>
-                        </form>
+            <!-- Content -->
+            <main class="flex-1 p-4 lg:p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Loading State -->
+                    <div id="loading" class="flex justify-center items-center h-64">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
                     </div>
 
-                    <!-- Report Summary Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
-                            <div class="flex items-center">
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-800">Total Bookings</h3>
-                                    <p class="text-3xl font-bold text-primary-600 mt-2" id="totalBookings">0</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
-                            <div class="flex items-center">
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-800">Revenue Generated</h3>
-                                    <p class="text-3xl font-bold text-green-600 mt-2" id="totalRevenue">₹0</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
-                            <div class="flex items-center">
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-800">Unique Rooms Used</h3>
-                                    <p class="text-3xl font-bold text-yellow-600 mt-2" id="activeHalls">0</p>
-                                </div>
-                            </div>
+                    <!-- Error State -->
+                    <div id="error" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                        <div class="flex">
+                            <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                            </svg>
+                            <p class="text-red-700" id="errorMessage">Failed to load reports. Please try again.</p>
                         </div>
                     </div>
 
-                    <!-- Status Distribution -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-400">
-                            <div class="flex items-center">
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-800">Pending Bookings</h3>
-                                    <p class="text-3xl font-bold text-yellow-600 mt-2" id="pendingBookings">0</p>
+                    <div id="content" class="bg-white rounded-lg shadow-md border border-gray-200 hidden">
+                        <!-- Frame Header with Controls -->
+                        <div class="p-4 lg:p-6 border-b border-gray-200">
+                            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                                <h2 class="text-xl font-semibold text-gray-800">Booking Analytics</h2>
+                                
+                                <!-- Controls -->
+                                <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                                    <!-- Report Type Dropdown -->
+                                    <select id="reportType" class="w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                        <option value="date">Bookings by Date</option>
+                                        <option value="month">Bookings by Month</option>
+                                        <option value="category">Bookings by Category</option>
+                                        <option value="status">Bookings by Status</option>
+                                        <option value="revenue">Revenue by Date</option>
+                                    </select>
+                                    <!-- Date Range Filter -->
+                                    <div class="relative">
+                                        <input 
+                                            type="date" 
+                                            id="startDate"
+                                            class="w-full sm:w-40 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                        >
+                                    </div>
+                                    <div class="relative">
+                                        <input 
+                                            type="date" 
+                                            id="endDate"
+                                            class="w-full sm:w-40 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                        >
+                                    </div>
+                                    <!-- Category Filter -->
+                                    <select id="categoryFilter" class="w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                        <option value="">All Categories</option>
+                                        <option value="compact">Compact Hall</option>
+                                        <option value="classic">Classic Hall</option>
+                                        <option value="grand">Grand Hall</option>
+                                    </select>
+                                    <!-- Apply Button -->
+                                    <button id="applyFilters" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 text-sm font-medium">
+                                        Apply
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-400">
-                            <div class="flex items-center">
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-800">Completed Bookings</h3>
-                                    <p class="text-3xl font-bold text-green-600 mt-2" id="completedBookings">0</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-400">
-                            <div class="flex items-center">
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-800">Cancelled Bookings</h3>
-                                    <p class="text-3xl font-bold text-red-600 mt-2" id="cancelledBookings">0</p>
-                                </div>
+                        <!-- Chart Container -->
+                        <div class="p-4 lg:p-6">
+                            <div id="chartContainer" class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <h3 id="chartTitle" class="text-lg font-medium mb-4">Bookings by Date</h3>
+                                <canvas id="reportChart" style="max-height: 400px;"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 
     <script>
-        // Global variables
         let allBookings = [];
+        let filteredBookings = [];
+        let reportChart;
         const API_BASE = 'http://localhost:3000';
 
-        // Available rooms mapping
-        const roomsByCategory = {
-            compact: ['#001', '#002', '#003', '#004'],
-            classic: ['#005', '#006', '#007', '#008'],
-            grand: ['#009', '#010', '#011', '#012']
-        };
-
-        // Initialize the application
+        // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            setupEventListeners();
             fetchBookings();
-            setDefaultDates();
+            setupEventListeners();
         });
+
+        // Fetch bookings from JSON server
+        async function fetchBookings() {
+            try {
+                showLoading(true);
+                const response = await fetch(`${API_BASE}/bookings`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch bookings');
+                }
+                
+                allBookings = await response.json();
+                filteredBookings = [...allBookings];
+                applyFilters();
+                showContent();
+                
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+                showError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Show/hide loading state
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'flex' : 'none';
+        }
+
+        // Show/hide error state
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('content').classList.add('hidden');
+        }
+
+        // Show content
+        function showContent() {
+            document.getElementById('error').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+        }
+
+        // Process data for charts
+        function processChartData(reportType) {
+            // Initialize data structures
+            let labels = [];
+            let data = [];
+            let title = '';
+            let yAxis = '';
+            let xAxis = '';
+
+            if (reportType === 'date') {
+                const bookingsByDate = {};
+                filteredBookings.forEach(booking => {
+                    const date = formatDate(booking.date);
+                    bookingsByDate[date] = (bookingsByDate[date] || 0) + 1;
+                });
+                labels = Object.keys(bookingsByDate).sort((a, b) => new Date(a) - new Date(b));
+                data = labels.map(date => bookingsByDate[date]);
+                title = 'Bookings by Date';
+                yAxis = 'Number of Bookings';
+                xAxis = 'Date';
+            } else if (reportType === 'month') {
+                const bookingsByMonth = {};
+                filteredBookings.forEach(booking => {
+                    const date = new Date(booking.date);
+                    const month = date.toLocaleString('en-GB', { month: 'short', year: 'numeric' });
+                    bookingsByMonth[month] = (bookingsByMonth[month] || 0) + 1;
+                });
+                labels = Object.keys(bookingsByMonth).sort((a, b) => new Date(a) - new Date(b));
+                data = labels.map(month => bookingsByMonth[month]);
+                title = 'Bookings by Month';
+                yAxis = 'Number of Bookings';
+                xAxis = 'Month';
+            } else if (reportType === 'category') {
+                const bookingsByCategory = { compact: 0, classic: 0, grand: 0 };
+                filteredBookings.forEach(booking => {
+                    if (bookingsByCategory[booking.venueCategory] !== undefined) {
+                        bookingsByCategory[booking.venueCategory] += 1;
+                    }
+                });
+                labels = ['Compact Hall', 'Classic Hall', 'Grand Hall'];
+                data = [bookingsByCategory.compact, bookingsByCategory.classic, bookingsByCategory.grand];
+                title = 'Bookings by Category';
+                yAxis = 'Number of Bookings';
+                xAxis = 'Category';
+            } else if (reportType === 'status') {
+                const bookingsByStatus = { booked: 0, completed: 0, cancelled: 0 };
+                filteredBookings.forEach(booking => {
+                    if (bookingsByStatus[booking.status] !== undefined) {
+                        bookingsByStatus[booking.status] += 1;
+                    }
+                });
+                labels = ['Booked', 'Completed', 'Cancelled'];
+                data = [bookingsByStatus.booked, bookingsByStatus.completed, bookingsByStatus.cancelled];
+                title = 'Bookings by Status';
+                yAxis = 'Number of Bookings';
+                xAxis = 'Status';
+            } else if (reportType === 'revenue') {
+                const revenueByDate = {};
+                filteredBookings.forEach(booking => {
+                    const date = formatDate(booking.date);
+                    revenueByDate[date] = (revenueByDate[date] || 0) + (booking.totalCost || 0);
+                });
+                labels = Object.keys(revenueByDate).sort((a, b) => new Date(a) - new Date(b));
+                data = labels.map(date => revenueByDate[date]);
+                title = 'Revenue by Date';
+                yAxis = 'Revenue ($)';
+                xAxis = 'Date';
+            }
+
+            return { labels, data, title, yAxis, xAxis };
+        }
+
+        // Render chart
+        function renderChart() {
+            const reportType = document.getElementById('reportType').value;
+            const { labels, data, title, yAxis, xAxis } = processChartData(reportType);
+
+            // Update chart title
+            document.getElementById('chartTitle').textContent = title;
+
+            // Destroy existing chart if it exists
+            if (reportChart) reportChart.destroy();
+
+            // Render new chart
+            reportChart = new Chart(document.getElementById('reportChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: yAxis,
+                        data: data,
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuad'
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: yAxis
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: xAxis
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const category = document.getElementById('categoryFilter').value;
+
+            filteredBookings = allBookings.filter(booking => {
+                const bookingDate = new Date(booking.date);
+                if (startDate && bookingDate < new Date(startDate)) return false;
+                if (endDate && bookingDate > new Date(endDate)) return false;
+                if (category && booking.venueCategory !== category) return false;
+                return true;
+            });
+
+            renderChart();
+        }
 
         // Setup event listeners
         function setupEventListeners() {
-            // Mobile menu functionality
+            // Mobile menu
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
             const closeMobileMenu = document.getElementById('closeMobileMenu');
@@ -327,321 +457,10 @@
                 }
             });
 
-            // Dynamic room filtering based on venue category
-            const venueCategory = document.getElementById('venueCategory');
-            venueCategory.addEventListener('change', updateRoomOptions);
-
-            // Form submission
-            document.getElementById('reportForm').addEventListener('submit', handleExport);
-        }
-
-        // Fetch bookings from API
-        async function fetchBookings() {
-            try {
-                showLoading(true);
-                const response = await fetch(`${API_BASE}/bookings`);
-                
-                if (!response.ok) {
-                    throw new Error('Failed to fetch bookings');
-                }
-                
-                allBookings = await response.json();
-                updateSummaryCards();
-                populateRoomOptions();
-                showContent();
-                
-            } catch (error) {
-                console.error('Error fetching bookings:', error);
-                showError(error.message);
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Show/hide loading state
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'flex' : 'none';
-        }
-
-        // Show error state
-        function showError(message) {
-            document.getElementById('errorMessage').textContent = message;
-            document.getElementById('error').classList.remove('hidden');
-            document.getElementById('content').classList.add('hidden');
-        }
-
-        // Show content
-        function showContent() {
-            document.getElementById('error').classList.add('hidden');
-            document.getElementById('content').classList.remove('hidden');
-        }
-
-        // Update summary cards with real data
-        function updateSummaryCards() {
-            const totalBookings = allBookings.length;
-            const totalRevenue = allBookings.reduce((sum, booking) => sum + (booking.totalCost || 0), 0);
-            const uniqueRooms = new Set(allBookings.map(booking => booking.roomId)).size;
-            
-            const statusCounts = allBookings.reduce((counts, booking) => {
-                counts[booking.status] = (counts[booking.status] || 0) + 1;
-                return counts;
-            }, {});
-
-            document.getElementById('totalBookings').textContent = totalBookings;
-            document.getElementById('totalRevenue').textContent = `₹${(totalRevenue / 100000).toFixed(1)}L`;
-            document.getElementById('activeHalls').textContent = uniqueRooms;
-            document.getElementById('pendingBookings').textContent = statusCounts.pending || 0;
-            document.getElementById('completedBookings').textContent = statusCounts.completed || 0;
-            document.getElementById('cancelledBookings').textContent = statusCounts.cancelled || 0;
-        }
-
-        // Populate room options from actual data
-        function populateRoomOptions() {
-            const roomSelect = document.getElementById('roomSelect');
-            const uniqueRooms = [...new Set(allBookings.map(booking => booking.roomId))].sort();
-            
-            // Clear existing options except default
-            roomSelect.innerHTML = '<option value="">Select Room</option>';
-            
-            // Add unique rooms from actual data
-            uniqueRooms.forEach(roomId => {
-                const option = document.createElement('option');
-                option.value = roomId;
-                option.textContent = `Hall ${roomId}`;
-                roomSelect.appendChild(option);
-            });
-            
-            // Add "All Rooms" option
-            const allOption = document.createElement('option');
-            allOption.value = 'all';
-            allOption.textContent = 'All Rooms';
-            roomSelect.appendChild(allOption);
-        }
-
-        // Update room options based on selected category
-        function updateRoomOptions() {
-            const category = document.getElementById('venueCategory').value;
-            const roomSelect = document.getElementById('roomSelect');
-            
-            // Clear options
-            roomSelect.innerHTML = '<option value="">Select Room</option>';
-            
-            if (category && category !== 'all') {
-                // Filter rooms by category from actual bookings
-                const categoryRooms = allBookings
-                    .filter(booking => booking.venueCategory === category)
-                    .map(booking => booking.roomId);
-                
-                const uniqueRooms = [...new Set(categoryRooms)].sort();
-                
-                uniqueRooms.forEach(roomId => {
-                    const option = document.createElement('option');
-                    option.value = roomId;
-                    option.textContent = `Hall ${roomId}`;
-                    roomSelect.appendChild(option);
-                });
-            } else if (category === 'all') {
-                // Add all rooms from actual data
-                const allRooms = [...new Set(allBookings.map(booking => booking.roomId))].sort();
-                allRooms.forEach(roomId => {
-                    const option = document.createElement('option');
-                    option.value = roomId;
-                    option.textContent = `Hall ${roomId}`;
-                    roomSelect.appendChild(option);
-                });
-            }
-            
-            // Add "All Rooms" option if category is selected
-            if (category) {
-                const allOption = document.createElement('option');
-                allOption.value = 'all';
-                allOption.textContent = 'All Rooms';
-                roomSelect.appendChild(allOption);
-            }
-        }
-
-        // Filter bookings based on criteria
-        function filterBookings(startDate, endDate, category, room) {
-            return allBookings.filter(booking => {
-                const bookingDate = new Date(booking.date);
-                const start = new Date(startDate);
-                const end = new Date(endDate);
-                
-                // Date filter
-                if (bookingDate < start || bookingDate > end) {
-                    return false;
-                }
-                
-                // Category filter
-                if (category && category !== 'all' && booking.venueCategory !== category) {
-                    return false;
-                }
-                
-                // Room filter
-                if (room && room !== 'all' && booking.roomId !== room) {
-                    return false;
-                }
-                
-                return true;
-            });
-        }
-
-        // Handle export functionality
-        function handleExport(e) {
-            e.preventDefault();
-            
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            const category = document.getElementById('venueCategory').value;
-            const room = document.getElementById('roomSelect').value;
-            
-            // Validation
-            if (!startDate || !endDate || !category) {
-                alert('Please provide all required filters:\n- Start Date\n- End Date\n- Venue Category');
-                return;
-            }
-            
-            if (new Date(startDate) > new Date(endDate)) {
-                alert('Start date cannot be later than end date.');
-                return;
-            }
-            
-            // Filter bookings
-            const filteredBookings = filterBookings(startDate, endDate, category, room);
-            
-            if (filteredBookings.length === 0) {
-                alert('No bookings found for the selected criteria.');
-                return;
-            }
-            
-            // Generate PDF
-            generatePDFReport(filteredBookings, { startDate, endDate, category, room });
-        }
-
-        // Generate PDF report
-        function generatePDFReport(bookings, filters) {
-            const exportBtn = document.getElementById('exportBtn');
-            const originalText = exportBtn.innerHTML;
-            
-            exportBtn.innerHTML = 'Generating PDF...';
-            exportBtn.disabled = true;
-            
-            try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                // Header
-                doc.setFontSize(20);
-                doc.setTextColor(59, 130, 246); // Primary blue
-                doc.text('VenueVista - Booking Report', 20, 30);
-                
-                // Report details
-                doc.setFontSize(12);
-                doc.setTextColor(0, 0, 0);
-                doc.text(`Report Period: ${formatDate(filters.startDate)} to ${formatDate(filters.endDate)}`, 20, 50);
-                doc.text(`Category: ${getCategoryDisplayName(filters.category)}`, 20, 60);
-                doc.text(`Room: ${filters.room === 'all' ? 'All Rooms' : filters.room || 'All Rooms'}`, 20, 70);
-                doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 80);
-                
-                // Summary statistics
-                const totalRevenue = bookings.reduce((sum, booking) => sum + (booking.totalCost || 0), 0);
-                const statusCounts = bookings.reduce((counts, booking) => {
-                    counts[booking.status] = (counts[booking.status] || 0) + 1;
-                    return counts;
-                }, {});
-                
-                doc.setFontSize(14);
-                doc.setTextColor(59, 130, 246);
-                doc.text('Summary', 20, 100);
-                
-                doc.setFontSize(10);
-                doc.setTextColor(0, 0, 0);
-                doc.text(`Total Bookings: ${bookings.length}`, 20, 115);
-                doc.text(`Total Revenue: ₹${totalRevenue.toLocaleString()}`, 20, 125);
-                doc.text(`Pending: ${statusCounts.pending || 0}`, 20, 135);
-                doc.text(`Completed: ${statusCounts.completed || 0}`, 90, 135);
-                doc.text(`Cancelled: ${statusCounts.cancelled || 0}`, 160, 135);
-                
-                // Table data
-                const tableColumns = ['User Name', 'Category', 'Room', 'Date', 'Time', 'Status', 'Cost'];
-                const tableRows = bookings.map(booking => [
-                    `${booking.firstName} ${booking.lastName}`,
-                    getCategoryDisplayName(booking.venueCategory),
-                    booking.roomId,
-                    formatDate(booking.date),
-                    `${booking.checkInTime}-${booking.checkOutTime}`,
-                    booking.status.charAt(0).toUpperCase() + booking.status.slice(1),
-                    `₹${booking.totalCost?.toLocaleString() || '0'}`
-                ]);
-                
-                // Generate table
-                doc.autoTable({
-                    head: [tableColumns],
-                    body: tableRows,
-                    startY: 150,
-                    styles: {
-                        fontSize: 8,
-                        cellPadding: 3
-                    },
-                    headStyles: {
-                        fillColor: [59, 130, 246],
-                        textColor: [255, 255, 255]
-                    },
-                    alternateRowStyles: {
-                        fillColor: [245, 247, 250]
-                    }
-                });
-                
-                // Save PDF
-                const filename = `VenueVista_Report_${filters.startDate}_to_${filters.endDate}.pdf`;
-                doc.save(filename);
-                
-                // Success feedback
-                exportBtn.innerHTML = 'PDF Generated Successfully!';
-                exportBtn.style.backgroundColor = '#059669';
-                
-                setTimeout(() => {
-                    exportBtn.innerHTML = originalText;
-                    exportBtn.style.backgroundColor = '';
-                    exportBtn.disabled = false;
-                }, 3000);
-                
-            } catch (error) {
-                console.error('Error generating PDF:', error);
-                alert('Error generating PDF report. Please try again.');
-                
-                exportBtn.innerHTML = originalText;
-                exportBtn.disabled = false;
-            }
-        }
-
-        // Get category display name
-        function getCategoryDisplayName(category) {
-            const categoryMap = {
-                'compact': 'Compact Halls',
-                'classic': 'Classic Halls',
-                'grand': 'Grand Halls',
-                'all': 'All Categories'
-            };
-            return categoryMap[category] || category;
-        }
-
-        // Format date for display
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-GB');
-        }
-
-        // Set default dates (last 30 days)
-        function setDefaultDates() {
-            const today = new Date();
-            const thirtyDaysAgo = new Date(today);
-            thirtyDaysAgo.setDate(today.getDate() - 30);
-
-            document.getElementById('endDate').value = today.toISOString().split('T')[0];
-            document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+            // Filter controls
+            document.getElementById('applyFilters').addEventListener('click', applyFilters);
+            document.getElementById('reportType').addEventListener('change', renderChart);
         }
     </script>
 </body>
-
 </html>

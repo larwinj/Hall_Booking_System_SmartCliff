@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -27,10 +29,10 @@
     </script>
 </head>
 
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-50 font-sans overflow-x-hidden">
     <div class="flex min-h-screen">
         <!-- Sidebar - Fixed position -->
-        <div class="w-64 bg-primary-500 text-white flex-shrink-0 hidden lg:block fixed h-full overflow-y-auto z-30">
+        <div class="w-64 bg-primary-900 text-white flex-shrink-0 hidden lg:block fixed h-full overflow-y-auto z-30">
             <div class="p-6">
                 <div class="flex items-center space-x-2">
                     <h1 class="text-2xl font-bold">VenueVista</h1>
@@ -41,41 +43,42 @@
             <nav class="mt-8 pb-20">
                 <div class="px-4 space-y-2">
                     <a href="../DashBoard/dashboard.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 rounded-lg transition-colors duration-200">
                         Dashboard
                     </a>
                     <a href="#"
-                        class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium bg-primary-700 rounded-lg">
                         Booking Management
                     </a>
                     <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 rounded-lg transition-colors duration-200">
                         Hall Management
                     </a>
-                    <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                    <a href="../QueryManagement/query.html"
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
                         <!-- <i class="fas fa-home mr-3"></i> -->
                         Query Management
                     </a>
                     <a href="../ReportManagement/report.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 rounded-lg transition-colors duration-200">
                         Report Management
                     </a>
                     <a href="../ContentManagement/content.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 rounded-lg transition-colors duration-200">
                         Content Management
                     </a>
-                    <a href="#"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                    <a href="../Backup & Recovery/backup&recovery.html"
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 rounded-lg transition-colors duration-200">
                         Backup & Recovery
                     </a>
                 </div>
 
                 <div class="absolute bottom-4 w-64 px-4">
-                    <button
-                        class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
-                        Log Out
-                    </button>
+                    <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                    class="w-full flex items-center px-4 py-3 font-bold text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-left">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    Log Out
+                </a>
                 </div>
             </nav>
         </div>
@@ -95,8 +98,8 @@
             <div class="fixed inset-0 bg-black opacity-50"></div>
             <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white overflow-y-auto">
                 <div class="p-6">
-                    <div class="flex justify-between items-center">
-                        <h1 class="text-xl font-bold">VenueVista</h1>
+                    <div class="flex justify-center items-center">
+                        <h1 class="text-xl font-bold ml-[3rem]">VenueVista</h1>
                         <button id="closeMobileMenu" class="text-white">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -115,7 +118,7 @@
                             Management</a>
                         <a href="../HallsManagement/hall.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Hall Management</a>
-                        <a href="../HallsManagement/hall.html"
+                        <a href="../QueryManagement/query.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Query Management</a>
                         <a href="../ReportManagement/report.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Report
@@ -123,7 +126,7 @@
                         <a href="../ContentManagement/content.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Content
                             Management</a>
-                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Backup &
+                        <a href="../Backup & Recovery/backup&recovery.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Backup &
                             Recovery</a>
                         <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Log Out</a>
                     </div>
@@ -136,12 +139,12 @@
             <!-- Header -->
             <header class="bg-white shadow-sm border-b border-gray-200 p-4 lg:p-6">
                 <div class="flex justify-between items-center">
-                    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 ml-12 lg:ml-0">Booking Management</h1>
+                    <h1 class="text-2xl lg:text-3xl font-bold text-primary-900 ml-12 lg:ml-0">Booking Management</h1>
                 </div>
             </header>
 
             <!-- Content -->
-            <main class="flex-1 p-4 lg:p-6">
+            <main class="flex-1 p-4 lg:p-6 overflow-x-hidden">
                 <!-- Loading State -->
                 <div id="loading" class="flex justify-center items-center h-64">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
@@ -247,34 +250,34 @@
                     <div class="overflow-x-auto">
                         <div class="min-w-full">
                             <table class="w-full min-w-max">
-                                <thead class="bg-gray-50 border-b border-gray-200">
+                                <thead class="bg-primary-900 text-white sticky top-0">
                                     <tr>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-36">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-36">
                                             User Name</th>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-32">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-32">
                                             Category Type</th>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-24">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-24">
                                             Room Number</th>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-28">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-28">
                                             Date</th>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-32">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-32">
                                             Check in Time</th>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-32">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-32">
                                             Check out Time</th>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-24">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-24">
                                             Status</th>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-28">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-28">
                                             Booked Date</th>
                                         <th
-                                            class="px-4 lg:px-6 py-3 text-left text-md font-medium text-gray-500 uppercase tracking-wider min-w-24">
+                                            class="px-4 lg:px-6 py-3 text-left text-md font-semibold uppercase tracking-wider min-w-24">
                                             Actions</th>
                                     </tr>
                                 </thead>
@@ -454,13 +457,13 @@
                 return `
                     <tr class="hover:bg-gray-50 transition-colors duration-150">
                         <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md font-medium text-gray-900">${fullName}</td>
-                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-700">${categoryName}</td>
-                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-700">${booking.roomId}</td>
-                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-700">${formatDate(booking.date)}</td>
-                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-700">${booking.checkInTime}</td>
-                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-700">${booking.checkOutTime}</td>
+                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-900">${categoryName}</td>
+                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-900">${booking.roomId}</td>
+                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-900">${formatDate(booking.date)}</td>
+                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-900">${booking.checkInTime}</td>
+                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-900">${booking.checkOutTime}</td>
                         <td class="px-4 lg:px-6 py-4 whitespace-nowrap">${statusBadge}</td>
-                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-700">${booking.BookedOn}</td>
+                        <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-900">${booking.BookedOn}</td>
                         <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-md text-gray-500 relative">
                             <button class="action-btn text-black hover:text-black font-medium p-1" data-booking-id="${booking.id}" data-booking-status="${booking.status}">⋮</button>
                         </td>

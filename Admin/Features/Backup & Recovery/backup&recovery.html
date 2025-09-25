@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup & Recovery System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-primary-900 text-white flex-shrink-0 hidden lg:block fixed h-full">
+            <div class="p-6">
+                <div class="flex items-center space-x-2">
+                    <h1 class="text-2xl font-bold">VenueVista</h1>
+                </div>
+                <p class="text-primary-200 text-sm mt-1">Admin Dashboard</p>
+            </div>
+
+            <nav class="mt-8">
+                <div class="px-4 space-y-2">
+                    <a href="../DashBoard/dashboard.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Dashboard
+                    </a>
+                    <a href="../Bookingmanagement/booking.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Booking Management
+                    </a>
+                    <a href="../HallsManagement/hall.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Hall Management
+                    </a>
+                    <a href="../QueryManagement/query.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white font-medium rounded-lg transition-all duration-200">
+                        Query Management
+                    </a>
+                    <a href="../ReportManagement/report.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Report Management
+                    </a>
+                    <a href="../ContentManagement/content.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Content Management
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Backup & Recovery
+                    </a>
+                </div>
+
+                <div class="absolute bottom-4 w-64 px-4">
+                    <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                        class="w-full flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-left">
+                        
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        Log Out
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="lg:hidden fixed top-4 left-4 z-50">
+            <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="mobileMenu" class="lg:hidden fixed inset-0 z-40 hidden">
+            <div class="fixed inset-0 bg-black opacity-50"></div>
+            <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white">
+                <div class="p-6">
+                    <div class="flex justify-center items-center">
+                        <h1 class="text-xl font-bold ml-[3rem]">VenueVista</h1>
+                        <button id="closeMobileMenu" class="text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <nav class="mt-4">
+                    <div class="px-4 space-y-2">
+                        <a href="../DashBoard/dashboard.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Dashboard</a>
+                        <a href="../Bookingmanagement/booking.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Booking
+                            Management</a>
+                        <a href="../HallsManagement/hall.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Hall
+                            Management</a>
+                        <a href="../QueryManagement/query.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Query
+                            Management</a>
+                        <a href="../ReportManagement/report.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Report
+                            Management</a>
+                        <a href="../ContentManagement/content.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Content
+                            Management</a>
+                        <a href="#"
+                            class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Backup
+                            & Recovery</a>
+                        <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                            class="block px-4 py-3 text-primary-200 font-bold hover:bg-primary-700 rounded-lg font-medium">Log
+                            Out</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-4 lg:p-8" style="margin-left:15%;">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-3xl lg:text-4xl font-bold text-primary-800 mb-12 ml-12 lg:ml-0">Backup & Recovery</h1>
+
+                <!-- Main Action Cards -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <!-- Backup Section -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 lg:p-8 border-t-4 border-primary-500">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-800">Data Backup</h2>
+                                <p class="text-gray-600 mt-1">Export your database tables to CSV format</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Select Tables to Backup</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" id="backup_users" class="w-4 h-4 text-primary-600 rounded focus:ring-2 focus:ring-primary-500">
+                                        <span class="text-gray-700">Users</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" id="backup_bookings" class="w-4 h-4 text-primary-600 rounded focus:ring-2 focus:ring-primary-500">
+                                        <span class="text-gray-700">Bookings</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" id="backup_reviews" class="w-4 h-4 text-primary-600 rounded focus:ring-2 focus:ring-primary-500">
+                                        <span class="text-gray-700">Reviews</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" id="backup_halls" class="w-4 h-4 text-primary-600 rounded focus:ring-2 focus:ring-primary-500">
+                                        <span class="text-gray-700">Halls</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="pt-4">
+                                <button id="startBackupBtn"
+                                    class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                    Start Backup Process
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Restore Section -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 lg:p-8 border-t-4 border-green-500">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-800">Data Restore</h2>
+                                <p class="text-gray-600 mt-1">Import CSV files to restore your data</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Select Table to Restore</label>
+                                <select id="restoreTableSelect" class="w-full px-4 py-3 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                    <option value="">Choose a table</option>
+                                    <option value="users">Users</option>
+                                    <option value="bookings">Bookings</option>
+                                    <option value="reviews">Reviews</option>
+                                    <option value="halls">Halls</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Upload CSV File</label>
+                                <div class="relative">
+                                    <input type="file" id="csvFileInput" accept=".csv" 
+                                        class="w-full px-4 py-3 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                                </div>
+                            </div>
+
+                            <div class="pt-4">
+                                <button id="startRestoreBtn"
+                                    class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                    Start Restore Process
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Modal -->
+                <div id="progressModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+                    <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+                        <div class="text-center">
+                            <div id="progressIcon" class="w-16 h-16 mx-auto mb-4"></div>
+                            <h3 id="progressTitle" class="text-xl font-bold text-gray-800 mb-2"></h3>
+                            <p id="progressMessage" class="text-gray-600 mb-6"></p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+                                <div id="progressBar" class="h-3 rounded-full transition-all duration-300 ease-out"></div>
+                            </div>
+                            
+                            <div class="flex justify-between text-sm text-gray-600 mb-6">
+                                <span id="progressPercentage">0%</span>
+                                <span id="progressStatus">Initializing...</span>
+                            </div>
+
+                            <button id="closeProgressBtn" class="hidden bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
+                        <div class="flex items-center">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800">Total Users</h3>
+                                <p class="text-3xl font-bold text-primary-600 mt-2" id="totalUsers">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800">Total Bookings</h3>
+                                <p class="text-3xl font-bold text-green-600 mt-2" id="totalBookings">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
+                        <div class="flex items-center">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800">Total Reviews</h3>
+                                <p class="text-3xl font-bold text-yellow-600 mt-2" id="totalReviews">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+                        <div class="flex items-center">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800">Total Halls</h3>
+                                <p class="text-3xl font-bold text-purple-600 mt-2" id="totalHalls">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup History Section -->
+                <div class="bg-white rounded-xl shadow-lg p-6 lg:p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Backup History</h2>
+                            <p class="text-gray-600 mt-1">Track your recent backup and restore operations</p>
+                        </div>
+                        <button id="clearHistoryBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm">
+                            Clear History
+                        </button>
+                    </div>
+
+                    <div id="historyContainer" class="space-y-4">
+                        <div id="noHistoryMessage" class="text-center py-12 text-gray-500">
+                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <h3 class="text-lg font-medium mb-2">No Backup History</h3>
+                            <p>Your backup and restore operations will appear here</p>
+                        </div>
+                    </div>
+
+                    <!-- History entries will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        const API_BASE = 'http://localhost:3000';
+        let currentOperation = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            loadStatistics();
+            loadBackupHistory();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.remove('hidden');
+            });
+
+            closeMobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+
+            // Backup and restore buttons
+            document.getElementById('startBackupBtn').addEventListener('click', handleBackup);
+            document.getElementById('startRestoreBtn').addEventListener('click', handleRestore);
+            document.getElementById('closeProgressBtn').addEventListener('click', closeProgressModal);
+            document.getElementById('clearHistoryBtn').addEventListener('click', clearBackupHistory);
+        }
+
+        // Load database statistics
+        async function loadStatistics() {
+            try {
+                const [users, bookings, reviews, halls] = await Promise.all([
+                    fetch(`${API_BASE}/users`).then(r => r.json()),
+                    fetch(`${API_BASE}/bookings`).then(r => r.json()),
+                    fetch(`${API_BASE}/reviews`).then(r => r.json()),
+                    fetch(`${API_BASE}/halls`).then(r => r.json())
+                ]);
+
+                document.getElementById('totalUsers').textContent = users.length;
+                document.getElementById('totalBookings').textContent = bookings.length;
+                document.getElementById('totalReviews').textContent = reviews.length;
+                document.getElementById('totalHalls').textContent = halls.length;
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        // Handle backup process
+        async function handleBackup() {
+            const selectedTables = [];
+            const checkboxes = ['backup_users', 'backup_bookings', 'backup_reviews', 'backup_halls'];
+            
+            checkboxes.forEach(id => {
+                if (document.getElementById(id).checked) {
+                    selectedTables.push(id.replace('backup_', ''));
+                }
+            });
+
+            if (selectedTables.length === 0) {
+                alert('Please select at least one table to backup.');
+                return;
+            }
+
+            currentOperation = 'backup';
+            showProgressModal('Backup', 'Preparing to backup selected tables...', 'bg-primary-600');
+
+            try {
+                for (let i = 0; i < selectedTables.length; i++) {
+                    const table = selectedTables[i];
+                    const progress = ((i + 1) / selectedTables.length) * 100;
+                    
+                    updateProgress(progress, `Backing up ${table}...`);
+                    
+                    await backupTable(table);
+                    await delay(1000); // Visual delay for better UX
+                }
+
+                updateProgress(100, 'Backup completed successfully!');
+                
+                // Save backup history
+                saveBackupHistory('backup', selectedTables, `${selectedTables.length} tables backed up successfully`);
+                loadBackupHistory(); // Refresh history display
+                
+                document.getElementById('closeProgressBtn').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Backup error:', error);
+                updateProgress(0, 'Backup failed. Please try again.');
+                document.getElementById('closeProgressBtn').classList.remove('hidden');
+            }
+        }
+
+        // Backup individual table
+        async function backupTable(tableName) {
+            try {
+                const response = await fetch(`${API_BASE}/${tableName}`);
+                const data = await response.json();
+                
+                if (data.length === 0) {
+                    console.warn(`No data found for table: ${tableName}`);
+                    return;
+                }
+
+                const csv = convertToCSV(data);
+                downloadCSV(csv, `${tableName}_backup_${getCurrentTimestamp()}.csv`);
+                
+            } catch (error) {
+                throw new Error(`Failed to backup ${tableName}: ${error.message}`);
+            }
+        }
+
+        // Handle restore process
+        async function handleRestore() {
+            const tableSelect = document.getElementById('restoreTableSelect');
+            const fileInput = document.getElementById('csvFileInput');
+            
+            if (!tableSelect.value) {
+                alert('Please select a table to restore.');
+                return;
+            }
+            
+            if (!fileInput.files.length) {
+                alert('Please select a CSV file to upload.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const tableName = tableSelect.value;
+
+            currentOperation = 'restore';
+            showProgressModal('Restore', `Preparing to restore ${tableName} data...`, 'bg-green-600');
+
+            try {
+                updateProgress(25, 'Reading CSV file...');
+                const csvData = await readCSVFile(file);
+                
+                updateProgress(50, 'Validating data...');
+                await delay(500);
+                
+                updateProgress(75, `Uploading to ${tableName} table...`);
+                await restoreTableData(tableName, csvData);
+                
+                updateProgress(100, 'Restore completed successfully!');
+                
+                // Save restore history
+                saveBackupHistory('restore', [tableName], `${tableName} table restored with ${csvData.length} records`);
+                loadBackupHistory(); // Refresh history display
+                
+                document.getElementById('closeProgressBtn').classList.remove('hidden');
+                
+                // Reload statistics
+                await loadStatistics();
+                
+            } catch (error) {
+                console.error('Restore error:', error);
+                updateProgress(0, `Restore failed: ${error.message}`);
+                document.getElementById('closeProgressBtn').classList.remove('hidden');
+            }
+        }
+
+        // Read CSV file
+        function readCSVFile(file) {
+            return new Promise((resolve, reject) => {
+                Papa.parse(file, {
+                    header: true,
+                    dynamicTyping: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        if (results.errors.length > 0) {
+                            reject(new Error('CSV parsing error: ' + results.errors[0].message));
+                        } else {
+                            resolve(results.data);
+                        }
+                    },
+                    error: (error) => reject(error)
+                });
+            });
+        }
+
+        // Restore table data
+        async function restoreTableData(tableName, data) {
+            try {
+                // Get existing data
+                const response = await fetch(`${API_BASE}/${tableName}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch existing ${tableName} data`);
+                }
+                const existingData = await response.json();
+                
+                // Delete existing records one by one
+                for (const item of existingData) {
+                    const deleteResponse = await fetch(`${API_BASE}/${tableName}/${item.id}`, { 
+                        method: 'DELETE' 
+                    });
+                    if (!deleteResponse.ok) {
+                        console.warn(`Failed to delete ${tableName} record with id: ${item.id}`);
+                    }
+                }
+                
+                // Insert new data from CSV
+                for (const item of data) {
+                    // Clean up the data - remove any undefined/null values and ensure proper types
+                    const cleanedItem = {};
+                    for (const [key, value] of Object.entries(item)) {
+                        if (value !== null && value !== undefined && value !== '') {
+                            // Handle JSON string fields (like beverages object)
+                            if (typeof value === 'string' && (value.startsWith('{') || value.startsWith('['))) {
+                                try {
+                                    cleanedItem[key] = JSON.parse(value);
+                                } catch (e) {
+                                    cleanedItem[key] = value;
+                                }
+                            } else {
+                                cleanedItem[key] = value;
+                            }
+                        }
+                    }
+                    
+                    const insertResponse = await fetch(`${API_BASE}/${tableName}`, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(cleanedItem)
+                    });
+                    
+                    if (!insertResponse.ok) {
+                        const errorText = await insertResponse.text();
+                        throw new Error(`Failed to insert record: ${errorText}`);
+                    }
+                }
+                
+            } catch (error) {
+                throw new Error(`Failed to restore data: ${error.message}`);
+            }
+        }
+
+        // Convert data to CSV format
+        function convertToCSV(data) {
+            if (data.length === 0) return '';
+            
+            const headers = Object.keys(data[0]);
+            const csvContent = [
+                headers.join(','),
+                ...data.map(row => 
+                    headers.map(header => {
+                        const value = row[header];
+                        // Handle nested objects/arrays
+                        if (typeof value === 'object' && value !== null) {
+                            return `"${JSON.stringify(value).replace(/"/g, '""')}"`;
+                        }
+                        // Escape commas and quotes in string values
+                        if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+                            return `"${value.replace(/"/g, '""')}"`;
+                        }
+                        return value;
+                    }).join(',')
+                )
+            ].join('\n');
+            
+            return csvContent;
+        }
+
+        // Download CSV file
+        function downloadCSV(csvContent, filename) {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Show progress modal
+        function showProgressModal(title, message, progressColor) {
+            document.getElementById('progressTitle').textContent = title + ' in Progress';
+            document.getElementById('progressMessage').textContent = message;
+            document.getElementById('progressBar').className = `h-3 rounded-full transition-all duration-300 ease-out ${progressColor}`;
+            document.getElementById('progressModal').classList.remove('hidden');
+            document.getElementById('closeProgressBtn').classList.add('hidden');
+            
+            // Set appropriate icon
+            const iconHtml = currentOperation === 'backup' 
+                ? '<div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600"></div>'
+                : '<div class="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600"></div>';
+            
+            document.getElementById('progressIcon').innerHTML = iconHtml;
+        }
+
+        // Update progress
+        function updateProgress(percentage, status) {
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressPercentage').textContent = Math.round(percentage) + '%';
+            document.getElementById('progressStatus').textContent = status;
+            
+            if (percentage === 100) {
+                // Replace spinning icon with success icon
+                const successIcon = currentOperation === 'backup'
+                    ? '<svg class="w-16 h-16 text-primary-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>'
+                    : '<svg class="w-16 h-16 text-green-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                
+                document.getElementById('progressIcon').innerHTML = successIcon;
+            }
+        }
+
+        // Close progress modal
+        function closeProgressModal() {
+            document.getElementById('progressModal').classList.add('hidden');
+            
+            // Reset form inputs
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.getElementById('restoreTableSelect').value = '';
+            document.getElementById('csvFileInput').value = '';
+        }
+
+        // Utility functions
+        function getCurrentTimestamp() {
+            return new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Backup History Management Functions
+        function saveBackupHistory(operation, tables, details) {
+            let history = getBackupHistory();
+            const newEntry = {
+                id: Date.now(),
+                operation: operation, // 'backup' or 'restore'
+                tables: tables,
+                details: details,
+                timestamp: new Date().toISOString(),
+                status: 'success'
+            };
+            
+            history.unshift(newEntry); // Add to beginning of array
+            
+            // Keep only last 50 entries to prevent localStorage bloat
+            if (history.length > 50) {
+                history = history.slice(0, 50);
+            }
+            
+            localStorage.setItem('venuevista_backup_history', JSON.stringify(history));
+        }
+
+        function getBackupHistory() {
+            try {
+                const history = localStorage.getItem('venuevista_backup_history');
+                return history ? JSON.parse(history) : [];
+            } catch (error) {
+                console.error('Error reading backup history:', error);
+                return [];
+            }
+        }
+
+        function loadBackupHistory() {
+            const history = getBackupHistory();
+            const container = document.getElementById('historyContainer');
+            const noHistoryMessage = document.getElementById('noHistoryMessage');
+            
+            if (history.length === 0) {
+                noHistoryMessage.style.display = 'block';
+                return;
+            }
+            
+            noHistoryMessage.style.display = 'none';
+            
+            // Clear existing entries except the no history message
+            const existingEntries = container.querySelectorAll('.history-entry');
+            existingEntries.forEach(entry => entry.remove());
+            
+            history.forEach(entry => {
+                const historyItem = createHistoryItem(entry);
+                container.appendChild(historyItem);
+            });
+        }
+
+        function createHistoryItem(entry) {
+            const div = document.createElement('div');
+            div.className = 'history-entry bg-gray-50 rounded-lg p-4 border-l-4 ' + 
+                (entry.operation === 'backup' ? 'border-primary-500' : 'border-green-500');
+            
+            const operationIcon = entry.operation === 'backup' 
+                ? '<svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>'
+                : '<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>';
+            
+            div.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0 mt-1">
+                        ${operationIcon}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <h4 class="text-sm font-semibold text-gray-800 capitalize">${entry.operation} Operation</h4>
+                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Success</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">${entry.details}</p>
+                        <div class="flex items-center space-x-4 text-xs text-gray-500">
+                            <span>Tables: ${entry.tables.join(', ')}</span>
+                            <span>${formatTimestamp(entry.timestamp)}</span>
+                        </div>
+                    </div>
+                    <button onclick="removeHistoryItem(${entry.id})" class="text-red-400 hover:text-red-600 transition-colors duration-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        function removeHistoryItem(id) {
+            let history = getBackupHistory();
+            history = history.filter(item => item.id !== id);
+            localStorage.setItem('venuevista_backup_history', JSON.stringify(history));
+            loadBackupHistory();
+        }
+
+        function clearBackupHistory() {
+            if (confirm('Are you sure you want to clear all backup history? This action cannot be undone.')) {
+                localStorage.removeItem('venuevista_backup_history');
+                loadBackupHistory();
+            }
+        }
+
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffInMinutes = Math.floor((now - date) / 60000);
+            
+            if (diffInMinutes < 1) return 'Just now';
+            if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+            if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+            if (diffInMinutes < 10080) return `${Math.floor(diffInMinutes / 1440)}d ago`;
+            
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        // Make removeHistoryItem globally accessible
+        window.removeHistoryItem = removeHistoryItem;
+    </script>
+</body>
+
+</html>

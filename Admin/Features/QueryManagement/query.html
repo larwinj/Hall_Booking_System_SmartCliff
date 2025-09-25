@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .toast-success {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+        }
+        .toast-error {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        .status-pending { @apply bg-yellow-100 text-yellow-800 border-yellow-200; }
+        .status-responded { @apply bg-green-100 text-green-800 border-green-200; }
+        .status-resolved { @apply bg-blue-100 text-blue-800 border-blue-200; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-primary-900 text-white flex-shrink-0 hidden lg:block">
+            <div class="p-6">
+                <div class="flex items-center space-x-2">
+                    <h1 class="text-2xl font-bold">VenueVista</h1>
+                </div>
+                <p class="text-primary-200 text-sm mt-1">Admin Dashboard</p>
+            </div>
+
+            <nav class="mt-8">
+                <div class="px-4 space-y-2">
+                    <a href="../DashBoard/dashboard.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Dashboard
+                    </a>
+                    <a href="../Bookingmanagement/booking.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Booking Management
+                    </a>
+                    <a href="../HallsManagement/hall.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Hall Management
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-4 py-3 text-primary-200 bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Query Management
+                    </a>
+                    <a href="../ReportManagement/report.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Report Management
+                    </a>
+                    <a href="../ContentManagement/content.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Content Management
+                    </a>
+                    <a href="../Backup & Recovery/backup&recovery.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        Backup & Recovery
+                    </a>
+                </div>
+
+                <div class="absolute bottom-4 w-64 px-4">
+                    <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                        class="w-full flex items-center px-4 py-3 text-primary-200 font-bold hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-left">
+                        
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        Log Out
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="lg:hidden fixed top-4 left-4 z-50">
+            <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="mobileMenu" class="lg:hidden fixed inset-0 z-40 hidden">
+            <div class="fixed inset-0 bg-black opacity-50"></div>
+            <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white">
+                <div class="p-6">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-xl font-bold ml-[3rem]">VenueVista</h1>
+                        <button id="closeMobileMenu" class="text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <nav class="mt-4">
+                    <div class="px-4 space-y-2">
+                        <a href="../DashBoard/dashboard.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Dashboard</a>
+                        <a href="../Bookingmanagement/booking.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Booking
+                            Management</a>
+                        <a href="../HallsManagement/hall.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Hall
+                            Management</a>
+                        <a href="#"
+                            class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Query
+                            Management</a>
+                        <a href="../ReportManagement/report.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Report
+                            Management</a>
+                        <a href="../ContentManagement/content.html"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Content
+                            Management</a>
+                        <a href="#"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Backup
+                            & Recovery</a>
+                        <a href="#"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Log
+                            Out</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-4 lg:p-8">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-3xl lg:text-4xl font-bold text-primary-800 mb-8 ml-12 lg:ml-0">Query Management</h1>
+
+                <!-- Search and Filter Section -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                        <div class="flex-1 max-w-md">
+                            <div class="relative">
+                                <input type="text" id="searchInput" placeholder="Search by username or email..."
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
+                                <svg class="absolute left-3 top-3.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <select id="statusFilter" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="responded">Responded</option>
+                                <option value="resolved">Resolved</option>
+                            </select>
+                            
+                            <select id="subjectFilter" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                <option value="all">All Subjects</option>
+                                <option value="venue-information">Venue Information</option>
+                                <option value="booking-inquiry">Booking Inquiry</option>
+                                <option value="technical-support">Technical Support</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary-500">
+                        <h3 class="text-sm font-medium text-gray-600">Total Queries</h3>
+                        <p class="text-3xl font-bold text-primary-600 mt-2" id="totalQueries">0</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
+                        <h3 class="text-sm font-medium text-gray-600">Pending</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2" id="pendingQueries">0</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                        <h3 class="text-sm font-medium text-gray-600">Responded</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2" id="respondedQueries">0</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+                        <h3 class="text-sm font-medium text-gray-600">Resolved</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2" id="resolvedQueries">0</p>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading" class="flex justify-center items-center h-64">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+                </div>
+
+                <!-- Error State -->
+                <div id="error" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <div class="flex">
+                        <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-red-700" id="errorMessage">Failed to load queries. Please try again.</p>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="hidden text-center py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No queries found</h3>
+                    <p class="mt-1 text-sm text-gray-500">No queries match your current search criteria.</p>
+                </div>
+
+                <!-- Queries Grid -->
+                <div id="queriesGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 hidden">
+                    <!-- Query cards will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Query Details Modal -->
+    <div id="queryModal" class="fixed inset-0 z-50 hidden modal-backdrop">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto fade-in">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900">Query Details</h2>
+                    <button id="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="p-6" id="modalContent">
+                    <!-- Content will be populated dynamically -->
+                </div>
+
+                <!-- Reply Section -->
+                <div id="replySection" class="border-t border-gray-200 p-6 hidden">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Send Reply</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Response Message</label>
+                            <textarea id="replyMessage" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none" placeholder="Type your response here..."></textarea>
+                        </div>
+                        <div class="flex gap-3">
+                            <button id="sendReplyBtn" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200">
+                                Send Reply
+                            </button>
+                            <button id="cancelReplyBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-lg font-medium transition-all duration-200">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let allQueries = [];
+        let filteredQueries = [];
+        let currentQuery = null;
+        const API_BASE = 'http://localhost:3000';
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            fetchQueries();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.remove('hidden');
+            });
+
+            closeMobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+
+            // Search and filter functionality
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            document.getElementById('statusFilter').addEventListener('change', applyFilters);
+            document.getElementById('subjectFilter').addEventListener('change', applyFilters);
+
+            // Modal functionality
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+            document.getElementById('queryModal').addEventListener('click', (e) => {
+                if (e.target.id === 'queryModal') closeModal();
+            });
+
+            // Reply functionality
+            document.getElementById('sendReplyBtn').addEventListener('click', sendReply);
+            document.getElementById('cancelReplyBtn').addEventListener('click', hideReplySection);
+        }
+
+        // Fetch queries from API
+        async function fetchQueries() {
+            try {
+                showLoading(true);
+                const response = await fetch(`${API_BASE}/queries`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch queries');
+                }
+                
+                allQueries = await response.json();
+                filteredQueries = [...allQueries];
+                updateStatistics();
+                renderQueries();
+                showContent();
+                
+            } catch (error) {
+                console.error('Error fetching queries:', error);
+                showError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Show/hide loading state
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'flex' : 'none';
+        }
+
+        // Show error state
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('queriesGrid').classList.add('hidden');
+        }
+
+        // Show content
+        function showContent() {
+            document.getElementById('error').classList.add('hidden');
+            document.getElementById('queriesGrid').classList.remove('hidden');
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const total = allQueries.length;
+            const pending = allQueries.filter(q => q.status === 'pending').length;
+            const responded = allQueries.filter(q => q.status === 'responded').length;
+            const resolved = allQueries.filter(q => q.status === 'resolved').length;
+
+            document.getElementById('totalQueries').textContent = total;
+            document.getElementById('pendingQueries').textContent = pending;
+            document.getElementById('respondedQueries').textContent = responded;
+            document.getElementById('resolvedQueries').textContent = resolved;
+        }
+
+        // Apply search and filters
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const subjectFilter = document.getElementById('subjectFilter').value;
+
+            filteredQueries = allQueries.filter(query => {
+                const matchesSearch = query.name.toLowerCase().includes(searchTerm) ||
+                                    query.email.toLowerCase().includes(searchTerm);
+                const matchesStatus = statusFilter === 'all' || query.status === statusFilter;
+                const matchesSubject = subjectFilter === 'all' || query.subject === subjectFilter;
+
+                return matchesSearch && matchesStatus && matchesSubject;
+            });
+
+            renderQueries();
+        }
+
+        // Render queries
+        function renderQueries() {
+            const grid = document.getElementById('queriesGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (filteredQueries.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.classList.remove('hidden');
+
+            grid.innerHTML = filteredQueries.map(query => `
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer relative" onclick="openQueryModal(${query.id})">
+                    <!-- Delete Button -->
+                    <button onclick="event.stopPropagation(); deleteQuery(${query.id})" 
+                            class="absolute top-4 right-4 text-red-500 hover:text-red-700 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Status Badge -->
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full border status-${query.status}">
+                            ${query.status.charAt(0).toUpperCase() + query.status.slice(1)}
+                        </span>
+                        <span class="text-xs text-gray-500">${formatDate(query.timestamp)}</span>
+                    </div>
+
+                    <!-- User Info -->
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">${query.name}</h3>
+                        <p class="text-sm text-gray-600">${query.email}</p>
+                        <p class="text-sm text-gray-600">${query.phone}</p>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="mb-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            ${formatSubject(query.subject)}
+                        </span>
+                    </div>
+
+                    <!-- Description Preview -->
+                    <p class="text-gray-700 text-sm line-clamp-3 mb-4">
+                        ${query.description.length > 100 ? query.description.substring(0, 100) + '...' : query.description}
+                    </p>
+
+                    <!-- Action Indicator -->
+                    <div class="flex justify-between items-center mt-auto">
+                        <span class="text-xs text-gray-500">Click to view details</span>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open query modal
+        function openQueryModal(queryId) {
+            currentQuery = allQueries.find(q => q.id === queryId);
+            if (!currentQuery) return;
+
+            const modal = document.getElementById('queryModal');
+            const content = document.getElementById('modalContent');
+
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <!-- User Information -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">User Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Name</label>
+                                <p class="mt-1 text-sm text-gray-900">${currentQuery.name}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Email</label>
+                                <p class="mt-1 text-sm text-gray-900">${currentQuery.email}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Phone</label>
+                                <p class="mt-1 text-sm text-gray-900">${currentQuery.phone}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Status</label>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 status-${currentQuery.status}">
+                                    ${currentQuery.status.charAt(0).toUpperCase() + currentQuery.status.slice(1)}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Query Details -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Query Details</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Subject</label>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
+                                    ${formatSubject(currentQuery.subject)}
+                                </span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Description</label>
+                                <p class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">${currentQuery.description}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Submitted</label>
+                                <p class="mt-1 text-sm text-gray-900">${formatDateTime(currentQuery.timestamp)}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3 pt-4 border-t border-gray-200">
+                        ${currentQuery.status === 'pending' ? `
+                            <button onclick="showReplySection()" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200">
+                                Reply to Query
+                            </button>
+                        ` : ''}
+                        ${currentQuery.status === 'responded' ? `
+                            <button onclick="markAsResolved()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200">
+                                Mark as Resolved
+                            </button>
+                        ` : ''}
+                        <button onclick="closeModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-lg font-medium transition-all duration-200">
+                            Close
+                        </button>
+                    </div>
+                </div>`;
+
+            modal.classList.remove('hidden');
+        }
+
+        // Show reply section
+        function showReplySection() {
+            document.getElementById('replySection').classList.remove('hidden');
+            document.getElementById('replyMessage').focus();
+        }
+
+        // Hide reply section
+        function hideReplySection() {
+            document.getElementById('replySection').classList.add('hidden');
+            document.getElementById('replyMessage').value = '';
+        }
+
+        // Send reply
+        async function sendReply() {
+            const message = document.getElementById('replyMessage').value.trim();
+            
+            if (!message) {
+                showToast('Please enter a reply message', 'error');
+                return;
+            }
+
+            const sendBtn = document.getElementById('sendReplyBtn');
+            const originalText = sendBtn.textContent;
+            sendBtn.textContent = 'Sending...';
+            sendBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_BASE}/queries/${currentQuery.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status: 'responded',
+                        response: message,
+                        responseTimestamp: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send reply');
+                }
+
+                // Update local data
+                const queryIndex = allQueries.findIndex(q => q.id === currentQuery.id);
+                if (queryIndex !== -1) {
+                    allQueries[queryIndex].status = 'responded';
+                    allQueries[queryIndex].response = message;
+                    allQueries[queryIndex].responseTimestamp = new Date().toISOString();
+                }
+
+                showToast('Response sent successfully!', 'success');
+                closeModal();
+                updateStatistics();
+                applyFilters();
+
+            } catch (error) {
+                console.error('Error sending reply:', error);
+                showToast('Failed to send response. Please try again.', 'error');
+            } finally {
+                sendBtn.textContent = originalText;
+                sendBtn.disabled = false;
+            }
+        }
+
+        // Mark as resolved
+        async function markAsResolved() {
+            if (!confirm('Are you sure you want to mark this query as resolved?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/queries/${currentQuery.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status: 'resolved',
+                        resolvedTimestamp: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to mark as resolved');
+                }
+
+                // Update local data
+                const queryIndex = allQueries.findIndex(q => q.id === currentQuery.id);
+                if (queryIndex !== -1) {
+                    allQueries[queryIndex].status = 'resolved';
+                    allQueries[queryIndex].resolvedTimestamp = new Date().toISOString();
+                }
+
+                showToast('Query marked as resolved!', 'success');
+                closeModal();
+                updateStatistics();
+                applyFilters();
+
+            } catch (error) {
+                console.error('Error marking as resolved:', error);
+                showToast('Failed to mark as resolved. Please try again.', 'error');
+            }
+        }
+
+        // Delete query
+        async function deleteQuery(queryId) {
+            if (!confirm('Are you sure you want to delete this query? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/queries/${queryId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete query');
+                }
+
+                // Remove from local data
+                allQueries = allQueries.filter(q => q.id !== queryId);
+                filteredQueries = filteredQueries.filter(q => q.id !== queryId);
+
+                showToast('Query deleted successfully!', 'success');
+                updateStatistics();
+                renderQueries();
+
+            } catch (error) {
+                console.error('Error deleting query:', error);
+                showToast('Failed to delete query. Please try again.', 'error');
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('queryModal').classList.add('hidden');
+            hideReplySection();
+            currentQuery = null;
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB');
+        }
+
+        // Format date and time
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB') + ' at ' + date.toLocaleTimeString('en-GB', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }
+
+        // Format subject
+        function formatSubject(subject) {
+            return subject.split('-').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                className: type === 'success' ? 'toast-success' : 'toast-error',
+                stopOnFocus: true,
+                style: {
+                    borderRadius: "8px",
+                    fontSize: "14px",
+                    fontWeight: "500"
+                }
+            }).showToast();
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Auto-refresh queries every 30 seconds
+        setInterval(() => {
+            if (document.visibilityState === 'visible') {
+                fetchQueries();
+            }
+        }, 30000);
+    </script>
+</body>
+
+</html>

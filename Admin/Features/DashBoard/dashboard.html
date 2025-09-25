@@ -34,7 +34,7 @@
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         <div
-            class="w-64 bg-primary-500 from-primary-600 to-primary-800 text-white flex-shrink-0 hidden lg:block shadow-xl fixed h-full">
+            class="w-64 bg-primary-900 from-primary-600 to-primary-800 text-white flex-shrink-0 hidden lg:block shadow-xl fixed h-full">
             <div class="p-6">
                 <div class="flex items-center space-x-2">
                     <h1 class="text-2xl font-bold">VenueVista</h1>
@@ -50,43 +50,44 @@
                         Dashboard
                     </a>
                     <a href="../Bookingmanagement/booking.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
                         <!-- <i class="fas fa-calendar-check mr-3"></i> -->
                         Booking Management
                     </a>
                     <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
                         <!-- <i class="fas fa-home mr-3"></i> -->
                         Hall Management
                     </a>
-                    <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                    <a href="../QueryManagement/query.html"
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
                         <!-- <i class="fas fa-home mr-3"></i> -->
                         Query Management
                     </a>
                     <a href="../ReportManagement/report.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
                         <!-- <i class="fas fa-chart-bar mr-3"></i> -->
                         Report Management
                     </a>
                     <a href="../ContentManagement/content.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
                         <!-- <i class="fas fa-edit mr-3"></i> -->
                         Content Management
                     </a>
-                    <a href="#"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                    <a href="../Backup & Recovery/backup&recovery.html"
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
                         <!-- <i class="fas fa-shield-alt mr-3"></i> -->
                         Backup & Recovery
                     </a>
                 </div>
 
                 <div class="absolute bottom-4 w-64 px-4">
-                    <button
+                    <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
                         class="w-full flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-left">
+                        
                         <i class="fas fa-sign-out-alt mr-3"></i>
                         Log Out
-                    </button>
+                    </a>
                 </div>
             </nav>
         </div>
@@ -104,10 +105,10 @@
             <div
                 class="fixed left-0 top-0 w-3/4 sm:w-64 h-full bg-gradient-to-b from-primary-600 to-primary-800 text-white transition-transform transform translate-x-0 shadow-xl">
                 <div class="p-4 sm:p-6">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-center items-center">
                         <div class="flex items-center space-x-2">
-                            <i class="fas fa-building text-xl"></i>
-                            <h1 class="text-lg font-bold">VenueVista</h1>
+                            <!-- <i class="fas fa-building text-xl"></i> -->
+                            <h1 class="text-lg font-bold ml-[3rem]">VenueVista</h1>
                         </div>
                         <button id="closeMobileMenu" class="text-white">
                             <i class="fas fa-times text-xl"></i>
@@ -129,7 +130,7 @@
                             class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
                             <i class="fas fa-home mr-3"></i>Hall Management
                         </a>
-                        <a href="../HallsManagement/hall.html"
+                        <a href="../QueryManagement/query.html"
                             class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
                             <i class="fas fa-home mr-3"></i>Query Management
                         </a>
@@ -141,7 +142,7 @@
                             class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
                             <i class="fas fa-edit mr-3"></i>Content Management
                         </a>
-                        <a href="#"
+                        <a href="../Backup & Recovery/backup&recovery.html"
                             class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg">
                             <i class="fas fa-shield-alt mr-3"></i>Backup & Recovery
                         </a>
@@ -160,7 +161,7 @@
             <header class="bg-white shadow-sm border-b border-gray-200 p-4 lg:p-6">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                     <div class="ml-12 lg:ml-0">
-                        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Dashboard Overview</h1>
+                        <h1 class="text-2xl lg:text-3xl font-bold text-primary-900">Dashboard Overview</h1>
                         <p class="text-gray-600" id="currentDate"></p>
                     </div>
                     <div class="flex items-center space-x-4 text-sm text-gray-600">
@@ -214,7 +215,7 @@
                         class="bg-gradient-to-br from-orange-300 to-orange-600 rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-shadow duration-200">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-sm font-medium opacity-90">Pending Actions</h3>
+                                <h3 class="text-sm font-medium opacity-90">Queries Count</h3>
                                 <p class="text-3xl font-bold mt-2" id="pendingActions">0</p>
                             </div>
                             <i class="fas fa-exclamation-circle text-3xl opacity-80"></i>
@@ -233,11 +234,14 @@
                                     Booking Calendar
                                 </h2>
                                 <div class="flex items-center space-x-2">
-                                    <button type="button" onclick="prevMonth()" class="p-2 text-gray-500 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-colors">
+                                    <button type="button" onclick="prevMonth()"
+                                        class="p-2 text-gray-500 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-colors">
                                         <i class="fas fa-chevron-left text-sm"></i>
                                     </button>
-                                    <span id="monthYear" class="text-lg font-semibold text-gray-800 min-w-[150px] text-center"></span>
-                                    <button type="button" onclick="nextMonth()" class="p-2 text-gray-500 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-colors">
+                                    <span id="monthYear"
+                                        class="text-lg font-semibold text-gray-800 min-w-[150px] text-center"></span>
+                                    <button type="button" onclick="nextMonth()"
+                                        class="p-2 text-gray-500 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-colors">
                                         <i class="fas fa-chevron-right text-sm"></i>
                                     </button>
                                 </div>
@@ -247,7 +251,8 @@
                             <div id="calendar" class="w-full">
                                 <!-- Calendar will be generated here -->
                             </div>
-                            <div id="selectedDateInfo" class="mt-4 p-4 bg-gray-50 h-[300px] overflow-scroll rounded-lg hidden">
+                            <div id="selectedDateInfo"
+                                class="mt-4 p-4 bg-gray-50 h-[300px] overflow-scroll rounded-lg hidden">
                                 <h4 class="font-semibold text-gray-800 mb-2">Bookings for <span
                                         id="selectedDate"></span></h4>
                                 <div id="dateBookings"></div>
@@ -358,433 +363,7 @@
         </div>
     </div>
 
-    <script>
-        // Initialize dashboard with real data
-        let mockDB = { users: [], bookings: [] };
-
-        function loadMockDB() {
-            console.log("Loading mockDB...");
-            return Promise.all([
-                fetch("http://localhost:3000/users"),
-                fetch("http://localhost:3000/bookings"),
-            ])
-                .then(async ([usersRes, bookingsRes]) => {
-                    if (!usersRes.ok || !bookingsRes.ok) {
-                        throw new Error("Failed to fetch from JSON server");
-                    }
-                    const users = await usersRes.json();
-                    const bookings = await bookingsRes.json();
-                    mockDB = { users, bookings };
-                    console.log("Mock DB Loaded:", mockDB);
-                    return mockDB;
-                })
-                .catch((error) => console.error("Error loading mockDB:", error));
-        }
-
-        let currentData = null;
-        let selectedCalendarDate = null;
-        let currentViewYear = new Date().getFullYear();
-        let currentViewMonth = new Date().getMonth();
-
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        function getTodayString() {
-            return formatDate(new Date());
-        }
-
-        function updateDateTime() {
-            const now = new Date();
-            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-
-        // Calculate analytics
-        function calculateAnalytics() {
-            const bookings = currentData.bookings;
-            const users = currentData.users;
-            const today = getTodayString();
-
-            // Today's data
-            const todayBookings = bookings.filter(b => b.date === today);
-            const todayRevenue = todayBookings.reduce((sum, b) => sum + (b.totalCost || 0), 0);
-
-            // Overall data
-            const totalBookings = bookings.length;
-            const completedBookings = bookings.filter(b => b.status === 'completed').length;
-            const pendingBookings = bookings.filter(b => b.status === 'pending').length;
-            const totalRevenue = bookings.reduce((sum, b) => sum + (b.totalCost || 0), 0);
-            const avgBooking = totalBookings > 0 ? Math.round(totalRevenue / totalBookings) : 0;
-
-            // Update UI
-            document.getElementById('todayBookings').textContent = todayBookings.length;
-            document.getElementById('todayRevenue').textContent = todayRevenue.toLocaleString();
-            document.getElementById('activeUsers').textContent = users.length;
-            document.getElementById('pendingActions').textContent = pendingBookings;
-            document.getElementById('totalBookings').textContent = totalBookings;
-            document.getElementById('completedBookings').textContent = completedBookings;
-            document.getElementById('pendingBookings').textContent = pendingBookings;
-            document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString();
-            document.getElementById('avgBooking').textContent = avgBooking.toLocaleString();
-        }
-
-        // Generate calendar
-        function generateCalendar(year = currentViewYear, month = currentViewMonth) {
-            currentViewYear = year;
-            currentViewMonth = month;
-
-            const monthDate = new Date(year, month, 1);
-            document.getElementById('monthYear').textContent = monthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-
-            const firstDay = new Date(year, month, 1);
-            const firstDayOfWeek = firstDay.getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-            let calendarHTML = `
-                <div class="grid grid-cols-7 gap-2 mb-2">
-                    <div class="text-center text-sm font-medium text-gray-500 py-2">Sun</div>
-                    <div class="text-center text-sm font-medium text-gray-500 py-2">Mon</div>
-                    <div class="text-center text-sm font-medium text-gray-500 py-2">Tue</div>
-                    <div class="text-center text-sm font-medium text-gray-500 py-2">Wed</div>
-                    <div class="text-center text-sm font-medium text-gray-500 py-2">Thu</div>
-                    <div class="text-center text-sm font-medium text-gray-500 py-2">Fri</div>
-                    <div class="text-center text-sm font-medium text-gray-500 py-2">Sat</div>
-                </div>
-                <div class="grid grid-cols-7 gap-2">
-            `;
-
-            // Start from the first day of the week
-            let dateCounter = 1 - firstDayOfWeek;
-
-            for (let i = 0; i < 42; i++) {
-                const currentDate = new Date(year, month, dateCounter);
-                const dateString = formatDate(currentDate);
-                const dayBookings = currentData.bookings.filter(b => b.date === dateString);
-                const isCurrentMonth = currentDate.getMonth() === month;
-                const isToday = dateString === getTodayString();
-                const dayNum = currentDate.getDate();
-
-                let dayClass = 'p-3 text-center text-sm cursor-pointer rounded-lg transition-all duration-200 ';
-                if (!isCurrentMonth) {
-                    dayClass += 'text-gray-300 hover:bg-gray-100 ';
-                } else if (isToday) {
-                    dayClass += 'bg-primary-500 text-white font-bold shadow-md ';
-                } else {
-                    dayClass += 'text-gray-700 hover:bg-gray-100 ';
-                }
-
-                if (dayBookings.length > 0) {
-                    dayClass += 'border-2 border-green-400 ';
-                }
-
-                const dayContent = isCurrentMonth ? `<div>${dayNum}</div>` : `<div class="invisible">${dayNum}</div>`;
-
-                calendarHTML += `
-                    <div class="${dayClass}" onclick="selectDate('${dateString}')">
-                        ${dayContent}
-                        ${dayBookings.length > 0 ? `<div class="w-2 h-2 bg-green-500 rounded-full mx-auto mt-1"></div>` : ''}
-                    </div>
-                `;
-
-                dateCounter++;
-            }
-
-            calendarHTML += '</div>';
-            document.getElementById('calendar').innerHTML = calendarHTML;
-        }
-
-        function prevMonth() {
-            currentViewMonth--;
-            if (currentViewMonth < 0) {
-                currentViewMonth = 11;
-                currentViewYear--;
-            }
-            generateCalendar(currentViewYear, currentViewMonth);
-        }
-
-        function nextMonth() {
-            currentViewMonth++;
-            if (currentViewMonth > 11) {
-                currentViewMonth = 0;
-                currentViewYear++;
-            }
-            generateCalendar(currentViewYear, currentViewMonth);
-        }
-
-        // Select date on calendar
-        function selectDate(dateString) {
-            selectedCalendarDate = dateString;
-            const dayBookings = currentData.bookings.filter(b => b.date === dateString);
-            const selectedDateEl = document.getElementById('selectedDate');
-            const dateBookingsEl = document.getElementById('dateBookings');
-            const infoEl = document.getElementById('selectedDateInfo');
-
-            selectedDateEl.textContent = new Date(dateString).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            console.log(selectedDateEl.textContent);
-
-            if (dayBookings.length > 0) {
-                let bookingsHTML = '';
-                dayBookings.forEach(booking => {
-                    bookingsHTML += `
-                        <div class="bg-white p-3 rounded-lg border border-gray-200 mb-2">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="font-semibold text-gray-800">${booking.firstName} ${booking.lastName}</p>
-                                    <p class="text-sm text-gray-600">${booking.checkInTime} - ${booking.checkOutTime}</p>
-                                    <p class="text-sm text-gray-600">Room: ${booking.roomId}</p>
-                                </div>
-                                <span class="px-2 py-1 text-xs rounded-full ${booking.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-blue-100 text-blue-800'
-                        }">${booking.status}</span>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">₹${booking.totalCost.toLocaleString()}</p>
-                        </div>
-                    `;
-                });
-                dateBookingsEl.innerHTML = bookingsHTML;
-            } else {
-                dateBookingsEl.innerHTML = '<p class="text-gray-500 text-center py-4">No bookings for this date</p>';
-            }
-
-            infoEl.classList.remove('hidden');
-        }
-
-        // Generate recent activities
-        function generateRecentActivities() {
-            const activities = [];
-
-            // Generate activities from bookings
-            currentData.bookings.forEach(booking => {
-                activities.push({
-                    icon: 'fas fa-calendar-plus',
-                    color: 'text-blue-500',
-                    text: `New booking by ${booking.firstName} ${booking.lastName}`,
-                    time: booking.BookedOn,
-                    type: 'booking'
-                });
-            });
-
-            // Generate activities from users
-            currentData.users.forEach(user => {
-                activities.push({
-                    icon: 'fas fa-user-plus',
-                    color: 'text-green-500',
-                    text: `New user registered: ${user.firstName} ${user.lastName}`,
-                    time: 'Today',
-                    type: 'user'
-                });
-            });
-
-            // Sort and limit activities
-            const recentActivities = activities.slice(-5).reverse();
-
-            let activitiesHTML = '';
-            recentActivities.forEach(activity => {
-                activitiesHTML += `
-                    <div class="flex items-start space-x-3">
-                        <div class="flex-shrink-0">
-                            <i class="${activity.icon} ${activity.color}"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm text-gray-900">${activity.text}</p>
-                            <p class="text-xs text-gray-500">${activity.time}</p>
-                        </div>
-                    </div>
-                `;
-            });
-
-            document.getElementById('recentActivities').innerHTML = activitiesHTML;
-        }
-
-        // Generate revenue breakdown
-        function generateRevenueBreakdown() {
-            const venueRevenue = {};
-            currentData.bookings.forEach(booking => {
-                const category = booking.venueCategory;
-                if (!venueRevenue[category]) {
-                    venueRevenue[category] = 0;
-                }
-                venueRevenue[category] += booking.totalCost || 0;
-            });
-
-            const totalRevText = document.getElementById('totalRevenue').textContent;
-            const totalRevNum = parseFloat(totalRevText.replace(/,/g, '')) || 0;
-
-            let revenueHTML = '';
-            Object.entries(venueRevenue).forEach(([category, revenue]) => {
-                const percentage = totalRevNum > 0 ? Math.round((revenue / totalRevNum) * 100) : 0;
-                revenueHTML += `
-                    <div class="flex items-center justify-between py-2">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-4 h-4 rounded-full bg-primary-500"></div>
-                            <span class="text-sm font-medium text-gray-700 capitalize">${category}</span>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-semibold text-gray-900">₹${revenue.toLocaleString()}</div>
-                            <div class="text-xs text-gray-500">${percentage}%</div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            document.getElementById('revenueByVenue').innerHTML = revenueHTML;
-        }
-
-        // Create charts
-        function createCharts() {
-            // Venue usage pie chart
-            const venueCtx = document.getElementById('venueChart').getContext('2d');
-            const venueData = {};
-            currentData.bookings.forEach(booking => {
-                const category = booking.venueCategory;
-                venueData[category] = (venueData[category] || 0) + 1;
-            });
-
-            new Chart(venueCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(venueData).map(key => key.charAt(0).toUpperCase() + key.slice(1)),
-                    datasets: [{
-                        data: Object.values(venueData),
-                        backgroundColor: [
-                            '#3B82F6',
-                            '#10B981',
-                            '#F59E0B',
-                            '#EF4444',
-                            '#8B5CF6'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#fff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Booking trend line chart
-            const bookingCtx = document.getElementById('bookingChart').getContext('2d');
-            const last7Days = [];
-            const bookingCounts = [];
-
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                const dateString = formatDate(date);
-                const dayBookings = currentData.bookings.filter(b => b.date === dateString).length;
-
-                last7Days.push(date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
-                bookingCounts.push(dayBookings);
-            }
-
-            new Chart(bookingCtx, {
-                type: 'line',
-                data: {
-                    labels: last7Days,
-                    datasets: [{
-                        label: 'Bookings',
-                        data: bookingCounts,
-                        borderColor: '#3B82F6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#3B82F6',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        pointRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Mobile menu functionality
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('hidden');
-        });
-
-        closeMobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-        });
-
-        mobileMenu.addEventListener('click', (e) => {
-            if (e.target === mobileMenu) {
-                mobileMenu.classList.add('hidden');
-            }
-        });
-
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function () {
-            updateDateTime();
-            setInterval(updateDateTime, 60000);
-
-            loadMockDB().then((data) => {
-                currentData = data;
-                console.log("Current Data:", currentData);
-                calculateAnalytics();
-                generateCalendar();
-                generateRecentActivities();
-                generateRevenueBreakdown();
-                createCharts();
-            });
-        });
-    </script>
+    <script src="dashboard.js"></script>
 </body>
 
 </html>

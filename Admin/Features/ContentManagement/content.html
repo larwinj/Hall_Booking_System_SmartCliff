@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -25,12 +27,55 @@
             }
         }
     </script>
+    <style>
+        /* Ensure the sidebar is fixed and full height */
+        .sidebar-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Ensure the main content has padding to avoid overlap with fixed sidebar */
+        .main-content {
+            margin-left: 0;
+        }
+
+        @media (min-width: 1024px) {
+            .main-content {
+                margin-left: 16rem; /* Matches sidebar width (w-64 = 16rem) */
+            }
+            .content-sections {
+                position: sticky;
+                top: 0;
+                max-height: 100vh;
+                overflow-y: auto;
+            }
+            .preview-scrollable {
+                max-height: calc(100vh - 12rem); /* Adjust based on header and padding */
+                overflow-y: auto;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .content-sections {
+                position: static;
+                max-height: none;
+                overflow-y: visible;
+            }
+            .preview-scrollable {
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-gray-50 min-h-screen">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <div class="w-64 bg-primary-500 text-white flex-shrink-0 hidden lg:block">
+        <div class="w-64 bg-primary-900 text-white flex-shrink-0 hidden lg:block shadow-xl sidebar-fixed">
             <div class="p-6">
                 <div class="flex items-center space-x-2">
                     <h1 class="text-2xl font-bold">VenueVista</h1>
@@ -52,9 +97,8 @@
                         class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Hall Management
                     </a>
-                    <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
-                        <!-- <i class="fas fa-home mr-3"></i> -->
+                    <a href="../QueryManagement/query.html"
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Query Management
                     </a>
                     <a href="../ReportManagement/report.html"
@@ -62,27 +106,29 @@
                         Report Management
                     </a>
                     <a href="#"
-                        class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-white bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Content Management
                     </a>
-                    <a href="#"
+                    <a href="../Backup & Recovery/backup&recovery.html"
                         class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
                         Backup & Recovery
                     </a>
                 </div>
 
                 <div class="absolute bottom-4 w-64 px-4">
-                    <button
-                        class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
+                    <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                        class="w-full flex items-center px-4 py-3 font-bold text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-left">
+                        
+                        <i class="fas fa-sign-out-alt mr-3"></i>
                         Log Out
-                    </button>
+                    </a>
                 </div>
             </nav>
         </div>
 
         <!-- Mobile Menu Button -->
         <div class="lg:hidden fixed top-4 left-4 z-50">
-            <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg">
+            <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg shadow-md">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
                     </path>
@@ -93,10 +139,10 @@
         <!-- Mobile Sidebar Overlay -->
         <div id="mobileMenu" class="lg:hidden fixed inset-0 z-40 hidden">
             <div class="fixed inset-0 bg-black opacity-50"></div>
-            <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white">
+            <div class="fixed left-0 top-0 w-64 h-full bg-primary-900 text-white shadow-xl">
                 <div class="p-6">
                     <div class="flex justify-between items-center">
-                        <h1 class="text-xl font-bold">VenueVista</h1>
+                        <h1 class="text-xl font-bold ml-[3rem]">VenueVista</h1>
                         <button id="closeMobileMenu" class="text-white">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -116,16 +162,16 @@
                         <a href="../HallsManagement/hall.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Hall
                             Management</a>
-                        <a href="../HallsManagement/hall.html"
+                        <a href="../QueryManagement/query.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Query
                             Management</a>
                         <a href="../ReportManagement/report.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Report
                             Management</a>
                         <a href="#"
-                            class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Content
+                            class="block px-4 py-3 text-white bg-primary-700 rounded-lg font-medium">Content
                             Management</a>
-                        <a href="#"
+                        <a href="../Backup & Recovery/backup&recovery.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">Backup
                             & Recovery</a>
                         <a href="#"
@@ -137,41 +183,55 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-4 lg:p-8">
-            <div class="max-w-6xl mx-auto">
-                <h1 class="text-3xl lg:text-4xl font-bold text-primary-800 mb-12 ml-12 lg:ml-0">Content Management</h1>
+        <div class="flex-1 p-4 lg:p-8 main-content">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-3xl lg:text-4xl font-bold text-primary-900 mb-12 ml-12 lg:ml-0">Content Management</h1>
 
                 <div class="flex flex-col lg:flex-row gap-8">
                     <!-- Left Side - Content Sections -->
-                    <div class="lg:w-1/2 space-y-6">
+                    <div class="lg:w-1/3 space-y-6 content-sections">
                         <!-- Hero Section Video -->
-                        <div class="bg-white rounded-xl shadow-lg p-6">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Hero Section Video</h3>
-                            <div class="flex items-center gap-4">
-                                <button id="videoUploadBtn"
-                                    class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg transition-colors font-medium">
-                                    Upload
-                                </button>
-                                <span id="videoFileName" class="text-sm text-gray-500">Select video file for hero
-                                    section</span>
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden" data-section="hero">
+                            <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors" data-toggle="hero">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 mr-4">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.665z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-gray-800">Hero Section Video</h3>
+                                </div>
+                                <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-200" data-icon="hero" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="hidden border-t border-gray-200 p-6" data-content="hero">
+                                <div class="flex items-center gap-4">
+                                    <button id="videoUploadBtn"
+                                        class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg transition-colors font-medium shadow-sm">
+                                        Upload Video
+                                    </button>
+                                    <span id="videoFileName" class="text-sm text-gray-500 truncate">No video selected</span>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Expandable Sections -->
                         <div class="space-y-4">
                             <!-- Feature Page -->
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
                                 <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                                     data-toggle="feature">
                                     <div class="flex items-center">
                                         <div
-                                            class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center text-white mr-4">
+                                            class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 mr-4">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 4v16m8-8H4"></path>
                                             </svg>
                                         </div>
-                                        <h3 class="text-lg font-semibold text-gray-800">Feature Page</h3>
+                                        <h3 class="text-lg font-semibold text-gray-800">Features Section</h3>
                                     </div>
                                     <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-200"
                                         data-icon="feature" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,51 +240,26 @@
                                     </svg>
                                 </div>
                                 <div class="hidden border-t border-gray-200 p-6" data-content="feature">
-                                    <div class="space-y-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Feature
-                                                Title</label>
-                                            <input type="text" placeholder="Enter feature title"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Feature
-                                                Description</label>
-                                            <textarea placeholder="Enter feature description" rows="4"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"></textarea>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Feature
-                                                Image</label>
-                                            <div
-                                                class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-500 transition-colors cursor-pointer">
-                                                <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M7 16V8m0 0L3 12m4-4l4 4m6 0v8m0 0l4-4m-4 4l-4-4"></path>
-                                                </svg>
-                                                <p class="text-gray-600">Upload feature image</p>
-                                                <input type="file" class="hidden" accept="image/*">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div id="features-container" class="space-y-6 mb-6"></div>
+                                    <button id="add-feature" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors w-full shadow-sm">
+                                        Add New Feature
+                                    </button>
                                 </div>
                             </div>
 
                             <!-- Discover Us/About Us -->
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
                                 <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                                     data-toggle="about">
                                     <div class="flex items-center">
                                         <div
-                                            class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center text-white mr-4">
+                                            class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 mr-4">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 4v16m8-8H4"></path>
                                             </svg>
                                         </div>
-                                        <h3 class="text-lg font-semibold text-gray-800">Discover Us/About Us</h3>
+                                        <h3 class="text-lg font-semibold text-gray-800">About Us Section</h3>
                                     </div>
                                     <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-200"
                                         data-icon="about" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,48 +270,32 @@
                                 <div class="hidden border-t border-gray-200 p-6" data-content="about">
                                     <div class="space-y-4">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">About Us
-                                                Title</label>
-                                            <input type="text" placeholder="Enter about us title"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Section Title</label>
+                                            <input id="about-title" type="text" placeholder="Enter about us title"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow shadow-sm">
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Company
-                                                Description</label>
-                                            <textarea placeholder="Tell us about your company..." rows="6"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"></textarea>
-                                        </div>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-2">Years of
-                                                    Experience</label>
-                                                <input type="number" placeholder="10"
-                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-2">Happy
-                                                    Clients</label>
-                                                <input type="number" placeholder="500+"
-                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
-                                            </div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                            <textarea id="about-desc" placeholder="Enter company description..." rows="6"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow resize-y shadow-sm"></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Properties -->
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
                                 <div class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                                     data-toggle="properties">
                                     <div class="flex items-center">
                                         <div
-                                            class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center text-white mr-4">
+                                            class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 mr-4">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 4v16m8-8H4"></path>
                                             </svg>
                                         </div>
-                                        <h3 class="text-lg font-semibold text-gray-800">Properties</h3>
+                                        <h3 class="text-lg font-semibold text-gray-800">Facilities Section</h3>
                                     </div>
                                     <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-200"
                                         data-icon="properties" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,65 +304,48 @@
                                     </svg>
                                 </div>
                                 <div class="hidden border-t border-gray-200 p-6" data-content="properties">
-                                    <div class="space-y-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Property
-                                                Management</label>
-                                            <div class="bg-gray-50 rounded-lg p-4">
-                                                <p class="text-gray-600 mb-4">Manage your hall properties and their
-                                                    details</p>
-                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                    <button
-                                                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
-                                                        Add Property
-                                                    </button>
-                                                    <button
-                                                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
-                                                        Manage Properties
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Property
-                                                Highlights</label>
-                                            <textarea placeholder="Enter property highlights and amenities..." rows="4"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"></textarea>
-                                        </div>
-                                    </div>
+                                    <div id="facilities-container" class="space-y-6 mb-6"></div>
+                                    <button id="add-facility" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors w-full shadow-sm">
+                                        Add New Facility
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right Side - Preview Panel -->
-                    <div class="lg:w-1/2">
-                        <div class="bg-white rounded-xl shadow-lg p-6 min-h-96">
+                    <div class="lg:w-2/3">
+                        <div class="bg-white rounded-xl shadow-md p-6">
                             <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-xl font-semibold text-gray-800">Content Preview</h3>
-                                <button class="text-primary-600 hover:text-primary-700 font-medium transition-colors">
-                                    Edit
-                                </button>
+                                <h3 class="text-xl font-semibold text-gray-800">Live Preview</h3>
+                                <div class="space-x-2">
+                                    <button id="fullscreenBtn" class="text-primary-600 hover:text-primary-700 font-medium transition-colors">
+                                        Full Screen
+                                    </button>
+                                    <button id="refreshBtn" class="text-primary-600 hover:text-primary-700 font-medium transition-colors">
+                                        Refresh
+                                    </button>
+                                </div>
                             </div>
 
-                            <div
-                                class="bg-gray-100 rounded-lg h-80 flex items-center justify-center border-2 border-dashed border-gray-300">
-                                <div class="text-center text-gray-500">
-                                    <svg class="w-10 h-10 mx-auto mb-4" fill="none" stroke="currentColor"
+                            <div id="preview-content"
+                                class="bg-gray-100 rounded-lg p-4 overflow-auto border-2 border-dashed border-gray-300 preview-scrollable">
+                                <div class="text-center text-gray-500 py-20">
+                                    <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm7 0a10 10 0 11-20 0 10 10 0 0120 0z">
                                         </path>
                                     </svg>
-                                    <p class="text-lg">Content Preview</p>
-                                    <p class="text-sm">Select a section to preview its content</p>
+                                    <p class="text-lg font-medium">Content Preview</p>
+                                    <p class="text-sm">Changes are reflected here in real-time</p>
                                 </div>
                             </div>
 
                             <div class="mt-6 flex justify-center">
                                 <button id="saveBtn"
-                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
-                                    Save
+                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    Save Changes
                                 </button>
                             </div>
                         </div>
@@ -354,129 +356,470 @@
     </div>
 
     <script>
-        // Mobile menu functionality
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        // Data management
+        let data = {};
+        const STORAGE_KEY = 'venuevista-content';
+        let isSaving = false;
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('hidden');
+        const defaultData = {
+            hero: {
+                video: "/Admin/Features/ContentManagement/Customer/Assets/HomePagevideo.mp4"
+            },
+            features: [
+                {
+                    title: "Easy Online Booking",
+                    description: "Reserve your venue in minutes with our intuitive platform.",
+                    iconKey: "check",
+                    icon: '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+                },
+                {
+                    title: "Flexible Options",
+                    description: "Choose from a variety of venues to suit any event size.",
+                    iconKey: "arrows",
+                    icon: '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>'
+                },
+                {
+                    title: "Transparent Pricing",
+                    description: "Clear pricing with no hidden fees.",
+                    iconKey: "dollar",
+                    icon: '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path></svg>'
+                }
+            ],
+            about: {
+                title: "About VenueVista",
+                description: "At VenueVista, we believe every event deserves the perfect venue. Our platform simplifies the booking process, offering a seamless experience for events of all sizes, from intimate meetings to grand celebrations.\n\nWith real-time availability, secure payments, and dedicated support, we ensure your planning is stress-free, allowing you to focus on creating unforgettable memories."
+            },
+            facilities: [
+                {
+                    title: "Spacious Parking",
+                    description: "Ample parking space for all your guests, ensuring convenience and accessibility.",
+                    image: "/Admin/Features/ContentManagement/Customer/Assets/parking.png"
+                },
+                {
+                    title: "Catering Services",
+                    description: "Delicious food and beverage options tailored to your event's needs.",
+                    image: "/Admin/Features/ContentManagement/Customer/Assets/Beverage.png"
+                },
+                {
+                    title: "Audio-Visual Equipment",
+                    description: "State-of-the-art AV systems for presentations and entertainment.",
+                    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+                }
+            ]
+        };
+
+        const iconMap = {
+            check: '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+            arrows: '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>',
+            dollar: '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path></svg>'
+        };
+
+        async function loadData() {
+            try {
+                const res = await fetch('http://localhost:3000/content');
+                if (!res.ok) throw new Error('Failed to fetch');
+                data = await res.json();
+            } catch (e) {
+                console.error('Load error:', e);
+                const stored = localStorage.getItem(STORAGE_KEY);
+                data = stored ? JSON.parse(stored) : defaultData;
+            }
+            // Ensure data is populated correctly
+            if (!data.hero) data.hero = defaultData.hero;
+            if (!data.features || !Array.isArray(data.features)) data.features = defaultData.features;
+            if (!data.about) data.about = defaultData.about;
+            if (!data.facilities || !Array.isArray(data.facilities)) data.facilities = defaultData.facilities;
+        }
+
+        async function saveData() {
+            if (isSaving) return;
+            isSaving = true;
+            try {
+                const res = await fetch('http://localhost:3000/content', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!res.ok) throw new Error('Failed to save');
+                // Only save to localStorage if necessary, and avoid large files
+                const slimData = {
+                    hero: { video: data.hero.video.startsWith('data:') ? '[Base64 Video]' : data.hero.video },
+                    features: data.features,
+                    about: data.about,
+                    facilities: data.facilities.map(f => ({
+                        title: f.title,
+                        description: f.description,
+                        image: f.image.startsWith('data:') ? '[Base64 Image]' : f.image
+                    }))
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(slimData));
+            } catch (e) {
+                console.error('Save error:', e);
+                alert('Failed to save to db.json. Ensure json-server is running with: npx json-server --watch db.json. Changes saved to localStorage (limited data).');
+                const slimData = {
+                    hero: { video: data.hero.video.startsWith('data:') ? '[Base64 Video]' : data.hero.video },
+                    features: data.features,
+                    about: data.about,
+                    facilities: data.facilities.map(f => ({
+                        title: f.title,
+                        description: f.description,
+                        image: f.image.startsWith('data:') ? '[Base64 Image]' : f.image
+                    }))
+                };
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(slimData));
+                } catch (storageError) {
+                    console.error('LocalStorage error:', storageError);
+                    alert('LocalStorage quota exceeded. Only text data saved. Consider clearing localStorage or reducing file sizes.');
+                }
+            } finally {
+                isSaving = false;
+            }
+        }
+
+        // Render functions
+        function renderFeatures() {
+            const container = document.getElementById('features-container');
+            container.innerHTML = '';
+            data.features.forEach((feature, index) => {
+                const div = document.createElement('div');
+                div.className = 'border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50 shadow-sm';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-semibold text-gray-800">Feature ${index + 1}</h4>
+                        <button onclick="deleteFeature(${index})" class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
+                    </div>
+                    <input type="text" value="${feature.title || ''}" placeholder="Feature title" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 transition-shadow shadow-sm" onchange="updateFeature(${index}, 'title', this.value)">
+                    <textarea rows="3" placeholder="Feature description" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 transition-shadow shadow-sm" onchange="updateFeature(${index}, 'description', this.value)">${feature.description || ''}</textarea>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 transition-shadow shadow-sm" onchange="updateFeature(${index}, 'iconKey', this.value)">
+                        <option value="check" ${feature.iconKey === 'check' ? 'selected' : ''}>Check Circle</option>
+                        <option value="arrows" ${feature.iconKey === 'arrows' ? 'selected' : ''}>Arrows</option>
+                        <option value="dollar" ${feature.iconKey === 'dollar' ? 'selected' : ''}>Dollar</option>
+                    </select>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderFacilities() {
+            const container = document.getElementById('facilities-container');
+            container.innerHTML = '';
+            data.facilities.forEach((facility, index) => {
+                const div = document.createElement('div');
+                div.className = 'border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50 shadow-sm';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-semibold text-gray-800">Facility ${index + 1}</h4>
+                        <button onclick="deleteFacility(${index})" class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
+                    </div>
+                    <input type="text" value="${facility.title || ''}" placeholder="Facility title" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 transition-shadow shadow-sm" onchange="updateFacility(${index}, 'title', this.value)">
+                    <textarea rows="3" placeholder="Facility description" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 transition-shadow shadow-sm" onchange="updateFacility(${index}, 'description', this.value)">${facility.description || ''}</textarea>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-500 transition-colors cursor-pointer group" onclick="document.getElementById('facility-image-${index}').click()">
+                        <svg class="w-8 h-8 text-gray-400 mx-auto mb-2 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V8m0 0L3 12m4-4l4 4m6 0v8m0 0l4-4m-4 4l-4-4"></path>
+                        </svg>
+                        <p class="text-gray-600 group-hover:text-primary-600 transition-colors">Upload facility image</p>
+                        <p class="text-sm text-gray-500 mt-1">${facility.image ? 'Image uploaded' : 'No image selected'}</p>
+                        <input type="file" id="facility-image-${index}" class="hidden" accept="image/*" onchange="handleFacilityImage(${index}, event)">
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Update functions with debounce
+        const debounce = (func, delay) => {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => func(...args), delay);
+            };
+        };
+
+        const debouncedUpdatePreview = debounce(updatePreview, 300);
+
+        function updateFeature(index, field, value) {
+            if (field === 'iconKey') {
+                data.features[index].iconKey = value;
+                data.features[index].icon = iconMap[value];
+            } else {
+                data.features[index][field] = value;
+            }
+            renderFeatures();
+            debouncedUpdatePreview();
+        }
+
+        function deleteFeature(index) {
+            if (confirm('Are you sure you want to delete this feature?')) {
+                data.features.splice(index, 1);
+                renderFeatures();
+                updatePreview();
+            }
+        }
+
+        function addFeature() {
+            data.features.push({
+                title: '',
+                description: '',
+                iconKey: 'check',
+                icon: iconMap['check']
+            });
+            renderFeatures();
+            debouncedUpdatePreview();
+        }
+
+        function updateFacility(index, field, value) {
+            data.facilities[index][field] = value;
+            renderFacilities();
+            debouncedUpdatePreview();
+        }
+
+        function handleFacilityImage(index, event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) { // Limit to 2MB
+                    alert('Image size exceeds 2MB. Please upload a smaller file.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    data.facilities[index].image = ev.target.result;
+                    renderFacilities();
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleVideoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) { // Limit to 5MB
+                    alert('Video size exceeds 5MB. Please upload a smaller file.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    data.hero.video = ev.target.result;
+                    updatePreview();
+                    document.getElementById('videoFileName').textContent = 'Video uploaded';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function deleteFacility(index) {
+            if (confirm('Are you sure you want to delete this facility?')) {
+                data.facilities.splice(index, 1);
+                renderFacilities();
+                updatePreview();
+            }
+        }
+
+        function addFacility() {
+            data.facilities.push({
+                title: '',
+                description: '',
+                image: ''
+            });
+            renderFacilities();
+            debouncedUpdatePreview();
+        }
+
+        function updateAbout(field, value) {
+            data.about[field] = value;
+            debouncedUpdatePreview();
+        }
+
+        // Preview generation
+        function generateHeroPreview(heroData) {
+            return `
+                <section class="relative min-h-[400px] overflow-hidden flex justify-center items-center rounded-xl shadow-md">
+                    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+                        <source src="${heroData.video}" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-black/70"></div>
+                    <div class="relative z-10 text-center px-4">
+                        <h1 class="text-4xl font-extrabold text-white mb-4 leading-tight">
+                            Discover Your Perfect
+                            <span class="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-red-500">Event Space</span>
+                        </h1>
+                        <p class="text-xl text-gray-100 mb-8 max-w-2xl mx-auto">
+                            Unlock premium venues for unforgettable occasions, from intimate gatherings to grand celebrations with VenueVista.
+                        </p>
+                    </div>
+                </section>
+            `;
+        }
+
+        function generateFeaturesPreview(featuresData) {
+            let html = `
+                <section class="py-12 bg-gray-50 rounded-xl shadow-md">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4">Why Choose VenueVista?</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Discover the benefits of booking with us for a seamless event experience.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+            `;
+            featuresData.forEach(f => {
+                html += `
+                    <div class="text-center group">
+                        <div class="w-16 h-16 bg-primary-600 rounded-xl mx-auto mb-6 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                            ${f.icon}
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">${f.title}</h3>
+                        <p class="text-gray-600">${f.description}</p>
+                    </div>
+                `;
+            });
+            html += '</div></section>';
+            return html;
+        }
+
+        function generateAboutPreview(aboutData) {
+            return `
+                <section class="py-12 bg-blue-50 rounded-xl shadow-md">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 px-4 items-center">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205" alt="About VenueVista"
+                                class="w-full h-64 object-cover rounded-2xl shadow-lg">
+                        </div>
+                        <div>
+                            <h2 class="text-4xl font-bold text-gray-800 mb-8">${aboutData.title}</h2>
+                            <p class="text-gray-600 leading-relaxed whitespace-pre-wrap">${aboutData.description}</p>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function generateFacilitiesPreview(facilitiesData) {
+            let html = `
+                <section class="py-12 bg-white rounded-xl shadow-md">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Facilities</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Top-notch amenities to ensure your event is a success.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+            `;
+            facilitiesData.forEach(f => {
+                html += `
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                        <div class="h-48 relative overflow-hidden">
+                            <img src="${f.image || 'https://placehold.co/400x300?text=Image+Not+Found'}" alt="${f.title}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">${f.title}</h3>
+                            <p class="text-gray-600">${f.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div></section>';
+            return html;
+        }
+
+        function generateFullPreview() {
+            return `
+                <div class="space-y-12">
+                    ${generateHeroPreview(data.hero)}
+                    ${generateFeaturesPreview(data.features)}
+                    ${generateAboutPreview(data.about)}
+                    ${generateFacilitiesPreview(data.facilities)}
+                </div>
+            `;
+        }
+
+        function updatePreview() {
+            document.getElementById('preview-content').innerHTML = generateFullPreview();
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadData();
+            renderFeatures();
+            renderFacilities();
+            document.getElementById('videoFileName').textContent = data.hero.video ? (data.hero.video.startsWith('data:') ? 'Video uploaded' : 'Default video loaded') : 'No video selected';
+            document.getElementById('about-title').value = data.about.title || '';
+            document.getElementById('about-desc').value = data.about.description || '';
+            setupAboutListeners();
+            updatePreview();
+
+            // Mobile menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.remove('hidden');
+            });
+            document.getElementById('closeMobileMenu').addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+            document.querySelector('#mobileMenu .bg-black').addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', updatePreview);
         });
 
-        closeMobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
+        function setupAboutListeners() {
+            document.getElementById('about-title').addEventListener('input', (e) => updateAbout('title', e.target.value));
+            document.getElementById('about-desc').addEventListener('input', (e) => updateAbout('description', e.target.value));
+        }
+
+        document.getElementById('add-feature').addEventListener('click', addFeature);
+        document.getElementById('add-facility').addEventListener('click', addFacility);
+
+        document.getElementById('saveBtn').addEventListener('click', async (e) => {
+            const btn = e.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<svg class="animate-spin h-5 w-5 mr-3 inline" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Saving...';
+            btn.disabled = true;
+            await saveData();
+            btn.innerHTML = 'Saved!';
+            btn.classList.add('bg-green-600', 'hover:bg-green-700');
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+            }, 2000);
         });
 
-        // Close mobile menu when clicking outside
-        mobileMenu.addEventListener('click', (e) => {
-            if (e.target === mobileMenu) {
-                mobileMenu.classList.add('hidden');
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            const preview = document.getElementById('preview-content');
+            if (preview.requestFullscreen) {
+                preview.requestFullscreen();
+            } else if (preview.webkitRequestFullscreen) {
+                preview.webkitRequestFullscreen();
+            } else if (preview.msRequestFullscreen) {
+                preview.msRequestFullscreen();
             }
         });
 
-        // Expandable sections functionality
+        document.getElementById('videoUploadBtn').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/mp4';
+            input.onchange = handleVideoUpload;
+            input.click();
+        });
+
+        // Accordion
         document.querySelectorAll('[data-toggle]').forEach(toggle => {
             toggle.addEventListener('click', () => {
                 const section = toggle.dataset.toggle;
                 const content = document.querySelector(`[data-content="${section}"]`);
                 const icon = document.querySelector(`[data-icon="${section}"]`);
 
-                if (content.classList.contains('hidden')) {
-                    content.classList.remove('hidden');
-                    icon.classList.add('rotate-180');
-                } else {
-                    content.classList.add('hidden');
-                    icon.classList.remove('rotate-180');
-                }
+                document.querySelectorAll('[data-content]').forEach(c => {
+                    if (c !== content) c.classList.add('hidden');
+                });
+                document.querySelectorAll('[data-icon]').forEach(i => {
+                    if (i !== icon) i.classList.remove('rotate-180');
+                });
+
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
             });
-        });
-
-        // File upload functionality for feature image
-        document.querySelectorAll('input[type="file"]').forEach(input => {
-            const uploadArea = input.closest('.border-dashed');
-            if (uploadArea) {
-                uploadArea.addEventListener('click', () => input.click());
-
-                uploadArea.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.add('border-primary-500', 'bg-primary-50');
-                });
-
-                uploadArea.addEventListener('dragleave', () => {
-                    uploadArea.classList.remove('border-primary-500', 'bg-primary-50');
-                });
-
-                uploadArea.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.remove('border-primary-500', 'bg-primary-50');
-
-                    const files = e.dataTransfer.files;
-                    if (files.length > 0) {
-                        input.files = files;
-                        console.log('File uploaded:', files[0].name);
-                    }
-                });
-            }
-        });
-
-        // Hero video upload button functionality
-        document.getElementById('videoUploadBtn').addEventListener('click', () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'video/*';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const uploadBtn = document.getElementById('videoUploadBtn');
-                    const fileNameSpan = document.getElementById('videoFileName');
-                    const originalText = uploadBtn.innerHTML;
-
-                    // Show loading state
-                    uploadBtn.innerHTML = 'Uploading...';
-                    uploadBtn.disabled = true;
-                    fileNameSpan.textContent = 'Processing...';
-
-                    // Simulate upload operation
-                    setTimeout(() => {
-                        uploadBtn.innerHTML = 'Uploaded!';
-                        uploadBtn.classList.remove('bg-primary-600', 'hover:bg-primary-700');
-                        uploadBtn.classList.add('bg-primary-500');
-                        fileNameSpan.textContent = file.name;
-
-                        setTimeout(() => {
-                            uploadBtn.innerHTML = originalText;
-                            uploadBtn.disabled = false;
-                            uploadBtn.classList.remove('bg-primary-500');
-                            uploadBtn.classList.add('bg-primary-600', 'hover:bg-primary-700');
-                        }, 2000);
-                    }, 1500);
-                }
-            };
-            input.click();
-        });
-
-        // Save functionality
-        document.getElementById('saveBtn').addEventListener('click', (e) => {
-            const btn = e.target;
-            const originalText = btn.innerHTML;
-
-            // Show loading state
-            btn.innerHTML = 'Saving...';
-            btn.disabled = true;
-
-            // Simulate save operation
-            setTimeout(() => {
-                btn.innerHTML = 'Saved!';
-                btn.classList.remove('bg-primary-600', 'hover:bg-primary-700');
-                btn.classList.add('bg-primary-500');
-
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                    btn.classList.remove('bg-primary-500');
-                    btn.classList.add('bg-primary-600', 'hover:bg-primary-700');
-                }, 2000);
-            }, 1500);
         });
     </script>
 </body>

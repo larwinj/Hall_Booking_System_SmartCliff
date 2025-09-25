@@ -113,6 +113,13 @@
                 padding: 2rem;
             }
         }
+
+        /* Ensure feature logos are visible */
+        .feature-logo {
+            width: 4rem;
+            height: 4rem;
+            object-fit: contain;
+        }
     </style>
 </head>
 
@@ -132,14 +139,12 @@
             });
     </script>
 
-    <!-- Hero Section (Enhanced for larger, more attractive text) -->
+    <!-- Hero Section -->
     <section id="home"
         class="hero-section relative min-h-screen pb-16 overflow-hidden flex justify-center items-center">
-        <!-- Background Video -->
         <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
             <source src="./Customer/Assests/HomePagevideo.mp4" type="video/mp4" />
         </video>
-        <!-- Enhanced Gradient Overlay for Better Text Contrast -->
         <div class="hero-overlay absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-black/70 z-10"></div>
         <div class="relative z-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,30 +160,25 @@
                         celebrations with VenueVista.
                     </p>
                 </div>
-                <!-- Enhanced Search Form: Improved glassmorphism and styling -->
                 <div class="max-w-4xl mx-auto">
                     <div
                         class="search-form bg-white/15 backdrop-blur-md rounded-2xl shadow-2xl glass-effect animate-slide-up border border-white/30 p-4 sm:p-6">
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                            <!-- Date -->
                             <div class="space-y-2">
                                 <label class="block text-xl font-semibold text-white">Date</label>
                                 <input type="date"
                                     class="w-full px-4 py-3 bg-white/80 text-black border border-white/40 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 placeholder-gray-200">
                             </div>
-                            <!-- Check In -->
                             <div class="space-y-2">
                                 <label class="block text-xl font-semibold text-white">Check In</label>
                                 <input type="time"
                                     class="w-full px-4 py-3 bg-white/80 text-black border border-white/40 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 placeholder-gray-200">
                             </div>
-                            <!-- Check Out -->
                             <div class="space-y-2">
                                 <label class="block text-xl font-semibold text-white">Check Out</label>
                                 <input type="time"
                                     class="w-full px-4 py-3 bg-white/80 text-black border border-white/40 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300 placeholder-gray-200">
                             </div>
-                            <!-- Category Dropdown -->
                             <div class="space-y-2">
                                 <label class="block text-xl font-semibold text-white">Category</label>
                                 <select id="category"
@@ -189,7 +189,6 @@
                                     <option value="grand">Grand Hall</option>
                                 </select>
                             </div>
-                            <!-- Room Dropdown -->
                             <div class="space-y-2">
                                 <label class="block text-xl font-semibold text-white">Room</label>
                                 <select id="room"
@@ -228,7 +227,6 @@
                     grand celebrations, find the perfect space for your event.</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Compact Hall -->
                 <div
                     class="bg-white rounded-2xl shadow-lg cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 group">
                     <div class="h-64 relative overflow-hidden">
@@ -252,7 +250,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Classic Hall -->
                 <div
                     class="bg-white rounded-2xl shadow-lg cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 group">
                     <div class="h-64 relative overflow-hidden">
@@ -276,7 +273,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Grand Hall -->
                 <div
                     class="bg-white rounded-2xl cursor-pointer shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 group">
                     <div class="h-64 relative overflow-hidden">
@@ -313,39 +309,28 @@
                     booking with us for a seamless event experience.</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Easy Online Booking -->
                 <div class="text-center group">
                     <div
                         class="w-16 h-16 bg-primary rounded-xl mx-auto mb-6 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                        <img src="https://placehold.co/64x64?text=Booking" alt="Easy Online Booking"
+                            class="feature-logo">
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-3">Easy Online Booking</h3>
                     <p class="text-gray-600">Reserve your venue in minutes with our intuitive platform.</p>
                 </div>
-                <!-- Flexible Options -->
                 <div class="text-center group">
                     <div
                         class="w-16 h-16 bg-primary rounded-xl mx-auto mb-6 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                        </svg>
+                        <img src="https://placehold.co/64x64?text=Options" alt="Flexible Options" class="feature-logo">
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-3">Flexible Options</h3>
                     <p class="text-gray-600">Choose from a variety of venues to suit any event size.</p>
                 </div>
-                <!-- Transparent Pricing -->
                 <div class="text-center group">
                     <div
                         class="w-16 h-16 bg-primary rounded-xl mx-auto mb-6 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
-                            </path>
-                        </svg>
+                        <img src="https://placehold.co/64x64?text=Pricing" alt="Transparent Pricing"
+                            class="feature-logo">
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-3">Transparent Pricing</h3>
                     <p class="text-gray-600">Clear pricing with no hidden fees.</p>
@@ -355,7 +340,7 @@
     </section>
 
     <!-- Facilities Section -->
-    <section class="py-20 bg-white">
+    <section id="facilities" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4 animate-fade-in">Our Facilities
@@ -363,8 +348,7 @@
                 <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto animate-slide-up">Top-notch amenities to
                     ensure your event is a success.</p>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Spacious Parking -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 facilities-grid">
                 <div
                     class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 group">
                     <div class="h-64 relative overflow-hidden">
@@ -377,7 +361,6 @@
                             accessibility.</p>
                     </div>
                 </div>
-                <!-- Catering Services -->
                 <div
                     class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 group">
                     <div class="h-64 relative overflow-hidden">
@@ -389,7 +372,6 @@
                         <p class="text-gray-600">Delicious food and beverage options tailored to your event's needs.</p>
                     </div>
                 </div>
-                <!-- Audio-Visual Equipment -->
                 <div
                     class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 group">
                     <div class="h-64 relative overflow-hidden">
@@ -400,29 +382,6 @@
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Audio-Visual Equipment</h3>
                         <p class="text-gray-600">State-of-the-art AV systems for presentations and entertainment.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-blue-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="order-2 lg:order-1">
-                    <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205" alt="About VenueVista"
-                        class="w-full h-96 object-cover rounded-2xl shadow-lg">
-                </div>
-                <div class="order-1 lg:order-2">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-8 animate-fade-in">About
-                        VenueVista</h2>
-                    <div class="prose prose-lg text-gray-600 leading-relaxed animate-slide-up">
-                        <p class="mb-6">At VenueVista, we believe every event deserves the perfect venue. Our platform
-                            simplifies the booking process, offering a seamless experience for events of all sizes, from
-                            intimate meetings to grand celebrations.</p>
-                        <p>With real-time availability, secure payments, and dedicated support, we ensure your planning
-                            is stress-free, allowing you to focus on creating unforgettable memories.</p>
                     </div>
                 </div>
             </div>
@@ -441,7 +400,6 @@
             <div class="relative overflow-hidden">
                 <div id="carousel" class="flex transition-transform duration-700 ease-in-out"
                     style="transform: translateX(0);">
-                    <!-- Testimonial 1 -->
                     <div class="min-w-full px-4">
                         <div
                             class="bg-white rounded-2xl shadow-xl p-10 text-center max-w-3xl mx-auto border border-gray-100 hover:shadow-2xl transition-all duration-300">
@@ -453,7 +411,6 @@
                             <p class="text-base sm:text-lg text-gray-500">Wedding Planner</p>
                         </div>
                     </div>
-                    <!-- Testimonial 2 -->
                     <div class="min-w-full px-4">
                         <div
                             class="bg-white rounded-2xl shadow-xl p-10 text-center max-w-3xl mx-auto border border-gray-100 hover:shadow-2xl transition-all duration-300">
@@ -465,7 +422,6 @@
                             <p class="text-base sm:text-lg text-gray-500">Corporate Event Organizer</p>
                         </div>
                     </div>
-                    <!-- Testimonial 3 -->
                     <div class="min-w-full px-4">
                         <div
                             class="bg-white rounded-2xl shadow-xl p-10 text-center max-w-3xl mx-auto border border-gray-100 hover:shadow-2xl transition-all duration-300">
@@ -476,7 +432,6 @@
                             <p class="text-base sm:text-lg text-gray-500">Event Coordinator</p>
                         </div>
                     </div>
-                    <!-- Testimonial 4 -->
                     <div class="min-w-full px-4">
                         <div
                             class="bg-white rounded-2xl shadow-xl p-10 text-center max-w-3xl mx-auto border border-gray-100 hover:shadow-2xl transition-all duration-300">
@@ -488,7 +443,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Carousel Controls -->
                 <button id="prev-slide"
                     class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-primary-blue text-white p-4 rounded-full hover:bg-primary-700 transition-all duration-300 shadow-lg">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -502,7 +456,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </button>
-                <!-- Carousel Indicators -->
                 <div class="flex justify-center mt-8 space-x-3">
                     <div class="w-4 h-4 rounded-full bg-gray-300 cursor-pointer transition-all duration-300 indicator"
                         data-index="0"></div>
@@ -534,7 +487,7 @@
 
                 function startAutoSlide() {
                     autoSlideInterval = setInterval(() => {
-                        currentIndex = (currentIndex + 1) % totalSlides; // Circular loop
+                        currentIndex = (currentIndex + 1) % totalSlides;
                         updateCarousel();
                     }, 5000);
                 }
@@ -544,12 +497,12 @@
                 }
 
                 prevSlide.addEventListener('click', () => {
-                    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; // Circular loop
+                    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
                     updateCarousel();
                 });
 
                 nextSlide.addEventListener('click', () => {
-                    currentIndex = (currentIndex + 1) % totalSlides; // Circular loop
+                    currentIndex = (currentIndex + 1) % totalSlides;
                     updateCarousel();
                 });
 
@@ -560,16 +513,35 @@
                     });
                 });
 
-                // Pause auto-slide on hover
                 testimonialSection.addEventListener('mouseenter', stopAutoSlide);
                 testimonialSection.addEventListener('mouseleave', startAutoSlide);
-
-                // Start auto-slide on load
                 startAutoSlide();
-
-                // Initialize the first indicator as active
                 updateCarousel();
             </script>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205" alt="About VenueVista"
+                        class="w-full h-96 object-cover rounded-2xl shadow-lg">
+                </div>
+                <div class="order-1 lg:order-2">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-8 animate-fade-in">About
+                        VenueVista</h2>
+                    <div class="prose prose-lg text-gray-600 leading-relaxed animate-slide-up">
+                        <p class="mb-6">At VenueVista, we believe every event deserves the perfect venue. Our platform
+                            simplifies the booking process, offering a seamless experience for events of all sizes, from
+                            intimate meetings to grand celebrations.</p>
+                        <p>With real-time availability, secure payments, and dedicated support, we ensure your planning
+                            is stress-free, allowing you to focus on creating unforgettable memories.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Contact Section -->
@@ -582,7 +554,6 @@
                     plan your perfect event.</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Map -->
                 <div class="order-2 lg:order-1">
                     <div class="bg-gray-200 rounded-2xl h-96 flex items-center justify-center relative overflow-hidden">
                         <iframe class="w-full h-full rounded-2xl"
@@ -590,7 +561,6 @@
                             allowfullscreen="" loading="lazy"></iframe>
                     </div>
                 </div>
-                <!-- Contact Form -->
                 <div class="order-1 lg:order-2">
                     <form id="contact-form" class="space-y-6">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -631,12 +601,10 @@
     <footer class="bg-blue-100 pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- VenueVista and Description -->
                 <div class="lg:col-span-1">
                     <h3 class="text-2xl font-bold gradient-text mb-4">VenueVista</h3>
                     <p class="text-gray-600 mb-6 leading-relaxed">Your trusted platform for booking premium event venues
                         with ease and transparency.</p>
-                    <!-- App Store Buttons -->
                     <div class="flex flex-col sm:flex-row gap-3">
                         <a href="#"
                             class="flex items-center bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-300">
@@ -662,7 +630,6 @@
                         </a>
                     </div>
                 </div>
-                <!-- Company Links -->
                 <div>
                     <h4 class="text-lg font-semibold text-gray-800 mb-4">Company</h4>
                     <ul class="space-y-2">
@@ -678,7 +645,6 @@
                         </li>
                     </ul>
                 </div>
-                <!-- Contact Info -->
                 <div>
                     <h4 class="text-lg font-semibold text-gray-800 mb-4">Contact</h4>
                     <ul class="space-y-2">
@@ -687,7 +653,6 @@
                         <li class="text-gray-600">Location: RS-Puram, Coimbatore</li>
                     </ul>
                 </div>
-                <!-- Social Media -->
                 <div>
                     <h4 class="text-lg font-semibold text-gray-800 mb-4">Follow Us</h4>
                     <div class="flex space-x-4">
@@ -715,7 +680,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Copyright -->
             <div class="border-t border-gray-200 mt-12 pt-8 text-center">
                 <p class="text-gray-600">© 2025 Anonymous | All rights reserved</p>
             </div>
@@ -741,6 +705,134 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
+
+        // Default content from static index.html
+        const defaultData = {
+            hero: {
+                title: "Discover Your Perfect Event Space",
+                subtitle: "Unlock premium venues for unforgettable occasions, from intimate gatherings to grand celebrations with VenueVista.",
+                video: "./Customer/Assests/HomePagevideo.mp4"
+            },
+            features: [
+                {
+                    title: "Easy Online Booking",
+                    description: "Reserve your venue in minutes with our intuitive platform.",
+                    icon: "https://placehold.co/64x64?text=Booking"
+                },
+                {
+                    title: "Flexible Options",
+                    description: "Choose from a variety of venues to suit any event size.",
+                    icon: "https://placehold.co/64x64?text=Options"
+                },
+                {
+                    title: "Transparent Pricing",
+                    description: "Clear pricing with no hidden fees.",
+                    icon: "https://placehold.co/64x64?text=Pricing"
+                }
+            ],
+            about: {
+                title: "About VenueVista",
+                description: "At VenueVista, we believe every event deserves the perfect venue. Our platform simplifies the booking process, offering a seamless experience for events of all sizes, from intimate meetings to grand celebrations.\n\nWith real-time availability, secure payments, and dedicated support, we ensure your planning is stress-free, allowing you to focus on creating unforgettable memories."
+            },
+            facilities: [
+                {
+                    title: "Spacious Parking",
+                    description: "Ample parking space for all your guests, ensuring convenience and accessibility.",
+                    image: "./Customer/Assests/parking.png"
+                },
+                {
+                    title: "Catering Services",
+                    description: "Delicious food and beverage options tailored to your event's needs.",
+                    image: "./Customer/Assests/Beverage.png"
+                },
+                {
+                    title: "Audio-Visual Equipment",
+                    description: "State-of-the-art AV systems for presentations and entertainment.",
+                    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+                }
+            ]
+        };
+
+        // Dynamic content loader
+        async function loadDynamicContent() {
+            let data = defaultData;
+            try {
+                const response = await fetch('http://localhost:3000/content?t=' + Date.now());
+                if (!response.ok) throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+                data = await response.json();
+            } catch (error) {
+                console.error('Error loading dynamic content:', error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'text-center text-red-600 py-4';
+                errorDiv.textContent = 'Failed to load dynamic content. Displaying default content.';
+                document.querySelector('.hero-section').prepend(errorDiv);
+            }
+
+            // Ensure data structure
+            data.hero = data.hero || defaultData.hero;
+            data.features = Array.isArray(data.features) ? data.features : defaultData.features;
+            data.about = data.about || defaultData.about;
+            data.facilities = Array.isArray(data.facilities) ? data.facilities : defaultData.facilities;
+
+            // Update hero section
+            const heroTitleWords = (data.hero.title || defaultData.hero.title).split(' ');
+            document.querySelector('.hero-section h1').innerHTML = `
+                ${heroTitleWords.slice(0, -2).join(' ')}<br>
+                <span class="block gradient-text font-extrabold">${heroTitleWords.slice(-2).join(' ')}</span>
+            `;
+            document.querySelector('.hero-section p').textContent = data.hero.subtitle || defaultData.hero.subtitle;
+            const video = document.querySelector('video source');
+            video.src = data.hero.video || defaultData.hero.video;
+            video.parentElement.load();
+
+            // Update features section
+            const featuresContainer = document.querySelector('#features .grid');
+            featuresContainer.innerHTML = data.features.map((feature, index) => {
+                // Use default icon if feature.icon is missing or invalid
+                const iconSvg = feature.icon && feature.icon.trim()
+                    ? feature.icon
+                    : defaultData.features[index % defaultData.features.length].icon;
+
+                return `
+                <div class="text-center group">
+                    <div class="w-16 h-16 bg-primary rounded-xl mx-auto mb-6 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                        ${iconSvg}
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">${feature.title || 'Untitled Feature'}</h3>
+                    <p class="text-gray-600">${feature.description || 'No description provided'}</p>
+                </div>
+            `;
+            }).join('');
+
+
+            // Update about section
+            document.getElementById('about').querySelector('h2').textContent = data.about.title || defaultData.about.title;
+            const aboutContent = document.querySelector('#about .prose');
+            aboutContent.innerHTML = (data.about.description || defaultData.about.description)
+                .split('\n\n')
+                .map(para => `<p class="mb-6">${para}</p>`)
+                .join('');
+
+            // Update facilities section
+            const facilitiesContainer = document.querySelector('.facilities-grid');
+            facilitiesContainer.innerHTML = data.facilities.map(facility => `
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 group">
+                    <div class="h-64 relative overflow-hidden">
+                        <img src="${facility.image || 'https://placehold.co/400x300?text=Image+Not+Found'}" alt="${facility.title || 'Untitled Facility'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${facility.title || 'Untitled Facility'}</h3>
+                        <p class="text-gray-600">${facility.description || 'No description provided'}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load content on page load
+        document.addEventListener('DOMContentLoaded', loadDynamicContent);
+
+        // Poll for updates every 30 seconds
+        setInterval(loadDynamicContent, 30000);
     </script>
 </body>
 

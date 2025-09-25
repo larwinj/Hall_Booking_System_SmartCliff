@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hall Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -38,7 +40,7 @@
 
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <div class="fixed top-0 left-0 w-64 h-screen bg-primary-500 text-white overflow-y-auto hidden lg:block">
+        <div class="fixed top-0 left-0 w-64 h-screen bg-primary-900 text-white overflow-y-auto hidden lg:block">
             <div class="p-6">
                 <div class="flex items-center space-x-2">
                     <h1 class="text-3xl font-bold">VenueVista</h1>
@@ -49,40 +51,42 @@
             <nav class="mt-8">
                 <div class="px-4 space-y-2">
                     <a href="../DashBoard/dashboard.html"
-                        class="flex items-center px-4 py-3 text-primary-100 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-100 hover:bg-primary-700 font-medium rounded-lg transition-colors duration-200">
                         Dashboard
                     </a>
                     <a href="../Bookingmanagement/booking.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 font-medium rounded-lg transition-colors duration-200">
                         Booking Management
                     </a>
                     <a href="#"
                         class="flex items-center px-4 py-3 text-primary-200 bg-primary-700 rounded-lg font-medium">
                         Hall Management
                     </a>
-                    <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
+                    <a href="../QueryManagement/query.html"
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200">
                         Query Management
                     </a>
                     <a href="../ReportManagement/report.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 rounded-lg transition-colors duration-200">
                         Report Management
                     </a>
                     <a href="../ContentManagement/content.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 rounded-lg transition-colors duration-200">
                         Content Management
                     </a>
                     <a href="#"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200">
+                        class="flex items-center px-4 py-3 text-primary-200 font-medium hover:bg-primary-700 rounded-lg transition-colors duration-200">
                         Backup & Recovery
                     </a>
                 </div>
 
                 <div class="absolute bottom-4 w-64 px-4">
-                    <button
-                        class="w-full px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg transition-colors duration-200 text-left">
+                    <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                        class="w-full flex items-center px-4 py-3 font-bold text-primary-200 hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-left">
+                        
+                        <i class="fas fa-sign-out-alt mr-3"></i>
                         Log Out
-                    </button>
+                    </a>
                 </div>
             </nav>
         </div>
@@ -102,8 +106,8 @@
             <div class="fixed inset-0 bg-black opacity-50"></div>
             <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white">
                 <div class="p-6">
-                    <div class="flex justify-between items-center">
-                        <h1 class="text-xl font-bold">VenueVista</h1>
+                    <div class="flex justify-center items-center">
+                        <h1 class="text-xl font-bold ml-[3rem]">VenueVista</h1>
                         <button id="closeMobileMenu" class="text-white">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -116,17 +120,18 @@
                 <nav class="mt-4">
                     <div class="px-4 space-y-2">
                         <a href="../DashBoard/dashboard.html"
-                            class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">Dashboard</a>
+                            class="block px-4 py-3 text-primary-100 hover:bg-primary-700 rounded-lg font-medium">Dashboard</a>
                         <a href="../Bookingmanagement/booking.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Booking Management</a>
-                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Hall Management</a>
-                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Query Management</a>
+                        <a href="#" class="block px-4 py-3 text-primary-200 bg-primary-700 rounded-lg">Hall Management</a>
+                        <a href="../QueryManagement/query.html" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Query Management</a>
                         <a href="../ReportManagement/report.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Report Management</a>
                         <a href="../ContentManagement/content.html"
                             class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Content Management</a>
                         <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Backup & Recovery</a>
-                        <a href="#" class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Log Out</a>
+                        <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
+                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg">Log Out</a>
                     </div>
                 </nav>
             </div>
@@ -136,7 +141,7 @@
         <div class="flex-1 p-4 lg:p-8 lg:ml-64">
             <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-                    <h1 class="text-3xl lg:text-4xl font-bold text-gray-800 ml-12 lg:ml-0">Hall Management</h1>
+                    <h1 class="text-3xl lg:text-4xl font-bold text-primary-900 ml-12 lg:ml-0">Hall Management</h1>
                     <div class="flex flex-col sm:flex-row gap-4">
                         <button id="updatePriceBtn"
                             class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors">
@@ -382,7 +387,7 @@
             const statusToggleText = room.status === 'active' ? 'Deactivate' : 'Activate';
 
             return `
-                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <div class="bg-white rounded-xl shadow-xl hover:scale-105 hover:shadow-xl animate-fadeInUp animation-delay-100">
                     <div class="h-32 bg-gradient-to-br ${gradientClass} flex items-center justify-center relative">
                         ${room.image ? 
                             `<img src="${room.image}" alt="Room ${room.roomNumber}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
