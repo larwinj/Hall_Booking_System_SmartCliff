@@ -33,7 +33,8 @@
       "email": "727722eucs095@skcet.ac.in",
       "phone": "7806922311",
       "password": "Test@123",
-      "id": 4
+      "id": 4,
+      "role": "customer"
     }
   ],
   "bookings": [
@@ -532,7 +533,7 @@
       "beverages": {},
       "BookedOn": "25/09/2025",
       "totalCost": 3000,
-      "status": "booked",
+      "status": "completed",
       "id": 22
     }
   ],
@@ -705,8 +706,20 @@
       "timestamp": "2025-09-25T03:53:00.551Z",
       "status": "pending",
       "id": 3
+    },
+    {
+      "UserId": "4",
+      "name": "Madhan",
+      "email": "madhan@gmail.com",
+      "phone": "8300216725",
+      "subject": "venue-information",
+      "description": "I need info about the compact hall..",
+      "timestamp": "2025-09-25T11:07:50.218Z",
+      "status": "pending",
+      "id": 4
     }
   ],
+  "reports": [],
   "content": {
     "hero": {
       "video": "./Customer/Assests/HomePagevideo.mp4"
