@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // API URL for JSON Server
-    const API_URL = 'http://localhost:3000';
+    const API_URL = 'https://wgmmpvw9-3000.inc1.devtunnels.ms';
 
     // Validation functions
     function validateField(fieldId, errorId, validationFn, errorMessage) {
