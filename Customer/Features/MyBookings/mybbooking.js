@@ -1,4 +1,4 @@
-const API_URL = "https://wgmmpvw9-3000.inc1.devtunnels.ms";
+const API_URL = "http://localhost:3000";
 let currentBookingForReschedule = null;
 let currentBookingForReview = null;
 let allBookings = [];
@@ -403,6 +403,132 @@ function renderPagination(totalBookings) {
   pagination.innerHTML = html;
 }
 
+function showRefundModal(booking) {
+  const refundAmount = calculateRefundAmount(booking);
+  const bookingDate = new Date(booking.date);
+  const currentDate = new Date();
+  const timeDifference = bookingDate.getTime() - currentDate.getTime();
+  const hoursDifference = timeDifference / (1000 * 60 * 60);
+
+  let refundPolicy = "";
+  if (hoursDifference > 24) {
+    refundPolicy =
+      "Full refund (cancellation more than 24 hours before booking)";
+  } else if (hoursDifference > 0) {
+    refundPolicy = "50% refund (cancellation within 24 hours of booking)";
+  } else {
+    refundPolicy =
+      "No refund (booking date has passed or same-day cancellation)";
+  }
+
+  const modalContent = `
+    <div class="bg-red-50 border border-red-200 rounded-lg p-6 mb-4">
+      <div class="flex items-center mb-3">
+        <svg class="w-6 h-6 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+        <h3 class="text-lg font-semibold text-red-800">Cancel Booking</h3>
+      </div>
+      
+      <div class="space-y-3">
+        <div class="flex justify-between">
+          <span class="text-gray-700">Original Amount:</span>
+          <span class="font-semibold">₹${booking.totalCost || 0}</span>
+        </div>
+        
+        <div class="flex justify-between">
+          <span class="text-gray-700">Refund Policy:</span>
+          <span class="text-sm text-gray-600 text-right">${refundPolicy}</span>
+        </div>
+        
+        <div class="border-t pt-2 mt-2">
+          <div class="flex justify-between text-lg font-bold">
+            <span class="text-green-600">Refund Amount:</span>
+            <span class="text-green-600">₹${refundAmount}</span>
+          </div>
+        </div>
+        
+        ${
+          hoursDifference <= 0
+            ? `
+        <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mt-3">
+          <p class="text-yellow-800 text-sm">Note: Since the booking date has passed, no refund can be processed.</p>
+        </div>
+        `
+            : ""
+        }
+      </div>
+    </div>
+    
+    <div class="flex justify-end space-x-3 pt-4">
+      <button type="button" onclick="closeRefundModal()" 
+        class="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-all duration-300">
+        Keep Booking
+      </button>
+      <button type="button" onclick="confirmCancellation(${
+        booking.id
+      }, ${refundAmount})" 
+        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-300">
+        Confirm Cancellation
+      </button>
+    </div>
+  `;
+
+  // Create or update refund modal
+  let refundModal = document.getElementById("refund-modal");
+  if (!refundModal) {
+    refundModal = document.createElement("div");
+    refundModal.id = "refund-modal";
+    refundModal.className = "modal-overlay hidden";
+    refundModal.innerHTML = `
+      <div class="modal-content relative animate-modalSlide" style="max-width: 500px;">
+        <button class="modal-close" onclick="closeRefundModal()">&times;</button>
+        <div id="refund-modal-body"></div>
+      </div>
+    `;
+    document.body.appendChild(refundModal);
+  }
+
+  document.getElementById("refund-modal-body").innerHTML = modalContent;
+
+  const modal = document.getElementById("refund-modal");
+  modal.classList.remove("hidden");
+  requestAnimationFrame(() => modal.classList.add("show"));
+}
+
+function closeRefundModal() {
+  const modal = document.getElementById("refund-modal");
+  modal.classList.remove("show");
+  setTimeout(() => modal.classList.add("hidden"), 200);
+}
+
+async function confirmCancellation(bookingId, refundAmount) {
+  try {
+    const updateResponse = await fetch(`${API_URL}/bookings/${bookingId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        status: "cancelled",
+        refundAmount: refundAmount,
+        cancellationDate: new Date().toISOString(),
+      }),
+    });
+
+    if (updateResponse.ok) {
+      alert(
+        `Booking cancelled successfully!\nRefund Amount: ₹${refundAmount} has been credited to your account.`
+      );
+      closeRefundModal();
+      location.reload();
+    } else {
+      alert("Error cancelling booking. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    alert("An error occurred. Please try again.");
+  }
+}
+
 function setupActions() {
   document.addEventListener("click", async (e) => {
     const btn = e.target.closest(".actions-btn");
@@ -470,7 +596,15 @@ function setupActions() {
             ev.preventDefault();
             ev.stopPropagation();
 
-            if (!confirm("Are you sure you want to cancel this booking?")) return;
+            // Calculate refund amount
+            const refundAmount = calculateRefundAmount(booking);
+
+            if (
+              !confirm(
+                `Are you sure you want to cancel this booking?\n\nRefund Amount: ₹${refundAmount}\n\nThis amount will be credited to your account.`
+              )
+            )
+              return;
 
             try {
               const updateResponse = await fetch(
@@ -478,12 +612,18 @@ function setupActions() {
                 {
                   method: "PATCH",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ status: "cancelled" }),
+                  body: JSON.stringify({
+                    status: "cancelled",
+                    refundAmount: refundAmount,
+                    cancellationDate: new Date().toISOString(),
+                  }),
                 }
               );
 
               if (updateResponse.ok) {
-                alert("Booking cancelled successfully!");
+                alert(
+                  `Booking cancelled successfully!\nRefund Amount: ₹${refundAmount} has been credited to your account.`
+                );
                 location.reload();
               } else {
                 alert("Error cancelling booking. Please try again.");
@@ -492,12 +632,12 @@ function setupActions() {
               console.error("Error cancelling booking:", error);
               alert("An error occurred. Please try again.");
             }
-
+            showRefundModal(booking);
             dropdown.classList.remove("show");
             dropdown.setAttribute("aria-hidden", "true");
           });
           dropdown.appendChild(cancel);
-        } 
+        }
         // If booking is completed
         else if (booking.status === "completed") {
           const addReview = document.createElement("button");
@@ -547,7 +687,6 @@ function setupActions() {
   });
 }
 
-
 function setupModal() {
   const modal = document.getElementById("booking-modal");
   const closeBtn = modal.querySelector(".modal-close");
@@ -567,6 +706,30 @@ function setupModal() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.classList.contains("show")) hideModal();
   });
+}
+
+function calculateRefundAmount(booking) {
+  if (!booking.date || !booking.totalCost) return 0;
+
+  const bookingDate = new Date(booking.date);
+  const currentDate = new Date();
+  const timeDifference = bookingDate.getTime() - currentDate.getTime();
+  const hoursDifference = timeDifference / (1000 * 60 * 60);
+
+  const totalCost = parseFloat(booking.totalCost) || 0;
+
+  // If cancellation is more than 24 hours before booking
+  if (hoursDifference > 24) {
+    return totalCost; // Full refund
+  }
+  // If cancellation is less than 24 hours before booking
+  else if (hoursDifference > 0) {
+    return Math.round(totalCost * 0.5); // 50% refund
+  }
+  // If booking date has passed or same day cancellation
+  else {
+    return 0; // No refund
+  }
 }
 
 function setupRescheduleModal() {

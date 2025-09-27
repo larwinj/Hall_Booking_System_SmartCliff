@@ -719,7 +719,30 @@
       "id": 4
     }
   ],
-  "reports": [],
+  "reports": [
+    {
+      "userId": 2,
+      "date": "2025-10-03",
+      "checkInTime": "10:35",
+      "checkOutTime": "11:35",
+      "venueCategory": "classic",
+      "roomId": "#006",
+      "firstName": "Naveen",
+      "lastName": "Kumar",
+      "email": "rith@gmail.com",
+      "mobileNumber": "7418529630",
+      "address": "123 Main Street, Apt 4B\nAnytown, CA 91234\nUSA ",
+      "purpose": "Meeting regarding sprink meeting.",
+      "beverage": "no",
+      "beverages": {},
+      "BookedOn": "25/09/2025",
+      "totalCost": 2500,
+      "status": "booked",
+      "id": 20,
+      "reportDescription": "I need to cancel this booking..",
+      "reportDate": "2025-09-26T11:33:40.966Z"
+    }
+  ],
   "content": {
     "hero": {
       "video": "./Customer/Assests/HomePagevideo.mp4"
