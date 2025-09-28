@@ -28,31 +28,31 @@ This app uses JSON Server (db.json) as a lightweight backend for database operat
 
 Hall_Booking_System/
 ├── Admin/
-│   ├── Assets/                     # Admin assets (images, icons, etc.)
-│   └── Features/                   # Admin-specific features
-│       ├── Backup & Recovery/
-│       ├── Bookingmanagement/      # booking.html, booking.js
-│       ├── ContentManagement/
-│       ├── DashBoard/
-│       ├── HallsManagement/
-│       ├── QueryManagement/
-│       └── ReportManagement/
+│ ├── Assets/ # Admin assets (images, icons, etc.)
+│ └── Features/ # Admin-specific features
+│ ├── Backup & Recovery/
+│ ├── Bookingmanagement/ # booking.html, booking.js
+│ ├── ContentManagement/
+│ ├── DashBoard/
+│ ├── HallsManagement/
+│ ├── QueryManagement/
+│ └── ReportManagement/
 │
 ├── Customer/
-│   ├── Assets/                     # Customer assets
-│   └── Features/                   # Customer-specific features
-│       ├── Auth/
-│       ├── BookingsForm/
-│       ├── ContactQuery/
-│       ├── Dashboard/
-│       ├── Halls/                  # rooms.html, rooms.js
-│       ├── MyBookings/
-│       └── Navbar/
+│ ├── Assets/ # Customer assets
+│ └── Features/ # Customer-specific features
+│ ├── Auth/ # loginSignUp.html,loginSignUp.js
+│ ├── BookingsForm/
+│ ├── ContactQuery/
+│ ├── Dashboard/
+│ ├── Halls/ # rooms.html, rooms.js
+│ ├── MyBookings/
+│ └── Navbar/
 │
-├── db.json                         # JSON Server database
-├── index.html                      # Main entry page
-├── index.js                        # Root JavaScript
-├── navbar.html                     # Common navbar
+├── db.json # JSON Server database
+├── index.html # Main entry page
+├── index.js # Root JavaScript
+└── navbar.html # Common navbar
 
 
 ## Getting Started 
