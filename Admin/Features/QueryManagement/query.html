@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Query Management System</title>
+    <title>Query & Report Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -33,41 +33,163 @@
         .toast-success {
             background: linear-gradient(135deg, #10b981, #059669) !important;
         }
+
         .toast-error {
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
         }
+
         .card-hover {
             transition: all 0.3s ease;
         }
+
         .card-hover:hover {
             transform: translateY(-2px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+
         .modal-backdrop {
-            backdrop-filter: blur(8px);
-            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.4);
         }
-        .status-pending { @apply bg-yellow-100 text-yellow-800 border-yellow-200; }
-        .status-responded { @apply bg-green-100 text-green-800 border-green-200; }
-        .status-resolved { @apply bg-blue-100 text-blue-800 border-blue-200; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+
+        .status-pending {
+            @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+        }
+
+        .status-responded {
+            @apply bg-green-100 text-green-800 border-green-200;
+        }
+
+        .status-resolved {
+            @apply bg-blue-100 text-blue-800 border-blue-200;
+        }
+
+        .status-booked {
+            @apply bg-blue-100 text-blue-800 border-blue-200;
+        }
+
+        .status-completed {
+            @apply bg-green-100 text-green-800 border-green-200;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .user-badge {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
+
         .query-card {
             background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid #e2e8f0;
         }
-        .priority-high { border-left: 4px solid #ef4444; }
-        .priority-medium { border-left: 4px solid #f59e0b; }
-        .priority-low { border-left: 4px solid #10b981; }
+
+        .priority-high {
+            border-left: 4px solid #ef4444;
+        }
+
+        .priority-medium {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .priority-low {
+            border-left: 4px solid #10b981;
+        }
+
+        .toggle-container {
+            display: inline-flex;
+            background: #f1f5f9;
+            border-radius: 9999px;
+            padding: 0.25rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .toggle-btn {
+            @apply relative px-4 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base font-semibold rounded-full transition-all duration-300 ease-in-out;
+            z-index: 1;
+        }
+
+        .toggle-btn.active {
+            @apply bg-gradient-to-r from-primary-600 to-primary-800 text-white shadow-md;
+        }
+
+        .toggle-btn:not(.active) {
+            @apply text-gray-600 hover:bg-gray-200;
+        }
+
+        .toggle-background {
+            @apply absolute top-0 left-0 h-full bg-gradient-to-r from-primary-600 to-primary-800 rounded-full transition-all duration-300 ease-in-out;
+        }
+
+        /* Responsive adjustments */
         @media (max-width: 640px) {
             .query-card {
                 margin-bottom: 1rem;
+            }
+
+            .modal-content {
+                max-height: 80vh;
+            }
+
+            .modal-content>div {
+                padding: 1rem;
+            }
+
+            .statistics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-section select,
+            .filter-section input {
+                width: 100%;
+            }
+
+            .toggle-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1023px) {
+            .statistics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .items-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-content {
+                max-width: 90vw;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .items-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .modal-content {
+                max-width: 80vw;
             }
         }
     </style>
@@ -77,49 +199,50 @@
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         <div class="w-64 bg-primary-900 text-white flex-shrink-0 hidden lg:block">
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 <div class="flex items-center space-x-2">
-                    <i class="fas fa-building text-2xl"></i>
-                    <h1 class="text-2xl font-bold">VenueVista</h1>
+                    <i class="fas fa-building text-xl sm:text-2xl"></i>
+                    <h1 class="text-xl sm:text-2xl font-bold">VenueVista</h1>
                 </div>
-                <p class="text-primary-200 text-sm mt-1">Admin Dashboard</p>
+                <p class="text-primary-200 text-xs sm:text-sm mt-1">Admin Dashboard</p>
             </div>
 
-            <nav class="mt-8">
+            <nav class="mt-6 sm:mt-8">
                 <div class="px-4 space-y-2">
                     <a href="../DashBoard/dashboard.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
                         <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
                     </a>
                     <a href="../Bookingmanagement/booking.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
                         <i class="fas fa-calendar-check mr-3"></i> Booking Management
                     </a>
                     <a href="../HallsManagement/hall.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
                         <i class="fas fa-warehouse mr-3"></i> Hall Management
                     </a>
                     <a href="#"
-                        class="flex items-center px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium transition-colors duration-200">
-                        <i class="fas fa-question-circle mr-3"></i> Query Management
+                        class="flex items-center px-4 py-2 sm:py-3 text-primary-100 bg-primary-700 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
+                        <i class="fas fa-question-circle mr-3"></i> Query & Report Management
                     </a>
                     <a href="../ReportManagement/report.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
                         <i class="fas fa-chart-bar mr-3"></i> Report Management
                     </a>
                     <a href="../ContentManagement/content.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
                         <i class="fas fa-edit mr-3"></i> Content Management
                     </a>
                     <a href="../Backup & Recovery/backup&recovery.html"
-                        class="flex items-center px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200">
+                        class="flex items-center px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base">
                         <i class="fas fa-database mr-3"></i> Backup & Recovery
                     </a>
                 </div>
 
                 <div class="absolute bottom-4 w-64 px-4">
-                    <a href="../../../Customer/Features/Auth/LoginSignUp.html" onclick="localStorage.removeItem('userId');"
-                        class="w-full flex items-center px-4 py-3 text-primary-200 font-bold hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-left">
+                    <a href="../../../Customer/Features/Auth/LoginSignUp.html"
+                        onclick="localStorage.removeItem('userId');"
+                        class="w-full flex items-center px-4 py-2 sm:py-3 text-primary-200 font-bold hover:bg-primary-700 hover:text-white rounded-lg transition-all duration-200 text-sm sm:text-base">
                         <i class="fas fa-sign-out-alt mr-3"></i> Log Out
                     </a>
                 </div>
@@ -129,7 +252,7 @@
         <!-- Mobile Menu Button -->
         <div class="lg:hidden fixed top-4 left-4 z-50">
             <button id="mobileMenuBtn" class="bg-primary-600 text-white p-2 rounded-lg shadow-lg">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 sm:w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
                     </path>
                 </svg>
@@ -140,14 +263,14 @@
         <div id="mobileMenu" class="lg:hidden fixed inset-0 z-40 hidden">
             <div class="fixed inset-0 bg-black opacity-50"></div>
             <div class="fixed left-0 top-0 w-64 h-full bg-primary-800 text-white">
-                <div class="p-6">
+                <div class="p-4 sm:p-6">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-2">
-                            <i class="fas fa-building text-xl"></i>
-                            <h1 class="text-xl font-bold">VenueVista</h1>
+                            <i class="fas fa-building text-lg sm:text-xl"></i>
+                            <h1 class="text-lg sm:text-xl font-bold">VenueVista</h1>
                         </div>
                         <button id="closeMobileMenu" class="text-white">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 sm:w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -158,28 +281,28 @@
                 <nav class="mt-4">
                     <div class="px-4 space-y-2">
                         <a href="../DashBoard/dashboard.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">
+                            class="block px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium text-sm sm:text-base">
                             <i class="fas fa-tachometer-alt mr-3"></i>Dashboard</a>
                         <a href="../Bookingmanagement/booking.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">
+                            class="block px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium text-sm sm:text-base">
                             <i class="fas fa-calendar-check mr-3"></i>Booking Management</a>
                         <a href="../HallsManagement/hall.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">
+                            class="block px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium text-sm sm:text-base">
                             <i class="fas fa-warehouse mr-3"></i>Hall Management</a>
                         <a href="#"
-                            class="block px-4 py-3 text-primary-100 bg-primary-700 rounded-lg font-medium">
-                            <i class="fas fa-question-circle mr-3"></i>Query Management</a>
+                            class="block px-4 py-2 sm:py-3 text-primary-100 bg-primary-700 rounded-lg font-medium text-sm sm:text-base">
+                            <i class="fas fa-question-circle mr-3"></i>Query & Report Management</a>
                         <a href="../ReportManagement/report.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">
+                            class="block px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium text-sm sm:text-base">
                             <i class="fas fa-chart-bar mr-3"></i>Report Management</a>
                         <a href="../ContentManagement/content.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">
+                            class="block px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium text-sm sm:text-base">
                             <i class="fas fa-edit mr-3"></i>Content Management</a>
                         <a href="../Backup & Recovery/backup&recovery.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">
+                            class="block px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium text-sm sm:text-base">
                             <i class="fas fa-database mr-3"></i>Backup & Recovery</a>
                         <a href="../../../Customer/Features/Auth/LoginSignUp.html"
-                            class="block px-4 py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium">
+                            class="block px-4 py-2 sm:py-3 text-primary-200 hover:bg-primary-700 rounded-lg font-medium text-sm sm:text-base">
                             <i class="fas fa-sign-out-alt mr-3"></i>Log Out</a>
                     </div>
                 </nav>
@@ -187,40 +310,59 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-4 lg:p-8">
+        <div class="flex-1 p-4 sm:p-6 lg:p-8">
             <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 mt-12 lg:mt-0">
-                    <h1 class="text-2xl lg:text-4xl font-bold text-primary-800 mb-4 lg:mb-0">
-                        <i class="fas fa-question-circle mr-3"></i>Query Management
+                <div
+                    class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6 sm:mb-8 mt-12 sm:mt-8 lg:mt-0">
+                    <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-primary-800 mb-4 lg:mb-0">
+                        <i class="fas fa-question-circle mr-2 sm:mr-3"></i>Query & Report Management
                     </h1>
-                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                    <div class="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
                         <i class="fas fa-clock"></i>
                         <span id="lastUpdated">Last updated: Just now</span>
                     </div>
                 </div>
 
+                <!-- Toggle Button -->
+                <div class="mb-6 flex justify-center">
+                    <div class="toggle-container relative">
+                        <!-- <span id="toggleBackground" class="toggle-background"></span> -->
+                        <button id="queryToggle"
+                            class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-2 focus:ring-primary-500 focus:bg-primary-600 focus:text-white transition-all duration-300 ease-in-out active:bg-primary-600 active:text-white">Queries</button>
+                        <button id="reportToggle"
+                            class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-lg hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-2 focus:ring-primary-500 focus:bg-primary-600 focus:text-white transition-all duration-300 ease-in-out">Reports</button>
+                    </div>
+                </div>
+
                 <!-- Search and Filter Section -->
-                <div class="bg-white rounded-xl shadow-lg p-4 lg:p-6 mb-8">
-                    <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                        <div class="flex-1 max-w-md w-full">
+                <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6 sm:mb-8 filter-section">
+                    <div class="flex flex-col gap-4 items-center justify-between">
+                        <div class="w-full max-w-md">
                             <div class="relative">
-                                <input type="text" id="searchInput" placeholder="Search by name, email or registered user..."
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all">
-                                <svg class="absolute left-3 top-3.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                <input type="text" id="searchInput"
+                                    placeholder="Search by name, email or registered user..."
+                                    class="w-full pl-8 sm:pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-sm sm:text-base">
+                                <svg class="absolute left-2 sm:left-3 top-2.5 sm:top-3.5 h-4 w-4 sm:h-5 sm:w-5 text-gray-400"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
                             </div>
                         </div>
-                        
-                        <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                            <select id="statusFilter" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+
+                        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full">
+                            <select id="statusFilter"
+                                class="px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm sm:text-base">
                                 <option value="all">All Status</option>
                                 <option value="pending">Pending</option>
                                 <option value="responded">Responded</option>
                                 <option value="resolved">Resolved</option>
+                                <option value="booked">Booked</option>
+                                <option value="completed">Completed</option>
                             </select>
-                            
-                            <select id="subjectFilter" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+
+                            <select id="subjectFilter"
+                                class="px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm sm:text-base">
                                 <option value="all">All Subjects</option>
                                 <option value="venue-information">Venue Information</option>
                                 <option value="booking-inquiry">Booking Inquiry</option>
@@ -228,7 +370,8 @@
                                 <option value="other">Other</option>
                             </select>
 
-                            <select id="userFilter" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                            <select id="userFilter"
+                                class="px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm sm:text-base">
                                 <option value="all">All Users</option>
                                 <option value="registered">Registered Users</option>
                                 <option value="guest">Guest Users</option>
@@ -238,41 +381,45 @@
                 </div>
 
                 <!-- Statistics Cards -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
-                    <div class="bg-white rounded-xl shadow-lg p-4 lg:p-6 border-l-4 border-primary-500">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8 statistics-grid">
+                    <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 border-l-4 border-primary-500">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-xs lg:text-sm font-medium text-gray-600">Total Queries</h3>
-                                <p class="text-xl lg:text-3xl font-bold text-primary-600 mt-2" id="totalQueries">0</p>
+                                <h3 class="text-xs sm:text-sm font-medium text-gray-600">Total Items</h3>
+                                <p class="text-lg sm:text-xl lg:text-2xl font-bold text-primary-600 mt-2"
+                                    id="totalItems">0</p>
                             </div>
-                            <i class="fas fa-question-circle text-2xl lg:text-3xl text-primary-500"></i>
+                            <i class="fas fa-question-circle text-xl sm:text-2xl lg:text-3xl text-primary-500"></i>
                         </div>
                     </div>
-                    <div class="bg-white rounded-xl shadow-lg p-4 lg:p-6 border-l-4 border-yellow-500">
+                    <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 border-l-4 border-yellow-500">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-xs lg:text-sm font-medium text-gray-600">Pending</h3>
-                                <p class="text-xl lg:text-3xl font-bold text-yellow-600 mt-2" id="pendingQueries">0</p>
+                                <h3 class="text-xs sm:text-sm font-medium text-gray-600">Pending Queries</h3>
+                                <p class="text-lg sm:text-xl lg:text-2xl font-bold text-yellow-600 mt-2"
+                                    id="pendingQueries">0</p>
                             </div>
-                            <i class="fas fa-clock text-2xl lg:text-3xl text-yellow-500"></i>
+                            <i class="fas fa-clock text-xl sm:text-2xl lg:text-3xl text-yellow-500"></i>
                         </div>
                     </div>
-                    <div class="bg-white rounded-xl shadow-lg p-4 lg:p-6 border-l-4 border-green-500">
+                    <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 border-l-4 border-green-500">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-xs lg:text-sm font-medium text-gray-600">Responded</h3>
-                                <p class="text-xl lg:text-3xl font-bold text-green-600 mt-2" id="respondedQueries">0</p>
+                                <h3 class="text-xs sm:text-sm font-medium text-gray-600">Responded Queries</h3>
+                                <p class="text-lg sm:text-xl lg:text-2xl font-bold text-green-600 mt-2"
+                                    id="respondedQueries">0</p>
                             </div>
-                            <i class="fas fa-reply text-2xl lg:text-3xl text-green-500"></i>
+                            <i class="fas fa-reply text-xl sm:text-2xl lg:text-3xl text-green-500"></i>
                         </div>
                     </div>
-                    <div class="bg-white rounded-xl shadow-lg p-4 lg:p-6 border-l-4 border-blue-500">
+                    <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 border-l-4 border-blue-500">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-xs lg:text-sm font-medium text-gray-600">Resolved</h3>
-                                <p class="text-xl lg:text-3xl font-bold text-blue-600 mt-2" id="resolvedQueries">0</p>
+                                <h3 class="text-xs sm:text-sm font-medium text-gray-600">Total Reports</h3>
+                                <p class="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 mt-2"
+                                    id="totalReports">0</p>
                             </div>
-                            <i class="fas fa-check-circle text-2xl lg:text-3xl text-blue-500"></i>
+                            <i class="fas fa-exclamation-circle text-xl sm:text-2xl lg:text-3xl text-blue-500"></i>
                         </div>
                     </div>
                 </div>
@@ -280,75 +427,89 @@
                 <!-- Loading State -->
                 <div id="loading" class="flex justify-center items-center h-64">
                     <div class="flex flex-col items-center">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-                        <p class="text-gray-600">Loading queries...</p>
+                        <div
+                            class="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-primary-600 mb-4">
+                        </div>
+                        <p class="text-gray-600 text-sm sm:text-base">Loading data...</p>
                     </div>
                 </div>
 
                 <!-- Error State -->
                 <div id="error" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                     <div class="flex">
-                        <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                clip-rule="evenodd"></path>
                         </svg>
-                        <p class="text-red-700" id="errorMessage">Failed to load queries. Please try again.</p>
+                        <p class="text-red-700 text-sm sm:text-base" id="errorMessage">Failed to load data. Please try
+                            again.</p>
                     </div>
                 </div>
 
                 <!-- Empty State -->
-                <div id="emptyState" class="hidden text-center py-12">
-                    <div class="mx-auto h-24 w-24 text-gray-400 mb-4">
-                        <i class="fas fa-inbox text-6xl"></i>
+                <div id="emptyState" class="hidden text-center py-10 sm:py-12">
+                    <div class="mx-auto h-20 w-20 sm:h-24 sm:w-24 text-gray-400 mb-4">
+                        <i class="fas fa-inbox text-5xl sm:text-6xl"></i>
                     </div>
-                    <h3 class="mt-2 text-sm font-medium text-gray-900">No queries found</h3>
-                    <p class="mt-1 text-sm text-gray-500">No queries match your current search criteria.</p>
+                    <h3 class="mt-2 text-sm sm:text-base font-medium text-gray-900">No items found</h3>
+                    <p class="mt-1 text-xs sm:text-sm text-gray-500">No items match your current search criteria.</p>
                 </div>
 
-                <!-- Queries Grid -->
-                <div id="queriesGrid" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 hidden">
-                    <!-- Query cards will be populated here -->
+                <!-- Items Grid -->
+                <div id="itemsGrid"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 items-grid hidden">
+                    <!-- Items (queries or reports) will be populated here -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Query Details Modal -->
-    <div id="queryModal" class="fixed inset-0 z-50 hidden modal-backdrop">
+    <!-- Item Details Modal -->
+    <div id="itemModal" class="fixed inset-0 z-50 hidden modal-backdrop">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto fade-in">
+            <div
+                class="bg-white rounded-xl shadow-2xl w-full max-w-lg sm:max-w-2xl lg:max-w-4xl max-h-[90vh] overflow-y-auto fade-in modal-content">
                 <!-- Modal Header -->
-                <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-primary-100">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-question-circle text-2xl text-primary-600"></i>
-                        <h2 class="text-2xl font-bold text-gray-900">Query Details</h2>
+                <div
+                    class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-primary-100">
+                    <div class="flex items-center space-x-2 sm:space-x-3">
+                        <i class="fas fa-question-circle text-xl sm:text-2xl text-primary-600"></i>
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-900" id="modalTitle">Item Details</h2>
                     </div>
-                    <button id="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-white rounded-full">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    <button id="closeModal"
+                        class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-white rounded-full">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
 
                 <!-- Modal Content -->
-                <div class="p-6" id="modalContent">
+                <div class="p-4 sm:p-6" id="modalContent">
                     <!-- Content will be populated dynamically -->
                 </div>
 
-                <!-- Reply Section -->
-                <div id="replySection" class="border-t border-gray-200 p-6 bg-gray-50 hidden">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <!-- Reply Section (for queries only) -->
+                <div id="replySection" class="border-t border-gray-200 p-4 sm:p-6 bg-gray-50 hidden">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4 flex items-center">
                         <i class="fas fa-reply mr-2"></i>Send Reply
                     </h3>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Response Message</label>
-                            <textarea id="replyMessage" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none" placeholder="Type your response here..."></textarea>
+                            <textarea id="replyMessage" rows="4"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none text-sm sm:text-base"
+                                placeholder="Type your response here..."></textarea>
                         </div>
                         <div class="flex gap-3">
-                            <button id="sendReplyBtn" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center">
+                            <button id="sendReplyBtn"
+                                class="bg-primary-600 hover:bg-primary-700 text-white px-4 sm:px-6 py-2 rounded-lg font-medium transition-all duration-200 flex items-center text-sm sm:text-base">
                                 <i class="fas fa-paper-plane mr-2"></i>Send Reply
                             </button>
-                            <button id="cancelReplyBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-lg font-medium transition-all duration-200">
+                            <button id="cancelReplyBtn"
+                                class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 sm:px-6 py-2 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base">
                                 Cancel
                             </button>
                         </div>
@@ -358,679 +519,7 @@
         </div>
     </div>
 
-    <script>
-        // Global variables
-        let allQueries = [];
-        let allUsers = [];
-        let filteredQueries = [];
-        let currentQuery = null;
-        const API_BASE = 'http://localhost:3000';
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            setupEventListeners();
-            fetchData();
-            updateLastUpdated();
-        });
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Mobile menu functionality
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const closeMobileMenu = document.getElementById('closeMobileMenu');
-
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.remove('hidden');
-            });
-
-            closeMobileMenu.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-
-            mobileMenu.addEventListener('click', (e) => {
-                if (e.target === mobileMenu) {
-                    mobileMenu.classList.add('hidden');
-                }
-            });
-
-            // Search and filter functionality
-            document.getElementById('searchInput').addEventListener('input', applyFilters);
-            document.getElementById('statusFilter').addEventListener('change', applyFilters);
-            document.getElementById('subjectFilter').addEventListener('change', applyFilters);
-            document.getElementById('userFilter').addEventListener('change', applyFilters);
-
-            // Modal functionality
-            document.getElementById('closeModal').addEventListener('click', closeModal);
-            document.getElementById('queryModal').addEventListener('click', (e) => {
-                if (e.target.id === 'queryModal') closeModal();
-            });
-
-            // Reply functionality
-            document.getElementById('sendReplyBtn').addEventListener('click', sendReply);
-            document.getElementById('cancelReplyBtn').addEventListener('click', hideReplySection);
-        }
-
-        // Fetch data from API
-        async function fetchData() {
-            try {
-                showLoading(true);
-                
-                // Fetch queries and users concurrently
-                const [queriesResponse, usersResponse] = await Promise.all([
-                    fetch(`${API_BASE}/queries`),
-                    fetch(`${API_BASE}/users`)
-                ]);
-                
-                if (!queriesResponse.ok || !usersResponse.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-                
-                allQueries = await queriesResponse.json();
-                allUsers = await usersResponse.json();
-                
-                // Match queries with user data
-                allQueries = allQueries.map(query => {
-                    const registeredUser = allUsers.find(user => user.id.toString() === query.UserId);
-                    return {
-                        ...query,
-                        registeredUser: registeredUser || null,
-                        isRegisteredUser: !!registeredUser
-                    };
-                });
-                
-                filteredQueries = [...allQueries];
-                updateStatistics();
-                renderQueries();
-                showContent();
-                updateLastUpdated();
-                
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                showError(error.message);
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Show/hide loading state
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'flex' : 'none';
-        }
-
-        // Show error state
-        function showError(message) {
-            document.getElementById('errorMessage').textContent = message;
-            document.getElementById('error').classList.remove('hidden');
-            document.getElementById('queriesGrid').classList.add('hidden');
-        }
-
-        // Show content
-        function showContent() {
-            document.getElementById('error').classList.add('hidden');
-            document.getElementById('queriesGrid').classList.remove('hidden');
-        }
-
-        // Update statistics
-        function updateStatistics() {
-            const total = allQueries.length;
-            const pending = allQueries.filter(q => q.status === 'pending').length;
-            const responded = allQueries.filter(q => q.status === 'responded').length;
-            const resolved = allQueries.filter(q => q.status === 'resolved').length;
-
-            document.getElementById('totalQueries').textContent = total;
-            document.getElementById('pendingQueries').textContent = pending;
-            document.getElementById('respondedQueries').textContent = responded;
-            document.getElementById('resolvedQueries').textContent = resolved;
-        }
-
-        // Update last updated timestamp
-        function updateLastUpdated() {
-            const now = new Date();
-            document.getElementById('lastUpdated').textContent = `Last updated: ${now.toLocaleTimeString()}`;
-        }
-
-        // Apply search and filters
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const statusFilter = document.getElementById('statusFilter').value;
-            const subjectFilter = document.getElementById('subjectFilter').value;
-            const userFilter = document.getElementById('userFilter').value;
-
-            filteredQueries = allQueries.filter(query => {
-                const matchesSearch = query.name.toLowerCase().includes(searchTerm) ||
-                                    query.email.toLowerCase().includes(searchTerm) ||
-                                    (query.registeredUser && 
-                                     (query.registeredUser.firstName.toLowerCase().includes(searchTerm) ||
-                                      query.registeredUser.lastName.toLowerCase().includes(searchTerm) ||
-                                      query.registeredUser.email.toLowerCase().includes(searchTerm)));
-                
-                const matchesStatus = statusFilter === 'all' || query.status === statusFilter;
-                const matchesSubject = subjectFilter === 'all' || query.subject === subjectFilter;
-                const matchesUserType = userFilter === 'all' || 
-                                      (userFilter === 'registered' && query.isRegisteredUser) ||
-                                      (userFilter === 'guest' && !query.isRegisteredUser);
-
-                return matchesSearch && matchesStatus && matchesSubject && matchesUserType;
-            });
-
-            renderQueries();
-        }
-
-        // Render queries
-        function renderQueries() {
-            const grid = document.getElementById('queriesGrid');
-            const emptyState = document.getElementById('emptyState');
-
-            if (filteredQueries.length === 0) {
-                grid.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            emptyState.classList.add('hidden');
-            grid.classList.remove('hidden');
-
-            grid.innerHTML = filteredQueries.map(query => {
-                const userInfo = query.isRegisteredUser ? query.registeredUser : null;
-                const priorityClass = getPriorityClass(query.status, query.timestamp);
-                
-                return `
-                <div class="query-card rounded-xl shadow-lg p-4 lg:p-6 card-hover cursor-pointer relative ${priorityClass}" onclick="openQueryModal(${query.id})">
-                    <!-- Delete Button -->
-                    <button onclick="event.stopPropagation(); deleteQuery(${query.id})" 
-                            class="absolute top-4 right-4 text-red-500 hover:text-red-700 transition-colors z-10">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-
-                    <!-- User Type Indicator -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center space-x-2">
-                            ${query.isRegisteredUser ? 
-                                `<span class="user-badge text-white px-3 py-1 text-xs font-semibold rounded-full flex items-center">
-                                    <i class="fas fa-user-check mr-1"></i>Registered User
-                                </span>` :
-                                `<span class="bg-gray-100 text-gray-800 px-3 py-1 text-xs font-semibold rounded-full flex items-center border">
-                                    <i class="fas fa-user-friends mr-1"></i>Guest User
-                                </span>`
-                            }
-                        </div>
-                        <span class="px-3 py-1 text-xs font-semibold rounded-full border status-${query.status}">
-                            ${query.status.charAt(0).toUpperCase() + query.status.slice(1)}
-                        </span>
-                    </div>
-
-                    <!-- Query Header -->
-                    <div class="mb-4">
-                        <div class="flex items-start justify-between mb-2">
-                            
-                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                ${formatDate(query.timestamp)}
-                            </span>
-                        </div>
-                        
-                        <!-- Subject Badge -->
-                        <div class="mb-3">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                <i class="fas fa-tag mr-1"></i>
-                                ${formatSubject(query.subject)}
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Contact Info Section -->
-                    <div class="bg-gray-50 rounded-lg p-3 mb-4">
-                        <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-                            <i class="fas fa-address-card mr-2"></i>Contact Information
-                        </h4>
-                        <div class="space-y-1">
-                            <div class="flex items-center text-sm">
-                                <i class="fas fa-user w-4 text-gray-500 mr-2"></i>
-                                <span class="font-medium text-gray-900">${query.name}</span>
-                                ${query.isRegisteredUser ? 
-                                    `<span class="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-                                        ${userInfo.firstName} ${userInfo.lastName}
-                                    </span>` : ''
-                                }
-                            </div>
-                            <div class="flex items-center text-sm text-gray-600">
-                                <i class="fas fa-envelope w-4 text-gray-500 mr-2"></i>
-                                <span>${query.email}</span>
-                            </div>
-                            <div class="flex items-center text-sm text-gray-600">
-                                <i class="fas fa-phone w-4 text-gray-500 mr-2"></i>
-                                <span>${query.phone}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Description Preview -->
-                    <div class="mb-4">
-                        <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-                            <i class="fas fa-comment-alt mr-2"></i>Description
-                        </h4>
-                        <p class="text-gray-700 text-sm line-clamp-3 bg-white p-3 rounded-lg border">
-                            ${query.description.length > 120 ? query.description.substring(0, 120) + '...' : query.description}
-                        </p>
-                    </div>
-
-                    <!-- Priority Indicator -->
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center text-gray-500">
-                            <i class="fas fa-clock mr-1"></i>
-                            <span>${getTimeAgo(query.timestamp)}</span>
-                        </div>
-                        <div class="flex items-center text-primary-600 font-medium">
-                            <span>Click for details</span>
-                            <i class="fas fa-chevron-right ml-1"></i>
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
-        }
-
-        // Get priority class based on status and timestamp
-        function getPriorityClass(status, timestamp) {
-            if (status === 'pending') {
-                const hoursSinceCreated = (new Date() - new Date(timestamp)) / (1000 * 60 * 60);
-                if (hoursSinceCreated > 24) return 'priority-high';
-                if (hoursSinceCreated > 12) return 'priority-medium';
-                return 'priority-low';
-            }
-            return '';
-        }
-
-        // Get time ago string
-        function getTimeAgo(timestamp) {
-            const now = new Date();
-            const created = new Date(timestamp);
-            const diffInHours = Math.floor((now - created) / (1000 * 60 * 60));
-            
-            if (diffInHours < 1) return 'Just now';
-            if (diffInHours < 24) return `${diffInHours}h ago`;
-            const diffInDays = Math.floor(diffInHours / 24);
-            return `${diffInDays}d ago`;
-        }
-
-        // Open query modal
-        function openQueryModal(queryId) {
-            currentQuery = allQueries.find(q => q.id === queryId);
-            if (!currentQuery) return;
-
-            const modal = document.getElementById('queryModal');
-            const content = document.getElementById('modalContent');
-            const userInfo = currentQuery.isRegisteredUser ? currentQuery.registeredUser : null;
-
-            content.innerHTML = `
-                <div class="space-y-6">
-                    <!-- User Information -->
-                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-gray-900 flex items-center">
-                                <i class="fas fa-user-circle mr-3 text-primary-600"></i>
-                                User Information
-                            </h3>
-                            ${currentQuery.isRegisteredUser ? 
-                                `<span class="user-badge text-white px-4 py-2 text-sm font-semibold rounded-full flex items-center">
-                                    <i class="fas fa-user-check mr-2"></i>Registered User
-                                </span>` :
-                                `<span class="bg-gray-200 text-gray-800 px-4 py-2 text-sm font-semibold rounded-full flex items-center">
-                                    <i class="fas fa-user-friends mr-2"></i>Guest User
-                                </span>`
-                            }
-                        </div>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="space-y-4">
-                                <div class="bg-white p-4 rounded-lg shadow-sm">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Query Contact Name</label>
-                                    <p class="text-lg font-semibold text-gray-900 flex items-center">
-                                        <i class="fas fa-user mr-2 text-primary-500"></i>
-                                        ${currentQuery.name}
-                                    </p>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
-                                    <p class="text-gray-900 flex items-center">
-                                        <i class="fas fa-envelope mr-2 text-primary-500"></i>
-                                        ${currentQuery.email}
-                                    </p>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                                    <p class="text-gray-900 flex items-center">
-                                        <i class="fas fa-phone mr-2 text-primary-500"></i>
-                                        ${currentQuery.phone}
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            ${currentQuery.isRegisteredUser ? `
-                                <div class="space-y-4">
-                                    <div class="bg-primary-50 p-4 rounded-lg border border-primary-200">
-                                        <label class="block text-sm font-medium text-primary-700 mb-2">
-                                            <i class="fas fa-id-badge mr-1"></i>Registered User Details
-                                        </label>
-                                        <div class="space-y-2">
-                                            <p class="text-primary-900 font-semibold">
-                                                ${userInfo.firstName} ${userInfo.lastName}
-                                            </p>
-                                            <p class="text-sm text-primary-700">
-                                                <i class="fas fa-envelope mr-1"></i>
-                                                Registered Email: ${userInfo.email}
-                                            </p>
-                                            <p class="text-sm text-primary-700">
-                                                <i class="fas fa-phone mr-1"></i>
-                                                Registered Phone: ${userInfo.phone}
-                                            </p>
-                                            <p class="text-sm text-primary-700">
-                                                <i class="fas fa-user-tag mr-1"></i>
-                                                User ID: #${userInfo.id}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ` : `
-                                <div class="flex items-center justify-center h-full">
-                                    <div class="text-center bg-gray-100 p-6 rounded-lg">
-                                        <i class="fas fa-user-friends text-4xl text-gray-400 mb-3"></i>
-                                        <p class="text-gray-600 font-medium">Guest User</p>
-                                        <p class="text-sm text-gray-500 mt-1">
-                                            No registered account found
-                                        </p>
-                                    </div>
-                                </div>
-                            `}
-                        </div>
-                    </div>
-
-                    <!-- Query Details -->
-                    <div class="bg-white border border-gray-200 rounded-lg p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                            <i class="fas fa-question-circle mr-3 text-primary-600"></i>
-                            Query Details
-                        </h3>
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                                    <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium status-${currentQuery.status}">
-                                        <i class="fas fa-circle mr-2 text-xs"></i>
-                                        ${currentQuery.status.charAt(0).toUpperCase() + currentQuery.status.slice(1)}
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Subject Category</label>
-                                <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200">
-                                    <i class="fas fa-tag mr-2"></i>
-                                    ${formatSubject(currentQuery.subject)}
-                                </span>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                                <div class="bg-gray-50 p-4 rounded-lg border">
-                                    <p class="text-gray-900 whitespace-pre-wrap leading-relaxed">${currentQuery.description}</p>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Submitted On</label>
-                                    <p class="text-gray-900 flex items-center">
-                                        <i class="fas fa-calendar-alt mr-2 text-primary-500"></i>
-                                        ${formatDateTime(currentQuery.timestamp)}
-                                    </p>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Time Elapsed</label>
-                                    <p class="text-gray-900 flex items-center">
-                                        <i class="fas fa-clock mr-2 text-primary-500"></i>
-                                        ${getTimeAgo(currentQuery.timestamp)}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Response History -->
-                    ${currentQuery.response ? `
-                        <div class="bg-green-50 border border-green-200 rounded-lg p-6">
-                            <h3 class="text-lg font-bold text-green-800 mb-3 flex items-center">
-                                <i class="fas fa-reply mr-2"></i>
-                                Admin Response
-                            </h3>
-                            <div class="bg-white p-4 rounded-lg border">
-                                <p class="text-gray-900 whitespace-pre-wrap">${currentQuery.response}</p>
-                            </div>
-                            <p class="text-sm text-green-700 mt-2 flex items-center">
-                                <i class="fas fa-clock mr-1"></i>
-                                Responded: ${formatDateTime(currentQuery.responseTimestamp)}
-                            </p>
-                        </div>
-                    ` : ''}
-
-                    <!-- Action Buttons -->
-                    <div class="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
-                        ${currentQuery.status === 'pending' ? `
-                            <button onclick="showReplySection()" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center">
-                                <i class="fas fa-reply mr-2"></i>Reply to Query
-                            </button>
-                        ` : ''}
-                        ${currentQuery.status === 'responded' ? `
-                            <button onclick="markAsResolved()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center">
-                                <i class="fas fa-check-circle mr-2"></i>Mark as Resolved
-                            </button>
-                        ` : ''}
-                        <button onclick="deleteQuery(${currentQuery.id}); closeModal();" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center">
-                            <i class="fas fa-trash-alt mr-2"></i>Delete Query
-                        </button>
-                        <button onclick="closeModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center">
-                            <i class="fas fa-times mr-2"></i>Close
-                        </button>
-                    </div>
-                </div>`;
-
-            modal.classList.remove('hidden');
-        }
-
-        // Show reply section
-        function showReplySection() {
-            document.getElementById('replySection').classList.remove('hidden');
-            document.getElementById('replyMessage').focus();
-        }
-
-        // Hide reply section
-        function hideReplySection() {
-            document.getElementById('replySection').classList.add('hidden');
-            document.getElementById('replyMessage').value = '';
-        }
-
-        // Send reply
-        async function sendReply() {
-            const message = document.getElementById('replyMessage').value.trim();
-            
-            if (!message) {
-                showToast('Please enter a reply message', 'error');
-                return;
-            }
-
-            const sendBtn = document.getElementById('sendReplyBtn');
-            const originalHtml = sendBtn.innerHTML;
-            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-            sendBtn.disabled = true;
-
-            try {
-                const response = await fetch(`${API_BASE}/queries/${currentQuery.id}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        status: 'responded',
-                        response: message,
-                        responseTimestamp: new Date().toISOString()
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to send reply');
-                }
-
-                // Update local data
-                const queryIndex = allQueries.findIndex(q => q.id === currentQuery.id);
-                if (queryIndex !== -1) {
-                    allQueries[queryIndex].status = 'responded';
-                    allQueries[queryIndex].response = message;
-                    allQueries[queryIndex].responseTimestamp = new Date().toISOString();
-                }
-
-                showToast('Response sent successfully!', 'success');
-                closeModal();
-                updateStatistics();
-                applyFilters();
-
-            } catch (error) {
-                console.error('Error sending reply:', error);
-                showToast('Failed to send response. Please try again.', 'error');
-            } finally {
-                sendBtn.innerHTML = originalHtml;
-                sendBtn.disabled = false;
-            }
-        }
-
-        // Mark as resolved
-        async function markAsResolved() {
-            if (!confirm('Are you sure you want to mark this query as resolved?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/queries/${currentQuery.id}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        status: 'resolved',
-                        resolvedTimestamp: new Date().toISOString()
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to mark as resolved');
-                }
-
-                // Update local data
-                const queryIndex = allQueries.findIndex(q => q.id === currentQuery.id);
-                if (queryIndex !== -1) {
-                    allQueries[queryIndex].status = 'resolved';
-                    allQueries[queryIndex].resolvedTimestamp = new Date().toISOString();
-                }
-
-                showToast('Query marked as resolved!', 'success');
-                closeModal();
-                updateStatistics();
-                applyFilters();
-
-            } catch (error) {
-                console.error('Error marking as resolved:', error);
-                showToast('Failed to mark as resolved. Please try again.', 'error');
-            }
-        }
-
-        // Delete query
-        async function deleteQuery(queryId) {
-            if (!confirm('Are you sure you want to delete this query? This action cannot be undone.')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/queries/${queryId}`, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to delete query');
-                }
-
-                // Remove from local data
-                allQueries = allQueries.filter(q => q.id !== queryId);
-                filteredQueries = filteredQueries.filter(q => q.id !== queryId);
-
-                showToast('Query deleted successfully!', 'success');
-                updateStatistics();
-                renderQueries();
-
-            } catch (error) {
-                console.error('Error deleting query:', error);
-                showToast('Failed to delete query. Please try again.', 'error');
-            }
-        }
-
-        // Close modal
-        function closeModal() {
-            document.getElementById('queryModal').classList.add('hidden');
-            hideReplySection();
-            currentQuery = null;
-        }
-
-        // Format date
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-GB');
-        }
-
-        // Format date and time
-        function formatDateTime(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-GB') + ' at ' + date.toLocaleTimeString('en-GB', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
-        }
-
-        // Format subject
-        function formatSubject(subject) {
-            return subject.split('-').map(word => 
-                word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ');
-        }
-
-        // Show toast notification
-        function showToast(message, type = 'success') {
-            Toastify({
-                text: message,
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                className: type === 'success' ? 'toast-success' : 'toast-error',
-                stopOnFocus: true,
-                style: {
-                    borderRadius: "8px",
-                    fontSize: "14px",
-                    fontWeight: "500"
-                }
-            }).showToast();
-        }
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Auto-refresh queries every 30 seconds
-        setInterval(() => {
-            if (document.visibilityState === 'visible') {
-                fetchData();
-            }
-        }, 30000);
-    </script>
+    <script src="query.js"></script>
 </body>
 
 </html>
