@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VenueVista Database Schema</title>
+</head>
+<body>
+  <!-- Paste your SVG here -->
+  <svg viewBox="0 0 1800 1350" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .class-box 
+      { fill: white; stroke: #2563eb; stroke-width: 2; }
+      .class-box-moving { fill: white; stroke: #8b5cf6; stroke-width: 2; }
+      .class-header { fill: #2563eb; }
+      .class-header-moving { fill: #8b5cf6; }
+      .class-title { fill: white; font-size: 16px; font-weight: bold; font-family: Arial, sans-serif; }
+      .attribute { fill: #1e293b; font-size: 12px; font-family: 'Courier New', monospace; }
+      .section-line { stroke: #2563eb; stroke-width: 2; }
+      .section-line-moving { stroke: #8b5cf6; stroke-width: 2; }
+      .relationship { stroke: #64748b; stroke-width: 2; fill: none; }
+      .relationship-moving { stroke: #a78bfa; stroke-width: 2; fill: none; }
+      .relationship-label { fill: #475569; font-size: 11px; font-family: Arial, sans-serif; }
+      .pk { fill: #eab308; font-weight: bold; }
+      .fk { fill: #10b981; }
+    </style>
+    
+    <marker id="arrow-one-many" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-moving" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#a78bfa"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="900" y="30" text-anchor="middle" style="font-size: 28px; font-weight: bold; fill: #1e293b; font-family: Arial, sans-serif;">VenueVista Complete Database Schema</text>
+
+  <!-- Users Table -->
+  <g id="users">
+    <rect class="class-box" x="50" y="130" width="280" height="220"/>
+    <rect class="class-header" x="50" y="130" width="280" height="40"/>
+    <text class="class-title" x="190" y="155" text-anchor="middle">Users</text>
+    <line class="section-line" x1="50" y1="170" x2="330" y2="170"/>
+    
+    <text class="attribute pk" x="60" y="190">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute" x="60" y="210">firstName: VARCHAR(100)</text>
+    <text class="attribute" x="60" y="230">lastName: VARCHAR(100)</text>
+    <text class="attribute" x="60" y="250">email: VARCHAR(255) UNIQUE</text>
+    <text class="attribute" x="60" y="270">phone: VARCHAR(20)</text>
+    <text class="attribute" x="60" y="290">password: VARCHAR(255)</text>
+    <text class="attribute" x="60" y="310">role: ENUM('customer','admin')</text>
+    <text class="attribute" x="60" y="330">createdAt: TIMESTAMP DEFAULT NOW()</text>
+  </g>
+
+  <!-- HallCategories Table -->
+  <g id="hallcategories">
+    <rect class="class-box" x="450" y="130" width="320" height="220"/>
+    <rect class="class-header" x="450" y="130" width="320" height="40"/>
+    <text class="class-title" x="610" y="155" text-anchor="middle">HallCategories</text>
+    <line class="section-line" x1="450" y1="170" x2="770" y2="170"/>
+    
+    <text class="attribute pk" x="460" y="190">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute" x="460" y="210">name: VARCHAR(100) UNIQUE</text>
+    <text class="attribute" x="460" y="230">capacity: VARCHAR(50)</text>
+    <text class="attribute" x="460" y="250">pricePerHour: DECIMAL(10,2)</text>
+    <text class="attribute" x="460" y="270">image: TEXT</text>
+    <text class="attribute" x="460" y="290">amenities: JSON</text>
+    <text class="attribute" x="460" y="310">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="460" y="330">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- Rooms Table -->
+  <g id="rooms">
+    <rect class="class-box" x="450" y="400" width="320" height="200"/>
+    <rect class="class-header" x="450" y="400" width="320" height="40"/>
+    <text class="class-title" x="610" y="425" text-anchor="middle">Rooms</text>
+    <line class="section-line" x1="450" y1="440" x2="770" y2="440"/>
+    
+    <text class="attribute pk" x="460" y="460">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute fk" x="460" y="480">🔗 hallCategoryId: INT (FK)</text>
+    <text class="attribute" x="460" y="500">roomNumber: VARCHAR(20) UNIQUE</text>
+    <text class="attribute" x="460" y="520">status: ENUM('active','inactive')</text>
+    <text class="attribute" x="460" y="540">image: TEXT</text>
+    <text class="attribute" x="460" y="560">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="460" y="580">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- BookingCustomers Table -->
+  <g id="bookingcustomers">
+    <rect class="class-box" x="50" y="400" width="300" height="220"/>
+    <rect class="class-header" x="50" y="400" width="300" height="40"/>
+    <text class="class-title" x="200" y="425" text-anchor="middle">BookingCustomers</text>
+    <line class="section-line" x1="50" y1="440" x2="350" y2="440"/>
+    
+    <text class="attribute pk" x="60" y="460">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute" x="60" y="480">firstName: VARCHAR(100)</text>
+    <text class="attribute" x="60" y="500">lastName: VARCHAR(100)</text>
+    <text class="attribute" x="60" y="520">email: VARCHAR(255)</text>
+    <text class="attribute" x="60" y="540">mobileNumber: VARCHAR(20)</text>
+    <text class="attribute" x="60" y="560">address: TEXT</text>
+    <text class="attribute" x="60" y="580">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="60" y="600">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- Bookings Table -->
+  <g id="bookings">
+    <rect class="class-box" x="50" y="670" width="300" height="330"/>
+    <rect class="class-header" x="50" y="670" width="300" height="40"/>
+    <text class="class-title" x="200" y="695" text-anchor="middle">Bookings</text>
+    <line class="section-line" x1="50" y1="710" x2="350" y2="710"/>
+    
+    <text class="attribute pk" x="60" y="730">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute fk" x="60" y="750">🔗 userId: INT (FK)</text>
+    <text class="attribute fk" x="60" y="770">🔗 roomId: INT (FK)</text>
+    <text class="attribute fk" x="60" y="790">🔗 customerId: INT (FK)</text>
+    <text class="attribute" x="60" y="810">bookingDate: DATE</text>
+    <text class="attribute" x="60" y="830">checkInTime: TIME</text>
+    <text class="attribute" x="60" y="850">checkOutTime: TIME</text>
+    <text class="attribute" x="60" y="870">purpose: TEXT</text>
+    <text class="attribute" x="60" y="890">hasBeverage: BOOLEAN</text>
+    <text class="attribute" x="60" y="910">totalCost: DECIMAL(10,2)</text>
+    <text class="attribute" x="60" y="930">status: ENUM('booked','completed',</text>
+    <text class="attribute" x="60" y="945">       'cancelled')</text>
+    <text class="attribute" x="60" y="975">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="60" y="995">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- Beverages Table -->
+  <g id="beverages">
+    <rect class="class-box" x="850" y="130" width="280" height="180"/>
+    <rect class="class-header" x="850" y="130" width="280" height="40"/>
+    <text class="class-title" x="990" y="155" text-anchor="middle">Beverages</text>
+    <line class="section-line" x1="850" y1="170" x2="1130" y2="170"/>
+    
+    <text class="attribute pk" x="860" y="190">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute" x="860" y="210">name: VARCHAR(100) UNIQUE</text>
+    <text class="attribute" x="860" y="230">price: DECIMAL(10,2)</text>
+    <text class="attribute" x="860" y="250">isAvailable: BOOLEAN DEFAULT TRUE</text>
+    <text class="attribute" x="860" y="270">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="860" y="290">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- BookingBeverages Junction -->
+  <g id="bookingbeverages">
+    <rect class="class-box" x="450" y="670" width="320" height="180"/>
+    <rect class="class-header" x="450" y="670" width="320" height="40" style="fill: #f59e0b;"/>
+    <text class="class-title" x="610" y="695" text-anchor="middle">BookingBeverages</text>
+    <line class="section-line" x1="450" y1="710" x2="770" y2="710"/>
+    
+    <text class="attribute pk" x="460" y="730">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute fk" x="460" y="750">🔗 bookingId: INT (FK)</text>
+    <text class="attribute fk" x="460" y="770">🔗 beverageId: INT (FK)</text>
+    <text class="attribute" x="460" y="790">quantity: INT</text>
+    <text class="attribute" x="460" y="810">pricePerUnit: DECIMAL(10,2)</text>
+    <text class="attribute" x="460" y="830">subtotal: DECIMAL(10,2)</text>
+  </g>
+
+  <!-- ==================== MOVING HALL SYSTEM ==================== -->
+
+  <!-- MovingHallSetups Table -->
+  <g id="movinghallsetups">
+    <rect class="class-box-moving" x="1230" y="130" width="320" height="300"/>
+    <rect class="class-header-moving" x="1230" y="130" width="320" height="40"/>
+    <text class="class-title" x="1390" y="155" text-anchor="middle">MovingHallSetups</text>
+    <line class="section-line-moving" x1="1230" y1="170" x2="1550" y2="170"/>
+    
+    <text class="attribute pk" x="1240" y="190">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute" x="1240" y="210">setupType: ENUM('compact','classic',</text>
+    <text class="attribute" x="1240" y="225">           'grand') UNIQUE</text>
+    <text class="attribute" x="1240" y="245">memberCapacity: VARCHAR(20)</text>
+    <text class="attribute" x="1240" y="265">chairs: INT</text>
+    <text class="attribute" x="1240" y="285">tables: INT</text>
+    <text class="attribute" x="1240" y="305">fans: INT</text>
+    <text class="attribute" x="1240" y="325">whiteboards: INT</text>
+    <text class="attribute" x="1240" y="345">projectors: INT</text>
+    <text class="attribute" x="1240" y="365">screens: INT</text>
+    <text class="attribute" x="1240" y="385">pricePerDay: DECIMAL(10,2)</text>
+    <text class="attribute" x="1240" y="405">transportationCost: DECIMAL(10,2)</text>
+    <text class="attribute" x="1240" y="425">createdAt: TIMESTAMP DEFAULT NOW()</text>
+  </g>
+
+  <!-- Equipment Table -->
+  <g id="equipment">
+    <rect class="class-box-moving" x="1230" y="480" width="320" height="180"/>
+    <rect class="class-header-moving" x="1230" y="480" width="320" height="40"/>
+    <text class="class-title" x="1390" y="505" text-anchor="middle">Equipment</text>
+    <line class="section-line-moving" x1="1230" y1="520" x2="1550" y2="520"/>
+    
+    <text class="attribute pk" x="1240" y="540">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute" x="1240" y="560">name: VARCHAR(100) UNIQUE</text>
+    <text class="attribute" x="1240" y="580">pricePerUnit: DECIMAL(10,2)</text>
+    <text class="attribute" x="1240" y="600">isAvailable: BOOLEAN DEFAULT TRUE</text>
+    <text class="attribute" x="1240" y="620">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="1240" y="640">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- MovingHallCustomers Table -->
+  <g id="movinghallcustomers">
+    <rect class="class-box-moving" x="850" y="400" width="320" height="220"/>
+    <rect class="class-header-moving" x="850" y="400" width="320" height="40"/>
+    <text class="class-title" x="1010" y="425" text-anchor="middle">MovingHallCustomers</text>
+    <line class="section-line-moving" x1="850" y1="440" x2="1170" y2="440"/>
+    
+    <text class="attribute pk" x="860" y="460">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute" x="860" y="480">firstName: VARCHAR(100)</text>
+    <text class="attribute" x="860" y="500">lastName: VARCHAR(100)</text>
+    <text class="attribute" x="860" y="520">email: VARCHAR(255)</text>
+    <text class="attribute" x="860" y="540">contactNumber: VARCHAR(20)</text>
+    <text class="attribute" x="860" y="560">setupAddress: TEXT</text>
+    <text class="attribute" x="860" y="580">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="860" y="600">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- MovingHallBookings Table -->
+  <g id="movinghallbookings">
+    <rect class="class-box-moving" x="850" y="670" width="320" height="360"/>
+    <rect class="class-header-moving" x="850" y="670" width="320" height="40"/>
+    <text class="class-title" x="1010" y="695" text-anchor="middle">MovingHallBookings</text>
+    <line class="section-line-moving" x1="850" y1="710" x2="1170" y2="710"/>
+    
+    <text class="attribute pk" x="860" y="730">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute fk" x="860" y="750">🔗 userId: INT (FK)</text>
+    <text class="attribute fk" x="860" y="770">🔗 setupId: INT (FK)</text>
+    <text class="attribute fk" x="860" y="790">🔗 customerId: INT (FK)</text>
+    <text class="attribute" x="860" y="810">startDate: DATE</text>
+    <text class="attribute" x="860" y="830">endDate: DATE</text>
+    <text class="attribute" x="860" y="850">durationDays: INT</text>
+    <text class="attribute" x="860" y="870">purpose: TEXT</text>
+    <text class="attribute" x="860" y="890">bookingType: ENUM('single_day',</text>
+    <text class="attribute" x="860" y="905">              'multiple_days')</text>
+    <text class="attribute" x="860" y="925">setupCost: DECIMAL(10,2)</text>
+    <text class="attribute" x="860" y="945">transportCost: DECIMAL(10,2)</text>
+    <text class="attribute" x="860" y="965">equipmentCost: DECIMAL(10,2)</text>
+    <text class="attribute" x="860" y="985">totalCost: DECIMAL(10,2)</text>
+    <text class="attribute" x="860" y="1005">status: ENUM('booked','completed',</text>
+    <text class="attribute" x="860" y="1020">       'cancelled')</text>
+  </g>
+
+  <!-- MovingHallEquipment Junction -->
+  <g id="movinghallequipment">
+    <rect class="class-box-moving" x="1230" y="710" width="320" height="180"/>
+    <rect class="class-header-moving" x="1230" y="710" width="320" height="40" style="fill: #f59e0b;"/>
+    <text class="class-title" x="1390" y="735" text-anchor="middle">MovingHallEquipment</text>
+    <line class="section-line-moving" x1="1230" y1="750" x2="1550" y2="750"/>
+    
+    <text class="attribute pk" x="1240" y="770">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute fk" x="1240" y="790">🔗 bookingId: INT (FK)</text>
+    <text class="attribute fk" x="1240" y="810">🔗 equipmentId: INT (FK)</text>
+    <text class="attribute" x="1240" y="830">quantity: INT</text>
+    <text class="attribute" x="1240" y="850">pricePerUnit: DECIMAL(10,2)</text>
+    <text class="attribute" x="1240" y="870">subtotal: DECIMAL(10,2)</text>
+  </g>
+
+  <!-- ==================== SHARED TABLES ==================== -->
+
+  <!-- Queries Table -->
+  <g id="queries">
+    <rect class="class-box" x="50" y="1010" width="300" height="240"/>
+    <rect class="class-header" x="50" y="1010" width="300" height="40"/>
+    <text class="class-title" x="200" y="1035" text-anchor="middle">Queries</text>
+    <line class="section-line" x1="50" y1="1050" x2="350" y2="1050"/>
+    
+    <text class="attribute pk" x="60" y="1070">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute fk" x="60" y="1090">🔗 userId: INT (FK)</text>
+    <text class="attribute" x="60" y="1110">name: VARCHAR(100)</text>
+    <text class="attribute" x="60" y="1130">email: VARCHAR(255)</text>
+    <text class="attribute" x="60" y="1150">phone: VARCHAR(20)</text>
+    <text class="attribute" x="60" y="1170">subject: VARCHAR(255)</text>
+    <text class="attribute" x="60" y="1190">description: TEXT</text>
+    <text class="attribute" x="60" y="1210">status: ENUM('pending','resolved')</text>
+    <text class="attribute" x="60" y="1230">createdAt: TIMESTAMP DEFAULT NOW()</text>
+  </g>
+
+  <!-- Reports Table -->
+  <g id="reports">
+    <rect class="class-box" x="450" y="1010" width="320" height="260"/>
+    <rect class="class-header" x="450" y="1010" width="320" height="40"/>
+    <text class="class-title" x="610" y="1035" text-anchor="middle">Reports</text>
+    <line class="section-line" x1="450" y1="1050" x2="770" y2="1050"/>
+    
+    <text class="attribute pk" x="460" y="1070">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute fk" x="460" y="1090">🔗 userId: INT (FK)</text>
+    <text class="attribute fk" x="460" y="1110">🔗 bookingId: INT (FK, NULL)</text>
+    <text class="attribute fk" x="460" y="1130">🔗 movingHallBookingId: INT (FK, NULL)</text>
+    <text class="attribute" x="460" y="1150">reportType: ENUM('fixed_venue',</text>
+    <text class="attribute" x="460" y="1165">            'moving_hall')</text>
+    <text class="attribute" x="460" y="1185">reportDescription: TEXT</text>
+    <text class="attribute" x="460" y="1205">status: ENUM('pending','resolved')</text>
+    <text class="attribute" x="460" y="1225">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="460" y="1245">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- Content Table -->
+  <g id="content">
+    <rect class="class-box" x="850" y="1080" width="280" height="180"/>
+    <rect class="class-header" x="850" y="1080" width="280" height="40"/>
+    <text class="class-title" x="990" y="1105" text-anchor="middle">Content</text>
+    <line class="section-line" x1="850" y1="1120" x2="1130" y2="1120"/>
+    
+    <text class="attribute pk" x="860" y="1140">🔑 id: INT (PK, AUTO_INCREMENT)</text>
+    <text class="attribute" x="860" y="1160">section: VARCHAR(100) UNIQUE</text>
+    <text class="attribute" x="860" y="1180">contentData: JSON</text>
+    <text class="attribute" x="860" y="1200">isActive: BOOLEAN DEFAULT TRUE</text>
+    <text class="attribute" x="860" y="1220">createdAt: TIMESTAMP DEFAULT NOW()</text>
+    <text class="attribute" x="860" y="1240">updatedAt: TIMESTAMP ON UPDATE NOW()</text>
+  </g>
+
+  <!-- ==================== RELATIONSHIPS ==================== -->
+  
+  <!-- Fixed Venue Relationships -->
+  <path class="relationship" d="M 180 350 L 180 400" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="165" y="375">1:*</text>
+  <path class="relationship" d="M 190 350 L 190 670" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="175" y="510">1:*</text>
+  <path class="relationship" d="M 200 350 L 200 1010" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="185" y="680">1:*</text>
+  
+  <path class="relationship" d="M 610 350 L 610 400" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="630" y="375" style="font-weight: bold;">has 1:*</text>
+  <path class="relationship" d="M 450 600 L 350 600 L 350 670" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="400" y="635">1:*</text>
+  <path class="relationship" d="M 200 620 L 200 670" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="220" y="645" style="font-weight: bold;">details 1:*</text>
+  <path class="relationship" d="M 350 780 L 450 780" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="400" y="765">1:*</text>
+  <path class="relationship" d="M 850 310 L 850 780 L 770 780" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="865" y="545">1:*</text>
+  
+  <!-- Moving Hall Relationships (Purple) -->
+  <path class="relationship-moving" d="M 330 240 L 330 360 L 1010 360 L 1010 400" marker-end="url(#arrow-moving)"/>
+  <text class="relationship-label" x="670" y="345">1:*</text>
+  <path class="relationship-moving" d="M 330 240 L 330 360 L 780 360 L 780 850 L 850 850" marker-end="url(#arrow-moving)"/>
+  <text class="relationship-label" x="555" y="345">1:*</text>
+  
+  <path class="relationship-moving" d="M 1230 280 L 1230 320 L 840 320 L 840 670 L 850 670" marker-end="url(#arrow-moving)"/>
+  <text class="relationship-label" x="1035" y="495">1:*</text>
+  <path class="relationship-moving" d="M 1010 620 L 1010 670" marker-end="url(#arrow-moving)"/>
+  <text class="relationship-label" x="1030" y="645" style="font-weight: bold;">details 1:*</text>
+  <path class="relationship-moving" d="M 1170 800 L 1230 800" marker-end="url(#arrow-moving)"/>
+  <text class="relationship-label" x="1200" y="785">1:*</text>
+  <path class="relationship-moving" d="M 1230 580 L 1200 580 L 1200 800 L 1230 800" marker-end="url(#arrow-moving)"/>
+  <text class="relationship-label" x="1215" y="690">1:*</text>
+  
+  <!-- Shared Reports Relationships -->
+  <path class="relationship" d="M 350 850 L 400 850 L 400 1120 L 450 1120" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="425" y="985">1:*</text>
+  <path class="relationship-moving" d="M 850 1010 L 800 1010 L 800 1120 L 770 1120" marker-end="url(#arrow-moving)"/>
+  <text class="relationship-label" x="785" y="1065">1:*</text>
+  <path class="relationship" d="M 330 300 L 380 300 L 380 1120 L 450 1120" marker-end="url(#arrow-one-many)"/>
+  <text class="relationship-label" x="405" y="710">1:*</text>
+
+  <!-- Labels -->
+  <text class="relationship-label" x="210" y="645" style="font-weight: bold;">details</text>
+  <text class="relationship-label" x="1020" y="645" style="font-weight: bold;">details</text>
+
+</svg>
+  
+</body>
+</html>
