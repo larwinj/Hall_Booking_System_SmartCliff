@@ -59,7 +59,7 @@ Hall_Booking_System/
 1. Simply open `index.html` in your browser or visit the deployed version.
 2. Install JSON Server - npm install -g json-server
 3. Run the JSON Server - json-server --watch db.json or (json-server --watch db.json --port 3000)
-        |_Server will start at : http://localhost:3000/
+        |_Server will start at : https://mpnt1qbp-3000.inc1.devtunnels.ms/
 
 ## Architecture
 

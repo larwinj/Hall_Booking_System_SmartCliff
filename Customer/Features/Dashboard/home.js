@@ -1,6 +1,6 @@
 class ProfileManager {
     constructor() {
-        this.apiUrl = 'http://localhost:3000/users';
+        this.apiUrl = 'https://mpnt1qbp-3000.inc1.devtunnels.ms/users';
         this.currentUserId = localStorage.getItem("userId");
         this.currentUser = null;
 
