@@ -1,5 +1,5 @@
 // Global variables
-const API_BASE = 'http://localhost:3000';
+const API_BASE = 'https://mpnt1qbp-3000.inc1.devtunnels.ms';
 let currentOperation = null;
 
 // Initialize the application

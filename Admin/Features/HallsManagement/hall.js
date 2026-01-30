@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://mpnt1qbp-3000.inc1.devtunnels.ms';
 
 // Global variables
 let hallsData = [];

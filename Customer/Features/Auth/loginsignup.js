@@ -1,5 +1,5 @@
 // Base URL for JSON Server
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://mpnt1qbp-3000.inc1.devtunnels.ms';
 
 // EmailJS Configuration - Replace with your actual EmailJS credentials
 emailjs.init("wP4KJ3AjpXVJsiadA"); // Replace with your EmailJS User ID

@@ -4,9 +4,9 @@ let mockDB = { users: [], bookings: [], queries: [] };
 function loadMockDB() {
     console.log("Loading mockDB...");
     return Promise.all([
-        fetch("http://localhost:3000/users"),
-        fetch("http://localhost:3000/bookings"),
-        fetch("http://localhost:3000/queries")
+        fetch("https://mpnt1qbp-3000.inc1.devtunnels.ms/users"),
+        fetch("https://mpnt1qbp-3000.inc1.devtunnels.ms/bookings"),
+        fetch("https://mpnt1qbp-3000.inc1.devtunnels.ms/queries")
     ])
         .then(async ([usersRes, bookingsRes, queriesRes]) => {
             if (!usersRes.ok || !bookingsRes.ok || !queriesRes.ok) {

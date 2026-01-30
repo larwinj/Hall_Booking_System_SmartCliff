@@ -757,7 +757,7 @@
         async function loadDynamicContent() {
             let data = defaultData;
             try {
-                const response = await fetch('http://localhost:3000/content?t=' + Date.now());
+                const response = await fetch('https://mpnt1qbp-3000.inc1.devtunnels.ms/content?t=' + Date.now());
                 if (!response.ok) throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
                 data = await response.json();
             } catch (error) {
