@@ -59,7 +59,7 @@ const iconMap = {
 
 async function loadData() {
     try {
-        const res = await fetch('https://mpnt1qbp-3000.inc1.devtunnels.ms/content');
+        const res = await fetch('http://localhost:3000/content');
         if (!res.ok) throw new Error('Failed to fetch');
         data = await res.json();
     } catch (e) {
@@ -78,7 +78,7 @@ async function saveData() {
     if (isSaving) return;
     isSaving = true;
     try {
-        const res = await fetch('https://mpnt1qbp-3000.inc1.devtunnels.ms/content', {
+        const res = await fetch('http://localhost:3000/content', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

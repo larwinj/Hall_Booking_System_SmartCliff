@@ -20,7 +20,7 @@ const rooms = {
 let hallsData = [];
 async function fetchHallsData() {
     try {
-        const response = await fetch('https://mpnt1qbp-3000.inc1.devtunnels.ms/halls');
+        const response = await fetch('http://localhost:3000/halls');
         hallsData = await response.json();
     } catch (error) {
         console.error('Error fetching halls data:', error);
@@ -92,7 +92,7 @@ categorySelect.addEventListener("change", function () {
 // Check room availability
 async function checkRoomAvailability(date, checkIn, checkOut, category, specificRoom = null) {
     try {
-        const response = await fetch('https://mpnt1qbp-3000.inc1.devtunnels.ms/bookings');
+        const response = await fetch('http://localhost:3000/bookings');
         const bookings = await response.json();
         
         const requestedDate = new Date(date).toDateString();

@@ -1,7 +1,7 @@
 let allBookings = [];
 let filteredBookings = [];
 let reportChart;
-const API_BASE = 'https://mpnt1qbp-3000.inc1.devtunnels.ms';
+const API_BASE = 'http://localhost:3000';
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
